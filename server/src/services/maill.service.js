@@ -49,7 +49,7 @@ const sendEmail = async (options) => {
   }
 };
 
-const emailVerificationMailgenContent = (username, verificationURL) => {
+const emailVerificationMailgenContent = ({ username, verificationURL }) => {
   return {
     body: {
       name: username,
