@@ -10,6 +10,7 @@ import {
   sendEmail,
   emailVerificationMailgenContent,
 } from "../services/maill.service.js";
+import crypto from "crypto";
 
 import {
   hashPassword,
@@ -42,7 +43,8 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateToken(user);
-  const { hashedToken, unhashedToken, tokenExpiry } = await genrateRandomToken();
+  const { hashedToken, unhashedToken, tokenExpiry } =
+    await genrateRandomToken();
 
   const avatar = req.file;
   let avatarUrl = null;
@@ -67,7 +69,7 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     },
   });
 
-  const verification_url = `${BASEURL}/verify-email?token=${unhashedToken}`;
+  const verification_url = `${BASEURL}/auth/verify-email/?token=${unhashedToken}`;
   await sendEmail({
     email,
     subject: "Welcome to LeetLab",
@@ -89,6 +91,39 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "User registered successfully", updatedUser));
 });
 
+const verifyEmailHandler = AsyncHandler(async (req, res) => {
+  const { token } = req.query;
+  console.log(token);
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await prisma.user.findFirst({
+    where: {
+      emailVerificationToken: hashedToken,
+      emailVerificationTokenExpiry: {
+        gt: new Date(),
+      },
+    },
+  });
+  if (!user) {
+    throw new ApiError(404, "User not found or token expired");
+  }
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      isVerified: true,
+      emailVerificationToken: null,
+      emailVerificationTokenExpiry: null,
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Email verified successfully"));
+});
+
 const loginUserHandler = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await findUserByEmail(email);
@@ -102,4 +137,9 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
 
 const logoutUserHandler = (req, res) => {};
 
-export { registerUserHandler, loginUserHandler, logoutUserHandler };
+export {
+  registerUserHandler,
+  loginUserHandler,
+  logoutUserHandler,
+  verifyEmailHandler,
+};
