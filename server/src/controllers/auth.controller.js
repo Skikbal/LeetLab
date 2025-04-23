@@ -4,14 +4,19 @@ import ApiResponse from "../utils/ApiResponse.js";
 import { prisma } from "../libs/db.js";
 import bcrypt from "bcryptjs";
 import { UserRole } from "../generated/prisma/index.js";
-import { NODE_ENV } from "../config/envConfig.js";
+import { NODE_ENV, BASEURL } from "../config/envConfig.js";
 import imagekitUpload from "../services/imagekit.service.js";
+import {
+  sendEmail,
+  emailVerificationMailgenContent,
+} from "../services/maill.service.js";
 
 import {
   hashPassword,
   comparePassword,
   generateToken,
   findUserByEmail,
+  genrateRandomToken,
 } from "../services/user.service.js";
 
 const registerUserHandler = AsyncHandler(async (req, res) => {
@@ -37,6 +42,8 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateToken(user);
+  const { hashedToken, unhashedToken, tokenExpiry } = await genrateRandomToken();
+
   const avatar = req.file;
   let avatarUrl = null;
   if (avatar) {
@@ -50,6 +57,8 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     data: {
       refreshToken: refreshToken,
       avatar: avatarUrl,
+      emailVerificationToken: hashedToken,
+      emailVerificationTokenExpiry: new Date(tokenExpiry),
     },
     select: {
       id: true,
@@ -58,13 +67,21 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     },
   });
 
+  const verification_url = `${BASEURL}/verify-email?token=${unhashedToken}`;
+  await sendEmail({
+    email,
+    subject: "Welcome to LeetLab",
+    mailgenContent: emailVerificationMailgenContent({
+      username: name,
+      verificationURL: verification_url,
+    }),
+  });
   const cookiesOptions = {
     httpOnly: true,
     sameSite: "strict",
     secure: NODE_ENV !== "development",
     maxAge: 24 * 60 * 60 * 1000,
   };
-
   return res
     .status(201)
     .cookie("accessToken", accessToken, cookiesOptions)

@@ -5,6 +5,7 @@ dotenv.config({
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 const PORT = process.env.PORT || 8000;
+const BASEURL = process.env.BASEURL;
 
 //tokens
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -25,6 +26,7 @@ const MAILTRAP_PASSWORD = process.env.MAILTRAP_PASSWORD;
 
 export {
   PORT,
+  BASEURL,
   NODE_ENV,
   ACCESS_TOKEN_SECRET,
   ACCESS_TOKEN_EXPIRY,
