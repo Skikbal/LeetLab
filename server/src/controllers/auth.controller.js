@@ -72,7 +72,16 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "User registered successfully", updatedUser));
 });
 
-const loginUserHandler = (req, res) => {};
+const loginUserHandler = AsyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  const isPasswordCorrect = await comparePassword(password, user.password);
+  if (!isPasswordCorrect) {
+  }
+});
 
 const logoutUserHandler = (req, res) => {};
 
