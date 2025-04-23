@@ -1,0 +1,33 @@
+import ApiError from "../utils/ApiError.js";
+import jwt from "jsonwebtoken";
+import { ACCESS_TOKEN_SECRET } from "../config/envConfig.js";
+import { prisma } from "../libs/db.js";
+const isAuth = async (req, res, next) => {
+  const { accessToken } = req.cookie;
+  if (!accessToken) {
+    return next(new ApiError(401, "Access token missing. Unauthorized"));
+  }
+  try {
+    const decoded = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decoded.id,
+      },
+      select: {
+        password: false,
+        refreshToken: false,
+      },
+    });
+
+    if (!user) {
+      return next(new ApiError(404, "User not found.Unauthorized"));
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    next(new ApiError(401, "Invalid or expired access token."));
+  }
+};
+
+export default isAuth;
