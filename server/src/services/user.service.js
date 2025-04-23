@@ -7,6 +7,7 @@ import {
   REFRESH_TOKEN_EXPIRY,
   REFRESH_TOKEN_SECRET,
 } from "../config/envConfig.js";
+import crypto from "crypto";
 
 // Utility to hash password before saving
 export const hashPassword = async (password) => {
@@ -42,6 +43,16 @@ export const generateToken = async (user) => {
     accessToken: AccessToken,
     refreshToken: RefreshToken,
   };
+};
+
+export const genrateRandomToken = async () => {
+  const unhashedToken = crypto.randomBytes(32).toString("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unhashedToken)
+    .digest("hex");
+  const tokenExpiry = Date.now() + 20 * 60 * 1000;
+  return { unhashedToken, hashedToken, tokenExpiry };
 };
 
 //utility to find user
