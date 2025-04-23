@@ -5,6 +5,7 @@ import { prisma } from "../libs/db.js";
 import bcrypt from "bcryptjs";
 import { UserRole } from "../generated/prisma/index.js";
 import { NODE_ENV } from "../config/envConfig.js";
+import imagekitUpload from "../services/imagekit.service.js";
 
 import {
   hashPassword,
@@ -14,10 +15,8 @@ import {
 } from "../services/user.service.js";
 
 const registerUserHandler = AsyncHandler(async (req, res) => {
-  const { email, password, name } = req.body;
-
+  const { email, password, name = null } = req.body;
   const existingUser = await findUserByEmail(email);
-
   if (existingUser) {
     throw new ApiError(409, "User with email or username already exists");
   }
@@ -38,13 +37,19 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateToken(user);
+  const avatar = req.file;
+  let avatarUrl = null;
+  if (avatar) {
+    avatarUrl = await imagekitUpload(avatar);
+  }
 
   const updatedUser = await prisma.user.update({
     where: {
       id: user.id,
     },
     data: {
-      refreshToken,
+      refreshToken: refreshToken,
+      avatar: avatarUrl,
     },
     select: {
       id: true,

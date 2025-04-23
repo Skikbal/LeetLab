@@ -26,7 +26,7 @@ export const generateToken = async (user) => {
     { id: user.id, role: user.role },
     ACCESS_TOKEN_SECRET,
     {
-      ACCESS_TOKEN_EXPIRY,
+      expiresIn: ACCESS_TOKEN_EXPIRY,
     },
   );
 
@@ -34,7 +34,7 @@ export const generateToken = async (user) => {
     { id: user.id, role: user.role },
     REFRESH_TOKEN_SECRET,
     {
-      REFRESH_TOKEN_EXPIRY,
+      expiresIn: REFRESH_TOKEN_EXPIRY,
     },
   );
 
