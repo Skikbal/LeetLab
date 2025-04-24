@@ -15,9 +15,12 @@ const imagekit = new ImageKit({
 
 const imagekitUpload = async (file) => {
   try {
+   const filePath = fs.readFileSync(file.path);
     const image = await imagekit.upload({
-      file: file.path,
+      file: filePath,
       fileName: file.filename,
+      fileType: "image",
+      folder: "LeetLab",
     });
     if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
     return image.url;
