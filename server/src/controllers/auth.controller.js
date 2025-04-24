@@ -180,9 +180,34 @@ const logoutUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User logged out successfully"));
 });
 
+const getUserProfileHandler = AsyncHandler(async (req, res) => {
+  const id = req.user.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      avatar: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User profile fetched successfully", user));
+});
+
 export {
   registerUserHandler,
   loginUserHandler,
   logoutUserHandler,
   verifyEmailHandler,
+  getUserProfileHandler,
 };
