@@ -20,6 +20,14 @@ import {
   genrateRandomToken,
 } from "../services/user.service.js";
 
+//cookie option
+const cookiesOptions = {
+  httpOnly: true,
+  sameSite: "strict",
+  secure: NODE_ENV !== "development",
+  maxAge: 24 * 60 * 60 * 1000,
+};
+
 const registerUserHandler = AsyncHandler(async (req, res) => {
   const { email, password, name = null } = req.body;
   const existingUser = await findUserByEmail(email);
@@ -78,12 +86,12 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
       verificationURL: verification_url,
     }),
   });
-  const cookiesOptions = {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: NODE_ENV !== "development",
-    maxAge: 24 * 60 * 60 * 1000,
-  };
+  // const cookiesOptions = {
+  //   httpOnly: true,
+  //   sameSite: "strict",
+  //   secure: NODE_ENV !== "development",
+  //   maxAge: 24 * 60 * 60 * 1000,
+  // };
   return res
     .status(201)
     .cookie("accessToken", accessToken, cookiesOptions)
@@ -148,14 +156,6 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
       refreshToken: refreshToken,
     },
   });
-  
-  const cookiesOptions = {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: NODE_ENV !== "development",
-    maxAge: 24 * 60 * 60 * 1000,
-  };
-
   return res
     .status(200)
     .cookie("accessToken", accessToken, cookiesOptions)
@@ -163,7 +163,22 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User logged in successfully"));
 });
 
-const logoutUserHandler = (req, res) => {};
+const logoutUserHandler = AsyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      refreshToken: null,
+    },
+  });
+  res
+    .status(200)
+    .cookie("accessToken", cookiesOptions)
+    .cookie("refreshToken", cookiesOptions)
+    .json(new ApiResponse(200, "User logged out successfully"));
+});
 
 export {
   registerUserHandler,
