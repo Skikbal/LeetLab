@@ -204,10 +204,68 @@ const getUserProfileHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User profile fetched successfully", user));
 });
 
+const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if(user.isVerified){
+    throw new ApiError(400, "Email already verified");
+  }
+
+  const { unhashedToken, hashedToken, tokenExpiry } = await genrateRandomToken();
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      emailVerificationToken: hashedToken,
+      emailVerificationTokenExpiry: new Date(tokenExpiry),
+    },
+  });
+
+  const verification_url = `${BASEURL}/auth/verify-email/?token=${unhashedToken}`;
+
+  await sendEmail({
+    email: user.email,
+    subject: "Welcome to LeetLab",
+    mailgenContent: emailVerificationMailgenContent({
+      username: user.name,
+      verificationURL: verification_url,
+    }),
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Verification email sent successfully"));
+});
+
+const forgotPasswordHandler = AsyncHandler(async (req, res) => {});
+const resetPasswordHandler = AsyncHandler(async (req, res) => {});
+const changePasswordHandler = AsyncHandler(async (req, res) => {});
+const updateUserProfileHandler = AsyncHandler(async (req, res) => {});
+const updateUserAvatarHandler = AsyncHandler(async (req, res) => {});
+const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {});
+
 export {
   registerUserHandler,
   loginUserHandler,
   logoutUserHandler,
   verifyEmailHandler,
   getUserProfileHandler,
+  resendEmailVerificationHandler,
+  forgotPasswordHandler,
+  resetPasswordHandler,
+  changePasswordHandler,
+  updateUserProfileHandler,
+  updateUserAvatarHandler,
+  refreshAccessTokenHandler,
 };
