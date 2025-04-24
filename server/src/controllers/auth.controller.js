@@ -132,7 +132,35 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
   }
   const isPasswordCorrect = await comparePassword(password, user.password);
   if (!isPasswordCorrect) {
+    throw new ApiError(401, "Invalid credentials");
   }
+  if (!user.isVerified) {
+    throw new ApiError(401, "Email not verified");
+  }
+
+  const { accessToken, refreshToken } = await generateToken(user);
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      refreshToken: refreshToken,
+    },
+  });
+  
+  const cookiesOptions = {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: NODE_ENV !== "development",
+    maxAge: 24 * 60 * 60 * 1000,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, cookiesOptions)
+    .cookie("refreshToken", refreshToken, cookiesOptions)
+    .json(new ApiResponse(200, "User logged in successfully"));
 });
 
 const logoutUserHandler = (req, res) => {};
