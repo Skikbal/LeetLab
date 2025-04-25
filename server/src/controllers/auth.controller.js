@@ -11,7 +11,7 @@ import {
   emailVerificationMailgenContent,
   resetPasswordMailgenContent,
 } from "../services/maill.service.js";
-import crypto from "crypto";
+import crypto, { verify } from "crypto";
 
 import {
   hashPassword,
@@ -102,7 +102,7 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
 
 const verifyEmailHandler = AsyncHandler(async (req, res) => {
   const { token } = req.query;
-  console.log(token);
+
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
   const user = await prisma.user.findFirst({
@@ -116,15 +116,20 @@ const verifyEmailHandler = AsyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(404, "User not found or token expired");
   }
+  if (user.isVerified) {
+    throw new ApiError(400, "Email already verified");
+  }
 
   await prisma.user.update({
     where: {
       id: user.id,
     },
     data: {
+      email: user.unverifiedEmail ? user.unverifiedEmail : user.email,
       isVerified: true,
       emailVerificationToken: null,
       emailVerificationTokenExpiry: null,
+      unverifiedEmail: null,
     },
   });
 
@@ -354,7 +359,91 @@ const changePasswordHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Password changed successfully"));
 });
-const updateUserProfileHandler = AsyncHandler(async (req, res) => {});
+const updateUserProfileHandler = AsyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  const { name = user.name, email = user.email } = req.body;
+  if (user.unverifiedEmail === email) {
+    // Already in progress
+    throw new ApiError(
+      409,
+      "Email change already requested. Please check your inbox.",
+    );
+  }
+
+  if (email === user.email && name === user.name) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User profile updated successfully"));
+  }
+
+  if (name !== user.name && email === user.email) {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name,
+      },
+    });
+
+    if (!updatedUser) {
+      throw new ApiError(404, "User update failed");
+    }
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User profile updated successfully"));
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (existingUser) {
+    throw new ApiError(409, "User with email already exists");
+  }
+  const { unhashedToken, hashedToken, tokenExpiry } =
+    await genrateRandomToken();
+
+  const verification_url = `${BASEURL}/auth/verify-email/?token=${unhashedToken}`;
+  await sendEmail({
+    email,
+    subject: "Verify your email",
+    mailgenContent: emailVerificationMailgenContent({
+      username: user.name,
+      verificationURL: verification_url,
+    }),
+  });
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      name,
+      unverifiedEmail: email,
+      emailVerificationToken: hashedToken,
+      emailVerificationTokenExpiry: new Date(tokenExpiry),
+      isVerified: false,
+    },
+  });
+
+  if (!updatedUser) {
+    throw new ApiError(404, "User update failed");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User updated successfully", updatedUser));
+});
+
 const updateUserAvatarHandler = AsyncHandler(async (req, res) => {});
 const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {});
 

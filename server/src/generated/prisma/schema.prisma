@@ -28,6 +28,7 @@ model User {
   password                     String
   refreshToken                 String?
   isVerified                   Boolean?  @default(false)
+  unverifiedEmail              String?
   emailVerificationToken       String?
   emailVerificationTokenExpiry DateTime?
   forgotPasswordToken          String?
