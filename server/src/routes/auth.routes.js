@@ -27,5 +27,8 @@ router.route("/resend-email-verification").post(resendEmailVerificationHandler);
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);
 router.route("/update-profile").post(isAuth, updateUserProfileHandler);
+router
+  .route("/update-avatar")
+  .post(isAuth, upload.single("avatar"), updateUserAvatarHandler);
 router.route("/user-profile").get(isAuth, getUserProfileHandler);
 export default router;

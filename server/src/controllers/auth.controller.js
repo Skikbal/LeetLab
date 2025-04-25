@@ -441,10 +441,31 @@ const updateUserProfileHandler = AsyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "User updated successfully", updatedUser));
+    .json(new ApiResponse(200, "User updated successfully"));
 });
+const updateUserAvatarHandler = AsyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const avatar = req.file;
 
-const updateUserAvatarHandler = AsyncHandler(async (req, res) => {});
+  if (!avatar) {
+    throw new ApiError(400, "Avatar is required");
+  }
+  const avatarUrl = await imagekitUpload(avatar);
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      avatar: avatarUrl,
+    },
+  });
+  if (!updatedUser) {
+    throw new ApiError(404, "Avatar update failed");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Avatar updated successfully"));
+});
 const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {});
 
 export {
