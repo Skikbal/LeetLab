@@ -323,7 +323,37 @@ const resetPasswordHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Password reset successfully"));
 });
-const changePasswordHandler = AsyncHandler(async (req, res) => {});
+const changePasswordHandler = AsyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, "Passwords do not match");
+  }
+
+  const isMatch = await comparePassword(currentPassword, user.password);
+  if (!isMatch) {
+    throw new ApiError(400, "Current password is incorrect");
+  }
+  const hashedPassword = await hashPassword(newPassword);
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      password: hashedPassword,
+    },
+  });
+
+  if (!updatedUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Password changed successfully"));
+});
 const updateUserProfileHandler = AsyncHandler(async (req, res) => {});
 const updateUserAvatarHandler = AsyncHandler(async (req, res) => {});
 const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {});
