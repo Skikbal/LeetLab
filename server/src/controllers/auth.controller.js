@@ -4,15 +4,15 @@ import ApiResponse from "../utils/ApiResponse.js";
 import { prisma } from "../libs/db.js";
 import bcrypt from "bcryptjs";
 import { UserRole } from "../generated/prisma/index.js";
-import { NODE_ENV, BASEURL } from "../config/envConfig.js";
+import { NODE_ENV, BASEURL,REFRESH_TOKEN_SECRET } from "../config/envConfig.js";
 import imagekitUpload from "../services/imagekit.service.js";
 import {
   sendEmail,
   emailVerificationMailgenContent,
   resetPasswordMailgenContent,
 } from "../services/maill.service.js";
-import crypto, { verify } from "crypto";
-
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import {
   hashPassword,
   comparePassword,
@@ -466,7 +466,54 @@ const updateUserAvatarHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Avatar updated successfully"));
 });
-const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {});
+const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    throw new ApiError(401, "Refresh token missing. Unauthorized.");
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+  } catch (error) {
+    throw new ApiError(401, "Invalid or expired refresh token");
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: decoded.id,
+    },
+  });
+  if (!user) {
+    throw new ApiError(401, "User not found");
+  }
+  if (user.refreshToken !== refreshToken) {
+    throw new ApiError(
+      401,
+      "Refresh token does not match. Possible token reuse detected.",
+    );
+  }
+  const { accessToken, newRefreshToken } = await generateToken(user);
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      refreshToken: newRefreshToken,
+    },
+  });
+  const cookiesOptions = {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: NODE_ENV !== "development",
+    maxAge: 24 * 60 * 60 * 1000,
+  };
+  return res
+    .status(200)
+    .cookie("refreshToken", newRefreshToken, cookiesOptions)
+    .cookie("accessToken", accessToken, cookiesOptions)
+    .json(new ApiResponse(200, "Access token refreshed successfully"));
+});
 
 export {
   registerUserHandler,

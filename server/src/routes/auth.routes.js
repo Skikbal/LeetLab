@@ -23,6 +23,7 @@ router.route("/register").post(upload.single("avatar"), registerUserHandler);
 router.route("/verify-email").get(verifyEmailHandler);
 router.route("/login").post(loginUserHandler);
 router.route("/resend-email-verification").post(resendEmailVerificationHandler);
+router.route('/refresh-token').get(refreshAccessTokenHandler);
 
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);
