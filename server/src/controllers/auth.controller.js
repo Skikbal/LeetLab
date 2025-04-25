@@ -9,6 +9,7 @@ import imagekitUpload from "../services/imagekit.service.js";
 import {
   sendEmail,
   emailVerificationMailgenContent,
+  resetPasswordMailgenContent,
 } from "../services/maill.service.js";
 import crypto from "crypto";
 
@@ -216,11 +217,12 @@ const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  if(user.isVerified){
+  if (user.isVerified) {
     throw new ApiError(400, "Email already verified");
   }
 
-  const { unhashedToken, hashedToken, tokenExpiry } = await genrateRandomToken();
+  const { unhashedToken, hashedToken, tokenExpiry } =
+    await genrateRandomToken();
 
   await prisma.user.update({
     where: {
@@ -248,8 +250,79 @@ const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Verification email sent successfully"));
 });
 
-const forgotPasswordHandler = AsyncHandler(async (req, res) => {});
-const resetPasswordHandler = AsyncHandler(async (req, res) => {});
+const forgotPasswordHandler = AsyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const { unhashedToken, hashedToken, tokenExpiry } =
+    await genrateRandomToken();
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      forgotPasswordToken: hashedToken,
+      forgotPasswordTokenExpiry: new Date(tokenExpiry),
+    },
+  });
+
+  const verification_url = `${BASEURL}/auth/reset-password/?token=${unhashedToken}`;
+
+  await sendEmail({
+    email: user.email,
+    subject: "Reset your password",
+    mailgenContent: resetPasswordMailgenContent({
+      username: user.name,
+      verificationURL: verification_url,
+    }),
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Reset password email sent successfully"));
+});
+
+const resetPasswordHandler = AsyncHandler(async (req, res) => {
+  const { token } = req.query;
+  const { password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    throw new ApiError(400, "Passwords do not match");
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      forgotPasswordToken: hashedToken,
+      forgotPasswordTokenExpiry: {
+        gt: new Date(),
+      },
+    },
+    data: {
+      password: hashedPassword,
+      forgotPasswordToken: null,
+      forgotPasswordTokenExpiry: null,
+    },
+  });
+  if (!updatedUser) {
+    throw new ApiError(404, "User not found or token expired");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Password reset successfully"));
+});
 const changePasswordHandler = AsyncHandler(async (req, res) => {});
 const updateUserProfileHandler = AsyncHandler(async (req, res) => {});
 const updateUserAvatarHandler = AsyncHandler(async (req, res) => {});

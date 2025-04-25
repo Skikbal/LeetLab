@@ -68,4 +68,27 @@ const emailVerificationMailgenContent = ({ username, verificationURL }) => {
   };
 };
 
-export { sendEmail, emailVerificationMailgenContent };
+const resetPasswordMailgenContent = ({ username, verificationURL }) => {
+  return {
+    body: {
+      name: username,
+      intro: "You have requested to reset your password",
+      action: {
+        instructions: "To reset your password, please click here:",
+        button: {
+          color: "#22BC66", // Optional action button color
+          text: "Reset your password",
+          link: verificationURL,
+        },
+      },
+      outro:
+        "Need help, or have questions? Just reply to this email, we'd love to help.",
+    },
+  };
+};
+
+export {
+  sendEmail,
+  emailVerificationMailgenContent,
+  resetPasswordMailgenContent,
+};

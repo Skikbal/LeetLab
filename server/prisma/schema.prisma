@@ -30,6 +30,8 @@ model User {
   isVerified                   Boolean?  @default(false)
   emailVerificationToken       String?
   emailVerificationTokenExpiry DateTime?
+  forgotPasswordToken          String?
+  forgotPasswordTokenExpiry    DateTime?
   createdAt                    DateTime  @default(now())
   updatedAt                    DateTime  @updatedAt
 }

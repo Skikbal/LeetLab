@@ -907,6 +907,8 @@ export namespace Prisma {
     isVerified: boolean | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
+    forgotPasswordToken: string | null
+    forgotPasswordTokenExpiry: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -922,6 +924,8 @@ export namespace Prisma {
     isVerified: boolean | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
+    forgotPasswordToken: string | null
+    forgotPasswordTokenExpiry: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -937,6 +941,8 @@ export namespace Prisma {
     isVerified: number
     emailVerificationToken: number
     emailVerificationTokenExpiry: number
+    forgotPasswordToken: number
+    forgotPasswordTokenExpiry: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -954,6 +960,8 @@ export namespace Prisma {
     isVerified?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
+    forgotPasswordToken?: true
+    forgotPasswordTokenExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -969,6 +977,8 @@ export namespace Prisma {
     isVerified?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
+    forgotPasswordToken?: true
+    forgotPasswordTokenExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -984,6 +994,8 @@ export namespace Prisma {
     isVerified?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
+    forgotPasswordToken?: true
+    forgotPasswordTokenExpiry?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1072,6 +1084,8 @@ export namespace Prisma {
     isVerified: boolean | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
+    forgotPasswordToken: string | null
+    forgotPasswordTokenExpiry: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1104,6 +1118,8 @@ export namespace Prisma {
     isVerified?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
+    forgotPasswordToken?: boolean
+    forgotPasswordTokenExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1119,6 +1135,8 @@ export namespace Prisma {
     isVerified?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
+    forgotPasswordToken?: boolean
+    forgotPasswordTokenExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1134,6 +1152,8 @@ export namespace Prisma {
     isVerified?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
+    forgotPasswordToken?: boolean
+    forgotPasswordTokenExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1149,11 +1169,13 @@ export namespace Prisma {
     isVerified?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
+    forgotPasswordToken?: boolean
+    forgotPasswordTokenExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "avatar" | "role" | "password" | "refreshToken" | "isVerified" | "emailVerificationToken" | "emailVerificationTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "avatar" | "role" | "password" | "refreshToken" | "isVerified" | "emailVerificationToken" | "emailVerificationTokenExpiry" | "forgotPasswordToken" | "forgotPasswordTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -1169,6 +1191,8 @@ export namespace Prisma {
       isVerified: boolean | null
       emailVerificationToken: string | null
       emailVerificationTokenExpiry: Date | null
+      forgotPasswordToken: string | null
+      forgotPasswordTokenExpiry: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1604,6 +1628,8 @@ export namespace Prisma {
     readonly isVerified: FieldRef<"User", 'Boolean'>
     readonly emailVerificationToken: FieldRef<"User", 'String'>
     readonly emailVerificationTokenExpiry: FieldRef<"User", 'DateTime'>
+    readonly forgotPasswordToken: FieldRef<"User", 'String'>
+    readonly forgotPasswordTokenExpiry: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -1997,6 +2023,8 @@ export namespace Prisma {
     isVerified: 'isVerified',
     emailVerificationToken: 'emailVerificationToken',
     emailVerificationTokenExpiry: 'emailVerificationTokenExpiry',
+    forgotPasswordToken: 'forgotPasswordToken',
+    forgotPasswordTokenExpiry: 'forgotPasswordTokenExpiry',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -2113,6 +2141,8 @@ export namespace Prisma {
     isVerified?: BoolNullableFilter<"User"> | boolean | null
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    forgotPasswordToken?: StringNullableFilter<"User"> | string | null
+    forgotPasswordTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -2128,6 +2158,8 @@ export namespace Prisma {
     isVerified?: SortOrderInput | SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
     emailVerificationTokenExpiry?: SortOrderInput | SortOrder
+    forgotPasswordToken?: SortOrderInput | SortOrder
+    forgotPasswordTokenExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2146,6 +2178,8 @@ export namespace Prisma {
     isVerified?: BoolNullableFilter<"User"> | boolean | null
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    forgotPasswordToken?: StringNullableFilter<"User"> | string | null
+    forgotPasswordTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }, "id" | "email">
@@ -2161,6 +2195,8 @@ export namespace Prisma {
     isVerified?: SortOrderInput | SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
     emailVerificationTokenExpiry?: SortOrderInput | SortOrder
+    forgotPasswordToken?: SortOrderInput | SortOrder
+    forgotPasswordTokenExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -2182,6 +2218,8 @@ export namespace Prisma {
     isVerified?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
     emailVerificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    forgotPasswordToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    forgotPasswordTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -2197,6 +2235,8 @@ export namespace Prisma {
     isVerified?: boolean | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
+    forgotPasswordToken?: string | null
+    forgotPasswordTokenExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2212,6 +2252,8 @@ export namespace Prisma {
     isVerified?: boolean | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
+    forgotPasswordToken?: string | null
+    forgotPasswordTokenExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2227,6 +2269,8 @@ export namespace Prisma {
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    forgotPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    forgotPasswordTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2242,6 +2286,8 @@ export namespace Prisma {
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    forgotPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    forgotPasswordTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2257,6 +2303,8 @@ export namespace Prisma {
     isVerified?: boolean | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
+    forgotPasswordToken?: string | null
+    forgotPasswordTokenExpiry?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2272,6 +2320,8 @@ export namespace Prisma {
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    forgotPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    forgotPasswordTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2287,6 +2337,8 @@ export namespace Prisma {
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    forgotPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    forgotPasswordTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2371,6 +2423,8 @@ export namespace Prisma {
     isVerified?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
+    forgotPasswordToken?: SortOrder
+    forgotPasswordTokenExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2386,6 +2440,8 @@ export namespace Prisma {
     isVerified?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
+    forgotPasswordToken?: SortOrder
+    forgotPasswordTokenExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2401,6 +2457,8 @@ export namespace Prisma {
     isVerified?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
+    forgotPasswordToken?: SortOrder
+    forgotPasswordTokenExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
