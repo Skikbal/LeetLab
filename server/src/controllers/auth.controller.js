@@ -4,7 +4,11 @@ import ApiResponse from "../utils/ApiResponse.js";
 import { prisma } from "../libs/db.js";
 import bcrypt from "bcryptjs";
 import { UserRole } from "../generated/prisma/index.js";
-import { NODE_ENV, BASEURL,REFRESH_TOKEN_SECRET } from "../config/envConfig.js";
+import {
+  NODE_ENV,
+  BASEURL,
+  REFRESH_TOKEN_SECRET,
+} from "../config/envConfig.js";
 import imagekitUpload from "../services/imagekit.service.js";
 import {
   sendEmail,
