@@ -7,7 +7,7 @@ import {
   MAILTRAP_USERNAME,
   MAILTRAP_PASSWORD,
 } from "../config/envConfig.js";
-
+import ApiError from "../utils/ApiError.js";
 const sendEmail = async (options) => {
   const mailGenerator = new Mailgen({
     theme: "default",
@@ -45,7 +45,7 @@ const sendEmail = async (options) => {
   try {
     await transporter.sendMail(mailInfo);
   } catch (error) {
-    console.log(error);
+    throw new ApiError(500, "Failed to send email");
   }
 };
 

@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import errorHandler from "./middlewares/errorHandler.middleware.js";
 
 const server = express();
 
@@ -16,4 +17,5 @@ server.use(cookieParser());
 
 server.use("/api/v1/auth", authRouter);
 
+server.use(errorHandler);
 export default server;
