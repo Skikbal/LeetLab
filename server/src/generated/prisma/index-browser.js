@@ -139,7 +139,7 @@ exports.Prisma.ProblemScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
-  dificulty: 'dificulty',
+  difficulty: 'difficulty',
   tags: 'tags',
   userId: 'userId',
   examples: 'examples',
@@ -182,7 +182,7 @@ exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER'
 };
 
-exports.Defficulty = exports.$Enums.Defficulty = {
+exports.Difficulty = exports.$Enums.Difficulty = {
   EASY: 'EASY',
   MEDIUM: 'MEDIUM',
   HARD: 'HARD'

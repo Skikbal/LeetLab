@@ -24,6 +24,9 @@ const MAILTRAP_PORT = process.env.MAILTRAP_PORT;
 const MAILTRAP_USERNAME = process.env.MAILTRAP_USERNAME;
 const MAILTRAP_PASSWORD = process.env.MAILTRAP_PASSWORD;
 
+//judge0
+const JUDGE0_API_URL = process.env.JUDGE0_API_URL
+
 export {
   PORT,
   BASEURL,
@@ -39,4 +42,5 @@ export {
   MAILTRAP_PORT,
   MAILTRAP_USERNAME,
   MAILTRAP_PASSWORD,
+  JUDGE0_API_URL
 };
