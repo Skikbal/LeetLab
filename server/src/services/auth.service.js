@@ -24,7 +24,7 @@ export const comparePassword = async (password, hashedPassword) => {
 //utility to generate token
 export const generateToken = async (user) => {
   const AccessToken = jwt.sign(
-    { id: user.id, role: user.role },
+    { id: user.id, role: user.role},
     ACCESS_TOKEN_SECRET,
     {
       expiresIn: ACCESS_TOKEN_EXPIRY,
@@ -32,7 +32,7 @@ export const generateToken = async (user) => {
   );
 
   const RefreshToken = jwt.sign(
-    { id: user.id, role: user.role },
+    { id: user.id, role: user.role},
     REFRESH_TOKEN_SECRET,
     {
       expiresIn: REFRESH_TOKEN_EXPIRY,

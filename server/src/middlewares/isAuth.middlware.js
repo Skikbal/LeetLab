@@ -18,11 +18,17 @@ const isAuth = async (req, res, next) => {
         email: true,
         name: true,
         role: true,
+        isVerified: true,
       },
     });
 
     if (!user) {
-      return next(new ApiError(404, "User not found.Unauthorized"));
+      return next(new ApiError(404, "Unauthorized user or user not found"));
+    }
+    if (!user.isVerified) {
+      return next(
+        new ApiError(401, "user not verified. Please verify your email !"),
+      );
     }
     req.user = user;
     next();

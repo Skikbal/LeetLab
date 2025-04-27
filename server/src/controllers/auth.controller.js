@@ -23,7 +23,7 @@ import {
   generateToken,
   findUserByEmail,
   genrateRandomToken,
-} from "../services/user.service.js";
+} from "../services/auth.service.js";
 
 //cookie option
 const cookiesOptions = {
