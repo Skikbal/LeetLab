@@ -15,8 +15,12 @@ const problemRoutes = Router();
 problemRoutes
   .route("/create-problem")
   .post(isAuth, isAdmin, createProblemHandler);
+problemRoutes
+  .route("/update-problem/:id")
+  .put(isAuth, isAdmin, updateProblemHandler);
 
 //user routes
 problemRoutes.route("/all-problems").get(isAuth, getAllProblemsHandler);
+problemRoutes.route("/problem/:id").get(isAuth, getProblemHandler);
 
 export default problemRoutes;

@@ -88,7 +88,16 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
 //get all problems
 const getAllProblemsHandler = AsyncHandler(async (req, res) => {
-  const problems = await prisma.problem.findMany();
+  const problems = await prisma.problem.findMany({
+    select: {
+      id: true,
+      title: true,
+      difficulty: true,
+      tags: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 
   if (!problems) {
     throw new ApiError(404, "Problems not found");
@@ -98,8 +107,29 @@ const getAllProblemsHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Problems fetched successfully", problems));
 });
-const getProblemHandler = AsyncHandler(async (req, res) => {});
-const updateProblemHandler = AsyncHandler(async (req, res) => {});
+//get single problem by id
+const getProblemHandler = AsyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const problem = await prisma.problem.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!problem) {
+    throw new ApiError(404, "Problem not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Problem fetched successfully", problem));
+});
+//update problem handler
+const updateProblemHandler = AsyncHandler(async (req, res) => {
+  
+});
+
 const deleteProblemHandler = AsyncHandler(async (req, res) => {});
 const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {});
 
