@@ -7,6 +7,7 @@ import {
 } from "../services/judge0.service.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import judge0Validator from "../services/judge0Validator.service.js";
 
 //create problem
 const createProblemHandler = AsyncHandler(async (req, res) => {
@@ -127,7 +128,100 @@ const getProblemHandler = AsyncHandler(async (req, res) => {
 });
 //update problem handler
 const updateProblemHandler = AsyncHandler(async (req, res) => {
-  
+  const { id } = req.params;
+  const { id: userId, role: userRole } = req.user;
+  let updateData = {};
+  const fieldsToCheck = [
+    "title",
+    "description",
+    "difficulty",
+    "tags",
+    "examples",
+    "constraints",
+    "hints",
+    "editorial",
+    "testcases",
+  ];
+  const { testcases, codesnippets, refrencesolution } = req.body;
+
+  if (userRole !== "ADMIN") {
+    throw new ApiError(403, "You are not authorized to update a problem");
+  }
+
+  const problem = await prisma.problem.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!problem) {
+    throw new ApiError(404, "Problem not found");
+  }
+
+  for (const field of fieldsToCheck) {
+    if (JSON.stringify(req.body[field]) !== JSON.stringify(problem[field])) {
+      updateData[field] = req.body[field];
+    }
+  }
+  //this will strip the extra spaces and new lines
+  const normalizeCode = (code) => code.replace(/\s+/g, " ").trim();
+  //check if codesnippets are same or not
+  const codesnippetsEquals =
+    codesnippets.length === problem.codesnippets.length &&
+    codesnippets.every((snippet, index) => {
+      const problemSnippet = problem.codesnippets[index];
+      return (
+        normalizeCode(snippet.language) ===
+          normalizeCode(problemSnippet.language) &&
+        normalizeCode(snippet.code) === normalizeCode(problemSnippet.code)
+      );
+    });
+  if (!codesnippetsEquals) {
+    updateData.codesnippets = codesnippets;
+  } else {
+    delete updateData.codesnippets;
+  }
+  //check if refrencesolution are same or not
+  const refrencesolutionEquals =
+    Object.keys(refrencesolution).length ===
+      Object.keys(problem.refrencesolution).length &&
+    Object.keys(refrencesolution).every(
+      (language) =>
+        Object.hasOwn(problem.refrencesolution, language) &&
+        normalizeCode(refrencesolution[language]) ===
+          normalizeCode(problem.refrencesolution[language]),
+    );
+  if (!refrencesolutionEquals) {
+    const result = await judge0Validator({ refrencesolution, testcases });
+    if (result.success) {
+      updateData.refrencesolution = refrencesolution;
+    }
+  } else {
+    delete updateData.refrencesolution;
+  }
+  //donot db update if updateData is empty
+  if (Object.entries(updateData).length === 0) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Problem updated Successfully"));
+  }
+
+  //here we will update the data
+  const updatedProblem = await prisma.problem.update({
+    where: {
+      id,
+    },
+    data: { ...updateData, userId },
+  });
+
+  if (!updatedProblem) {
+    throw new ApiError(404, "Error updating problem");
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Problem updated successfully",
+    data: updatedProblem,
+  });
 });
 
 const deleteProblemHandler = AsyncHandler(async (req, res) => {});
