@@ -8,6 +8,7 @@ import {
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
+//create problem
 const createProblemHandler = AsyncHandler(async (req, res) => {
   //get data from re body
   const {
@@ -23,7 +24,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     codesnippets,
     refrencesolution,
   } = req.body;
-  const { id: userId, role:userRole } = req.user;
+  const { id: userId, role: userRole } = req.user;
   //check user role again
   if (userRole !== "ADMIN") {
     throw new ApiError(403, "You are not authorized to create a problem");
@@ -80,10 +81,23 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "Problem not created");
   }
 
-  return res.status(200).json(new ApiResponse(200, "Problem created successfully", problem));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Problem created successfully", problem));
 });
 
-const getAllProblemsHandler = AsyncHandler(async (req, res) => {});
+//get all problems
+const getAllProblemsHandler = AsyncHandler(async (req, res) => {
+  const problems = await prisma.problem.findMany();
+
+  if (!problems) {
+    throw new ApiError(404, "Problems not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Problems fetched successfully", problems));
+});
 const getProblemHandler = AsyncHandler(async (req, res) => {});
 const updateProblemHandler = AsyncHandler(async (req, res) => {});
 const deleteProblemHandler = AsyncHandler(async (req, res) => {});
