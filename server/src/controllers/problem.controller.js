@@ -195,8 +195,41 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
   });
 });
 
-const deleteProblemHandler = AsyncHandler(async (req, res) => {});
-const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {});
+//delete problem handler
+const deleteProblemHandler = AsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { role: userRole } = req.user;
+
+  if (userRole !== "ADMIN") {
+    throw new ApiError(403, "You are not authorized to delete a problem");
+  }
+
+  const problem = await prisma.problem.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!problem) {
+    throw new ApiError(404, "Problem not found");
+  }
+
+  const deletedProblem = await prisma.problem.delete({
+    where: {
+      id,
+    },
+  });
+
+  if (!deletedProblem) {
+    throw new ApiError(404, "Error deleting problem");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Problem deleted successfully"));
+});
+const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {
+  
+});
 
 export {
   createProblemHandler,
