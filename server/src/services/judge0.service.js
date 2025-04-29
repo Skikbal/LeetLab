@@ -59,7 +59,7 @@ const poolBatchResult = async (tokens) => {
         "Content-Type": "application/json",
       },
     });
-
+    console.log(data)
     const result = data.submissions;
     const isAllDone = result.every(
       (r) => r.status.id !== 1 && r.status.id !== 2,

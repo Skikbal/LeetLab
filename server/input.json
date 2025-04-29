@@ -1,0 +1,143 @@
+// problem 1
+{
+    "title": "Multiply Two Numbers",
+    "description": "Create a function that takes two integers as input and returns their product. The integers are provided as part of the JSON payload.",
+    "difficulty": "HARD",
+    "tags": [
+        "math",
+        "beginner",
+        "multiplication",
+        "arithmetic"
+    ],
+    "examples": [
+        {
+            "input": {
+                "a": 5,
+                "b": 10
+            },
+            "output": {
+                "result": 50
+            }
+        },
+        {
+            "input": {
+                "a": 3,
+                "b": 4
+            },
+            "output": {
+                "result": 12
+            }
+        }
+    ],
+    "constraints": "Both a and b are integers, 1 <= a, b <= 10^4",
+    "hints": "Ensure both numbers are integers. Use basic arithmetic multiplication to find the product.",
+    "editorial": "This problem requires multiplying two integers and returning the result. It can be solved using a simple arithmetic operation. This is a foundational problem for those learning basic programming logic.",
+    "testcases": [
+        {
+            "input": {
+                "a": 5,
+                "b": 10
+            },
+            "output": {
+                "result": 50
+            }
+        },
+        {
+            "input": {
+                "a": 6,
+                "b": 7
+            },
+            "output": {
+                "result": 42
+            }
+        }
+    ],
+    "codesnippets": [
+        {
+            "language": "JavaScript",
+            "code": "function multiply(a, b) {\n  // Your code here\n}"
+        },
+        {
+            "language": "Python",
+            "code": "def multiply(a, b):\n    # Your code here"
+        },
+        {
+            "language": "C++",
+            "code": "#include <iostream>\nusing namespace std;\n\nint multiply(int a, int b) {\n //ypur code here  \n}\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << multiply(a, b) << endl;\n    return 0;\n}"
+        }
+    ],
+    "refrencesolution": {
+        "JavaScript": "function multiply(a, b) {\n  return a * b;\n}",
+        "Python": "def multiply(a, b):\n    return a * b",
+        "C++": "#include <iostream>\nusing namespace std;\n\nint multiply(int a, int b) {\n    return a * b;\n}\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << multiply(a, b) << endl;\n    return 0;\n}"
+    }
+}
+//problem 2
+{
+    "title": "Sum of Two Numbers",
+    "description": "Create a function that takes two integers as input and returns their sum. The integers are provided as part of the JSON payload",
+    "difficulty": "HARD",
+    "tags": [
+        "math",
+        "beginner",
+        "addition",
+        "arithmetic"
+    ],
+    "examples": [
+        {
+            "input": {
+                "a": 5,
+                "b": 10
+            },
+            "output": {
+                "result": 15
+            }
+        },
+        {
+            "input": {
+                "a": 1,
+                "b": 2
+            },
+            "output": {
+                "result": 3
+            }
+        }
+    ],
+    "constraints": "Both a and b are integers,1 <= a, b <= 10^4",
+    "hints": "Make sure both numbers are of integer type,Use basic arithmetic to calculate the sum",
+    "editorial": "The problem asks for a simple sum of two numbers. We can solve this by directly adding the two numbers and returning the result. It's an easy problem to implement with basic knowledge of addition.",
+    "testcases": [
+        {
+            "input": {
+                "a": 5,
+                "b": 10
+            },
+            "output": {
+                "result": 15
+            }
+        },
+        {
+            "input": {
+                "a": 3,
+                "b": 7
+            },
+            "output": {
+                "result": 10
+            }
+        }
+    ],
+    "codesnippets": [
+        {
+            "language": "JavaScript",
+            "code": "function sum(a, b) {\n  // Your code here\n}"
+        },
+        {
+            "language": "Python",
+            "code": "def sum(a, b):\n    # Your code here"
+        }
+    ],
+    "refrencesolution": {
+        "JavaScript": "function sum(a, b) {\n  return a + b;\n}",
+        "Python": "def sum(c, b):\n    return c + b"
+    }
+}
