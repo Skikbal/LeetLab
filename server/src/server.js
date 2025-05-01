@@ -1,11 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
-import problemRouter from "./routes/problem.routes.js"
+import problemRouter from "./routes/problem.routes.js";
+import executionRouter from "./routes/execution.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
-
 const server = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +18,7 @@ server.use(cookieParser());
 
 server.use("/api/v1/auth", authRouter);
 server.use("/api/v1/problems", problemRouter);
+server.use('/api/v1/execute-problem', executionRouter);
 
 server.use(errorHandler);
 export default server;
