@@ -161,7 +161,6 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
         Object.hasOwn(problem.refrencesolution, language) &&
         solution === problem.refrencesolution[language],
     );
-  console.log(refrencesolutionEquals);
 
   if (!refrencesolutionEquals) {
     const result = await judge0Validator({ refrencesolution, testcases });
