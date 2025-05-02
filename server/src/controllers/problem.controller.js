@@ -28,7 +28,6 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
   //here we extracting language and code from refrencesolution
   const result = await judge0Validator({ refrencesolution, testcases });
-  console.log(result);
   if (!result.success) {
     throw new ApiError(400, result.message);
   }
@@ -123,7 +122,6 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     "editorial",
     "testcases",
   ];
-  const { testcases, codesnippets, refrencesolution } = req.body;
 
   if (userRole !== "ADMIN") {
     throw new ApiError(403, "You are not authorized to update a problem");
@@ -134,19 +132,21 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
       updateData[field] = req.body[field];
     }
   }
+
+  const { codesnippets, refrencesolution, testcases } = req.body;
+
   //this will strip the extra spaces and new lines
   const normalizeCode = (code) => code.replace(/\s+/g, " ").trim();
   //check if codesnippets are same or not
   const codesnippetsEquals =
-    codesnippets.length === problem.codesnippets.length &&
-    codesnippets.every((snippet, index) => {
-      const problemSnippet = problem.codesnippets[index];
-      return (
-        normalizeCode(snippet.language) ===
-          normalizeCode(problemSnippet.language) &&
-        normalizeCode(snippet.code) === normalizeCode(problemSnippet.code)
-      );
-    });
+    Object.entries(codesnippets).length ===
+      Object.entries(problem.codesnippets).length &&
+    Object.entries(codesnippets).every(
+      ([language, code]) =>
+        Object.hasOwn(problem.codesnippets, language) &&
+        code === problem.codesnippets[language],
+    );
+
   if (!codesnippetsEquals) {
     updateData.codesnippets = codesnippets;
   } else {
@@ -154,14 +154,15 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
   }
   //check if refrencesolution are same or not
   const refrencesolutionEquals =
-    Object.keys(refrencesolution).length ===
-      Object.keys(problem.refrencesolution).length &&
-    Object.keys(refrencesolution).every(
-      (language) =>
+    Object.entries(refrencesolution).length ===
+      Object.entries(problem.refrencesolution).length &&
+    Object.entries(refrencesolution).every(
+      ([language, solution]) =>
         Object.hasOwn(problem.refrencesolution, language) &&
-        normalizeCode(refrencesolution[language]) ===
-          normalizeCode(problem.refrencesolution[language]),
+        solution === problem.refrencesolution[language],
     );
+  console.log(refrencesolutionEquals);
+
   if (!refrencesolutionEquals) {
     const result = await judge0Validator({ refrencesolution, testcases });
     if (result.success) {
@@ -170,7 +171,8 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
   } else {
     delete updateData.refrencesolution;
   }
-  //donot db update if updateData is empty
+
+  // donot db update if updateData is empty
   if (Object.entries(updateData).length === 0) {
     return res
       .status(200)
@@ -227,9 +229,7 @@ const deleteProblemHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Problem deleted successfully"));
 });
-const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {
-  
-});
+const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {});
 
 export {
   createProblemHandler,
