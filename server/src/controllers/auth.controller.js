@@ -352,6 +352,7 @@ const changePasswordHandler = AsyncHandler(async (req, res) => {
     },
     data: {
       password: hashedPassword,
+      refreshToken: null,
     },
   });
 
@@ -361,6 +362,8 @@ const changePasswordHandler = AsyncHandler(async (req, res) => {
 
   return res
     .status(200)
+    .cookie("accessToken", "", cookiesOptions)
+    .cookie("refreshToken", "", cookiesOptions)
     .json(new ApiResponse(200, "Password changed successfully"));
 });
 const updateUserProfileHandler = AsyncHandler(async (req, res) => {
@@ -518,6 +521,9 @@ const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, cookiesOptions)
     .json(new ApiResponse(200, "Access token refreshed successfully"));
 });
+
+//user account deletation
+const userAccountDeletionHandler = AsyncHandler(async (req, res) => {});
 
 export {
   registerUserHandler,
