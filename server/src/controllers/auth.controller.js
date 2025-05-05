@@ -523,7 +523,10 @@ const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {
 });
 
 //user account deletation
-const userAccountDeletionHandler = AsyncHandler(async (req, res) => {});
+const userAccountDeletionHandler = AsyncHandler(async (req, res) => {
+  //deactivate user account for 30 days
+  //if user is not active for 30 days, delete user account
+});
 
 export {
   registerUserHandler,
