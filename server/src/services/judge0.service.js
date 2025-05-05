@@ -17,6 +17,21 @@ const getJudge0LanguageId = (language) => {
   return languageMap[language.toUpperCase()] || null;
 };
 
+const getLanguageName = (id) => {
+  const LANGUAGE_NAME = {
+    50: "C",
+    54: "C++",
+    51: "C#",
+    62: "JAVA",
+    63: "JAVASCRIPT",
+    60: "GO",
+    71: "PYTHON",
+    73: "RUST",
+    74: "TYPESCRIPT",
+  };
+  return LANGUAGE_NAME[id] || null;
+};
+
 const submitBatch = async (submissions) => {
   try {
     const { data } = await axios({
@@ -72,4 +87,4 @@ const poolBatchResult = async (tokens) => {
   }
 };
 
-export { getJudge0LanguageId, submitBatch, poolBatchResult };
+export { getJudge0LanguageId, submitBatch, poolBatchResult, getLanguageName };
