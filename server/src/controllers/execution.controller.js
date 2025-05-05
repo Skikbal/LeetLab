@@ -7,12 +7,13 @@ import {
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { prisma } from "../libs/db.js";
-import e from "express";
 
 const executeProblemHandler = AsyncHandler(async (req, res) => {
+  //user input & user id
   const { id: userId } = req.user;
   const { source_code, problemId, language_id, mode } = req.body;
 
+  // Problem retrieval
   const problem = await prisma.problem.findUnique({
     where: {
       id: problemId,
@@ -44,11 +45,13 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
     stdin: input,
     expected_output: output,
   }));
+
   //batch submission
   const submissionResult = await submitBatch(submission);
   const tokens = submissionResult.map((result) => result.token);
   const results = await poolBatchResult(tokens);
 
+  //pass cases checking
   let isAllCasesPassed = true;
 
   const detailedResult = results.map((result, index) => {
@@ -71,10 +74,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
     };
   });
 
-  if (!isAllCasesPassed) {
-    throw new ApiError(400, `Testcase failed output does not match`);
-  }
-
+  //if user is only running testcases
   if (mode === "run") {
     //save individual testcases result
     const testCaseResult = detailedResult.map((r) => {
@@ -97,51 +97,34 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
         new ApiResponse(200, "Testcases executed successfully", testCaseResult),
       );
   }
-
-  //store submission summary
-  const submissionToDB = await prisma.Submission.create({
-    data: {
-      userId,
-      problemId,
-      sourceCode: source_code,
-      language: getLanguageName(language_id),
-      stdin: JSON.stringify(stdIn),
-      stdout: JSON.stringify(detailedResult.map((r) => r.stdout)),
-      stderr: detailedResult.some((r) => r.stderr)
-        ? JSON.stringify(detailedResult.map((r) => r.stderr))
-        : null,
-      compileOutput: detailedResult.some((r) => r.compile_output)
-        ? JSON.stringify(detailedResult.map((r) => r.compile_output))
-        : null,
-      status: isAllCasesPassed ? "ACCEPTED" : "REJECTED",
-      memory: detailedResult.some((r) => r.memory)
-        ? JSON.stringify(detailedResult.map((r) => r.memory))
-        : null,
-      time: detailedResult.some((r) => r.time)
-        ? JSON.stringify(detailedResult.map((r) => r.time))
-        : null,
-    },
-  });
-
-  //if all passed and submission db then we make it mark as done
-  if (isAllCasesPassed && submissionToDB) {
-    await prisma.problemSolved.upsert({
-      where: {
-        userId_problemId: {
-          userId,
-          problemId,
-        },
-      },
-      update: {},
-      create: {
+  //save submission result to database
+  const result = await prisma.$transaction(async (tx) => {
+    const submissionToDB = await tx.submission.create({
+      data: {
         userId,
         problemId,
+        sourceCode: source_code,
+        language: getLanguageName(language_id),
+        stdin: JSON.stringify(stdIn),
+        stdout: JSON.stringify(detailedResult.map((r) => r.stdout)),
+        stderr: detailedResult.some((r) => r.stderr)
+          ? JSON.stringify(detailedResult.map((r) => r.stderr))
+          : null,
+        compileOutput: detailedResult.some((r) => r.compiledOutput)
+          ? JSON.stringify(detailedResult.map((r) => r.compiledOutput))
+          : null,
+        status: isAllCasesPassed ? "ACCEPTED" : "REJECTED",
+        memory: detailedResult.some((r) => r.memory)
+          ? JSON.stringify(detailedResult.map((r) => r.memory))
+          : null,
+        time: detailedResult.some((r) => r.time)
+          ? JSON.stringify(detailedResult.map((r) => r.time))
+          : null,
       },
     });
-  }
-  //save individual testcases result
-  const testCaseResult = detailedResult.map((r) => {
-    return {
+
+    // Use the submission.id now
+    const testCaseResult = detailedResult.map((r) => ({
       submissionId: submissionToDB.id,
       testCase: r.testCase,
       passed: r.passed,
@@ -152,15 +135,35 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       status: r.status,
       memory: r.memory,
       time: r.time,
-    };
-  });
-  await prisma.TestCasesResult.createMany({
-    data: testCaseResult,
+    }));
+
+    await tx.testCasesResult.createMany({
+      data: testCaseResult,
+    });
+
+    if (isAllCasesPassed) {
+      await tx.problemSolved.upsert({
+        where: {
+          userId_problemId: {
+            userId,
+            problemId,
+          },
+        },
+        update: {},
+        create: {
+          userId,
+          problemId,
+        },
+      });
+    }
+
+    return submissionToDB;
   });
 
+  //save individual testcases result
   const fetchedTestCases = await prisma.Submission.findUnique({
     where: {
-      id: submissionToDB.id,
+      id: result.id,
     },
     include: {
       testCases: true,
