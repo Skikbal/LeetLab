@@ -7,6 +7,9 @@ import submissionRouter from "./routes/submission.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger-output.json" with { type: "json" };
+
 const server = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,5 +25,6 @@ server.use("/api/v1/problems", problemRouter);
 server.use("/api/v1/execute-problem", executionRouter);
 server.use("/api/v1/submission", submissionRouter);
 
+server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 server.use(errorHandler);
 export default server;
