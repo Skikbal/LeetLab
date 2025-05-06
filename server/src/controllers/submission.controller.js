@@ -19,8 +19,44 @@ const getAllSubmissionsHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiRespone(200, "Submissions fetched successfully", submissions));
 });
-const getSubmissionForProblemHandler = AsyncHandler(async (req, res) => {});
-const countSubmissionForProblemHandler = AsyncHandler(async (req, res) => {});
+const getSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const problemId = req.params.problemId;
+
+  const submissions = await prisma.submissions.findMany({
+    where: {
+      userId,
+      problemId,
+    },
+  });
+
+  if (!submissions) {
+    throw new ApiError(404, "Submissions not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiRespone(200, "Submissions fetched successfully", submissions));
+});
+const countSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
+  const problemId = req.user.id;
+
+  const submissionCount = await prisma.submissions.count({
+    where: {
+      problemId,
+    },
+  });
+
+  if (!submissionCount) {
+    throw new ApiError(404, "Submissions not found");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiRespone(200, "Submissions fetched successfully", submissionCount),
+    );
+});
 
 export {
   getAllSubmissionsHandler,
