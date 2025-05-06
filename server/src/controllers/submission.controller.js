@@ -22,8 +22,7 @@ const getAllSubmissionsHandler = AsyncHandler(async (req, res) => {
 const getSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
   const problemId = req.params.problemId;
-
-  const submissions = await prisma.submissions.findMany({
+  const submissions = await prisma.Submission.findMany({
     where: {
       userId,
       problemId,
@@ -39,9 +38,9 @@ const getSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
     .json(new ApiRespone(200, "Submissions fetched successfully", submissions));
 });
 const countSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
-  const problemId = req.user.id;
+  const problemId = req.params.problemId;
 
-  const submissionCount = await prisma.submissions.count({
+  const submissionCount = await prisma.Submission.count({
     where: {
       problemId,
     },
