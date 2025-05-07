@@ -20,10 +20,10 @@ server.use(express.urlencoded({ extended: true }));
 server.use("/public", express.static(path.join(__dirname, "public")));
 server.use(cookieParser());
 
-server.use("/api/v1/auth", authRouter);
-server.use("/api/v1/problems", problemRouter);
-server.use("/api/v1/execute-problem", executionRouter);
-server.use("/api/v1/submission", submissionRouter);
+server.use("/api/v1/auth",/* #swagger.tags = ['Auth'] */ authRouter);
+server.use("/api/v1/problems",/* #swagger.tags = ['Problem'] */ problemRouter);
+server.use("/api/v1/execute-problem",/* #swagger.tags = ['Execution'] */ executionRouter);
+server.use("/api/v1/submission",/* #swagger.tags = ['Submission'] */ submissionRouter);
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 server.use(errorHandler);

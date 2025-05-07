@@ -15,15 +15,23 @@ import {
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
+import { registerSchema } from "../validators/Auth.validators.js";
+import validation from "../middlewares/validation.middleware.js";
 
 const router = Router();
 
 //public routes
-router.route("/register").post(upload.single("avatar"), registerUserHandler);
+router
+  .route("/register")
+  .post(
+    upload.single("avatar"),
+    validation(registerSchema),
+    registerUserHandler,
+  );
 router.route("/verify-email").get(verifyEmailHandler);
 router.route("/login").post(loginUserHandler);
 router.route("/resend-email-verification").post(resendEmailVerificationHandler);
-router.route('/refresh-token').get(refreshAccessTokenHandler);
+router.route("/refresh-token").get(refreshAccessTokenHandler);
 
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);

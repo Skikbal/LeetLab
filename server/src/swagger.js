@@ -24,6 +24,10 @@ const doc = {
       name: "Execution",
       description: "Code execution and submission logic",
     },
+    {
+      name: "Submission",
+      description: "submission CRUD logic",
+    }
   ],
   securityDefinitions: {}, // by default: empty object
   definitions: {},

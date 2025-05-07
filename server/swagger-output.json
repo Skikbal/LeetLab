@@ -19,6 +19,10 @@
     {
       "name": "Execution",
       "description": "Code execution and submission logic"
+    },
+    {
+      "name": "Submission",
+      "description": "submission CRUD logic"
     }
   ],
   "schemes": [
@@ -35,6 +39,9 @@
   "paths": {
     "/api/v1/auth/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -65,6 +72,9 @@
     },
     "/api/v1/auth/verify-email": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -82,6 +92,9 @@
     },
     "/api/v1/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -109,6 +122,9 @@
     },
     "/api/v1/auth/resend-email-verification": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -133,6 +149,9 @@
     },
     "/api/v1/auth/refresh-token": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -143,6 +162,9 @@
     },
     "/api/v1/auth/logout": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -153,6 +175,9 @@
     },
     "/api/v1/auth/update-profile": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -177,6 +202,9 @@
     },
     "/api/v1/auth/update-avatar": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -187,6 +215,9 @@
     },
     "/api/v1/auth/user-profile": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -197,6 +228,9 @@
     },
     "/api/v1/problems/create-problem": {
       "post": {
+        "tags": [
+          "Problem"
+        ],
         "description": "",
         "parameters": [
           {
@@ -251,6 +285,9 @@
     },
     "/api/v1/problems/update-problem/{id}": {
       "put": {
+        "tags": [
+          "Problem"
+        ],
         "description": "",
         "parameters": [
           {
@@ -281,6 +318,9 @@
     },
     "/api/v1/problems/all-problems": {
       "get": {
+        "tags": [
+          "Problem"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -291,6 +331,9 @@
     },
     "/api/v1/problems/problem/{id}": {
       "get": {
+        "tags": [
+          "Problem"
+        ],
         "description": "",
         "parameters": [
           {
@@ -309,6 +352,9 @@
     },
     "/api/v1/execute-problem/": {
       "post": {
+        "tags": [
+          "Execution"
+        ],
         "description": "",
         "parameters": [
           {
@@ -345,6 +391,9 @@
     },
     "/api/v1/submission/": {
       "get": {
+        "tags": [
+          "Submission"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -355,6 +404,9 @@
     },
     "/api/v1/submission/problem/{problemId}": {
       "get": {
+        "tags": [
+          "Submission"
+        ],
         "description": "",
         "parameters": [
           {
@@ -373,6 +425,9 @@
     },
     "/api/v1/submission/count-submission/{problemId}": {
       "get": {
+        "tags": [
+          "Submission"
+        ],
         "description": "",
         "parameters": [
           {
