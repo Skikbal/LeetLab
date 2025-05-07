@@ -31,13 +31,16 @@ model User {
   email                        String          @unique
   avatar                       String?         @default("https://avatar.iran.liara.run/public/boy")
   role                         UserRole        @default(USER)
-  password                     String
+  password                     String?
   refreshToken                 String?
   isVerified                   Boolean?        @default(false)
   unverifiedEmail              String?
   emailVerificationToken       String?
   emailVerificationTokenExpiry DateTime?
   forgotPasswordToken          String?
+  googleId                     String?         @unique
+  githubId                     String?         @unique
+  appleId                      String?         @unique
   forgotPasswordTokenExpiry    DateTime?
   createdAt                    DateTime        @default(now())
   updatedAt                    DateTime        @updatedAt

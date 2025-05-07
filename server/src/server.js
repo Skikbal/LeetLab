@@ -9,11 +9,16 @@ import { fileURLToPath } from "url";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger-output.json" with { type: "json" };
+import passport from "passport";
+import './config/passport.js';
 
 const server = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Passport middleware
+server.use(passport.initialize());
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));

@@ -32,6 +32,71 @@ const cookiesOptions = {
   secure: NODE_ENV !== "development",
   maxAge: 24 * 60 * 60 * 1000,
 };
+const loginWithGoogleUserHandler = AsyncHandler(async (req, res) => {
+  const { profile } = req.user;
+  const provider = profile.provider;
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      OR: [
+        {
+          email: profile.emails[0].value,
+        },
+        provider === "google"
+          ? { googleId: profile.id }
+          : { githubId: profile.id },
+      ],
+    },
+  });
+
+  if (existingUser) {
+    const { accessToken, refreshToken } = await generateToken(existingUser);
+    await prisma.user.update({
+      where: {
+        id: existingUser.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, cookiesOptions)
+      .cookie("refreshToken", refreshToken, cookiesOptions)
+      .json(new ApiResponse(200, "User logged in successfully"));
+  }
+
+  const user = await prisma.user.create({
+    data: {
+      name: profile.name?.givenName,
+      email: profile.emails[0].value,
+      ...(provider === "google"
+        ? { googleId: profile.id }
+        : { githubId: profile.id }),
+      avatar: profile.photos[0].value,
+      isVerified: true,
+    },
+  });
+  if (!user) {
+    throw new ApiError(500, "Failed to create user");
+  }
+  const { refreshToken, accessToken } = generateToken(user);
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      refreshToken: refreshToken,
+    },
+  });
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, cookiesOptions)
+    .cookie("refreshToken", refreshToken, cookiesOptions)
+    .json(new ApiResponse(200, "User registered successfully"));
+});
 
 const registerUserHandler = AsyncHandler(async (req, res) => {
   const { email, password, name = null } = req.body;
@@ -91,12 +156,6 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
       verificationURL: verification_url,
     }),
   });
-  // const cookiesOptions = {
-  //   httpOnly: true,
-  //   sameSite: "strict",
-  //   secure: NODE_ENV !== "development",
-  //   maxAge: 24 * 60 * 60 * 1000,
-  // };
   return res
     .status(201)
     .cookie("accessToken", accessToken, cookiesOptions)
@@ -541,4 +600,5 @@ export {
   updateUserProfileHandler,
   updateUserAvatarHandler,
   refreshAccessTokenHandler,
+  loginWithGoogleUserHandler,
 };

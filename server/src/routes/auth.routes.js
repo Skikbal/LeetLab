@@ -12,13 +12,32 @@ import {
   updateUserAvatarHandler,
   refreshAccessTokenHandler,
   resendEmailVerificationHandler,
+  loginWithGoogleUserHandler,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
 import { registerSchema } from "../validators/Auth.validators.js";
 import validation from "../middlewares/validation.middleware.js";
+import passport from "passport";
 
 const router = Router();
+
+//google auth
+router
+  .route("/google")
+  .get(
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
+      accessType: "offline",
+      prompt: "consent",
+    }),
+  );
+router
+  .route("/google/callback")
+  .get(
+    passport.authenticate("google", { session: false }),
+    loginWithGoogleUserHandler,
+  );
 
 //public routes
 router
