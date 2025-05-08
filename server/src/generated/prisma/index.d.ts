@@ -1401,6 +1401,8 @@ export namespace Prisma {
     password: string | null
     refreshToken: string | null
     isVerified: boolean | null
+    isDeActivated: boolean | null
+    deletionRequestedAt: Date | null
     unverifiedEmail: string | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
@@ -1422,6 +1424,8 @@ export namespace Prisma {
     password: string | null
     refreshToken: string | null
     isVerified: boolean | null
+    isDeActivated: boolean | null
+    deletionRequestedAt: Date | null
     unverifiedEmail: string | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
@@ -1443,6 +1447,8 @@ export namespace Prisma {
     password: number
     refreshToken: number
     isVerified: number
+    isDeActivated: number
+    deletionRequestedAt: number
     unverifiedEmail: number
     emailVerificationToken: number
     emailVerificationTokenExpiry: number
@@ -1466,6 +1472,8 @@ export namespace Prisma {
     password?: true
     refreshToken?: true
     isVerified?: true
+    isDeActivated?: true
+    deletionRequestedAt?: true
     unverifiedEmail?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
@@ -1487,6 +1495,8 @@ export namespace Prisma {
     password?: true
     refreshToken?: true
     isVerified?: true
+    isDeActivated?: true
+    deletionRequestedAt?: true
     unverifiedEmail?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
@@ -1508,6 +1518,8 @@ export namespace Prisma {
     password?: true
     refreshToken?: true
     isVerified?: true
+    isDeActivated?: true
+    deletionRequestedAt?: true
     unverifiedEmail?: true
     emailVerificationToken?: true
     emailVerificationTokenExpiry?: true
@@ -1602,6 +1614,8 @@ export namespace Prisma {
     password: string | null
     refreshToken: string | null
     isVerified: boolean | null
+    isDeActivated: boolean | null
+    deletionRequestedAt: Date | null
     unverifiedEmail: string | null
     emailVerificationToken: string | null
     emailVerificationTokenExpiry: Date | null
@@ -1640,6 +1654,8 @@ export namespace Prisma {
     password?: boolean
     refreshToken?: boolean
     isVerified?: boolean
+    isDeActivated?: boolean
+    deletionRequestedAt?: boolean
     unverifiedEmail?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
@@ -1665,6 +1681,8 @@ export namespace Prisma {
     password?: boolean
     refreshToken?: boolean
     isVerified?: boolean
+    isDeActivated?: boolean
+    deletionRequestedAt?: boolean
     unverifiedEmail?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
@@ -1686,6 +1704,8 @@ export namespace Prisma {
     password?: boolean
     refreshToken?: boolean
     isVerified?: boolean
+    isDeActivated?: boolean
+    deletionRequestedAt?: boolean
     unverifiedEmail?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
@@ -1707,6 +1727,8 @@ export namespace Prisma {
     password?: boolean
     refreshToken?: boolean
     isVerified?: boolean
+    isDeActivated?: boolean
+    deletionRequestedAt?: boolean
     unverifiedEmail?: boolean
     emailVerificationToken?: boolean
     emailVerificationTokenExpiry?: boolean
@@ -1719,7 +1741,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "avatar" | "role" | "password" | "refreshToken" | "isVerified" | "unverifiedEmail" | "emailVerificationToken" | "emailVerificationTokenExpiry" | "forgotPasswordToken" | "googleId" | "githubId" | "appleId" | "forgotPasswordTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "avatar" | "role" | "password" | "refreshToken" | "isVerified" | "isDeActivated" | "deletionRequestedAt" | "unverifiedEmail" | "emailVerificationToken" | "emailVerificationTokenExpiry" | "forgotPasswordToken" | "googleId" | "githubId" | "appleId" | "forgotPasswordTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     problems?: boolean | User$problemsArgs<ExtArgs>
     submissions?: boolean | User$submissionsArgs<ExtArgs>
@@ -1745,6 +1767,8 @@ export namespace Prisma {
       password: string | null
       refreshToken: string | null
       isVerified: boolean | null
+      isDeActivated: boolean | null
+      deletionRequestedAt: Date | null
       unverifiedEmail: string | null
       emailVerificationToken: string | null
       emailVerificationTokenExpiry: Date | null
@@ -2189,6 +2213,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly refreshToken: FieldRef<"User", 'String'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
+    readonly isDeActivated: FieldRef<"User", 'Boolean'>
+    readonly deletionRequestedAt: FieldRef<"User", 'DateTime'>
     readonly unverifiedEmail: FieldRef<"User", 'String'>
     readonly emailVerificationToken: FieldRef<"User", 'String'>
     readonly emailVerificationTokenExpiry: FieldRef<"User", 'DateTime'>
@@ -7397,6 +7423,8 @@ export namespace Prisma {
     password: 'password',
     refreshToken: 'refreshToken',
     isVerified: 'isVerified',
+    isDeActivated: 'isDeActivated',
+    deletionRequestedAt: 'deletionRequestedAt',
     unverifiedEmail: 'unverifiedEmail',
     emailVerificationToken: 'emailVerificationToken',
     emailVerificationTokenExpiry: 'emailVerificationTokenExpiry',
@@ -7648,6 +7676,8 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     refreshToken?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolNullableFilter<"User"> | boolean | null
+    isDeActivated?: BoolNullableFilter<"User"> | boolean | null
+    deletionRequestedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     unverifiedEmail?: StringNullableFilter<"User"> | string | null
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -7672,6 +7702,8 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     refreshToken?: SortOrderInput | SortOrder
     isVerified?: SortOrderInput | SortOrder
+    isDeActivated?: SortOrderInput | SortOrder
+    deletionRequestedAt?: SortOrderInput | SortOrder
     unverifiedEmail?: SortOrderInput | SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
     emailVerificationTokenExpiry?: SortOrderInput | SortOrder
@@ -7702,6 +7734,8 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     refreshToken?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolNullableFilter<"User"> | boolean | null
+    isDeActivated?: BoolNullableFilter<"User"> | boolean | null
+    deletionRequestedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     unverifiedEmail?: StringNullableFilter<"User"> | string | null
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -7723,6 +7757,8 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     refreshToken?: SortOrderInput | SortOrder
     isVerified?: SortOrderInput | SortOrder
+    isDeActivated?: SortOrderInput | SortOrder
+    deletionRequestedAt?: SortOrderInput | SortOrder
     unverifiedEmail?: SortOrderInput | SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
     emailVerificationTokenExpiry?: SortOrderInput | SortOrder
@@ -7750,6 +7786,8 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     refreshToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     isVerified?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
+    isDeActivated?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
+    deletionRequestedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     unverifiedEmail?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerificationTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -8144,6 +8182,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -8168,6 +8208,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -8192,6 +8234,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8216,6 +8260,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8240,6 +8286,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -8261,6 +8309,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8282,6 +8332,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8821,6 +8873,8 @@ export namespace Prisma {
     password?: SortOrder
     refreshToken?: SortOrder
     isVerified?: SortOrder
+    isDeActivated?: SortOrder
+    deletionRequestedAt?: SortOrder
     unverifiedEmail?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
@@ -8842,6 +8896,8 @@ export namespace Prisma {
     password?: SortOrder
     refreshToken?: SortOrder
     isVerified?: SortOrder
+    isDeActivated?: SortOrder
+    deletionRequestedAt?: SortOrder
     unverifiedEmail?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
@@ -8863,6 +8919,8 @@ export namespace Prisma {
     password?: SortOrder
     refreshToken?: SortOrder
     isVerified?: SortOrder
+    isDeActivated?: SortOrder
+    deletionRequestedAt?: SortOrder
     unverifiedEmail?: SortOrder
     emailVerificationToken?: SortOrder
     emailVerificationTokenExpiry?: SortOrder
@@ -10128,6 +10186,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10151,6 +10211,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10258,6 +10320,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10281,6 +10345,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10336,6 +10402,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10359,6 +10427,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10481,6 +10551,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10504,6 +10576,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10695,6 +10769,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10718,6 +10794,8 @@ export namespace Prisma {
     password?: string | null
     refreshToken?: string | null
     isVerified?: boolean | null
+    isDeActivated?: boolean | null
+    deletionRequestedAt?: Date | string | null
     unverifiedEmail?: string | null
     emailVerificationToken?: string | null
     emailVerificationTokenExpiry?: Date | string | null
@@ -10800,6 +10878,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10823,6 +10903,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeActivated?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    deletionRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unverifiedEmail?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerificationTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

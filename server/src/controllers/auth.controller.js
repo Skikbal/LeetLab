@@ -14,6 +14,7 @@ import {
   sendEmail,
   emailVerificationMailgenContent,
   resetPasswordMailgenContent,
+  accountDeletionMailgenContent,
 } from "../services/maill.service.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
@@ -32,6 +33,7 @@ const cookiesOptions = {
   secure: NODE_ENV !== "development",
   maxAge: 24 * 60 * 60 * 1000,
 };
+//OAuth2.O handler
 const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
   const { profile } = req.user;
   const provider = profile.provider;
@@ -113,6 +115,7 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User registered successfully"));
 });
 
+//register user handler
 const registerUserHandler = AsyncHandler(async (req, res) => {
   const { email, password, name = null } = req.body;
   const existingUser = await findUserByEmail(email);
@@ -178,6 +181,7 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "User registered successfully", updatedUser));
 });
 
+// verify email handler
 const verifyEmailHandler = AsyncHandler(async (req, res) => {
   const { token } = req.query;
 
@@ -216,6 +220,7 @@ const verifyEmailHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Email verified successfully"));
 });
 
+// login user handler
 const loginUserHandler = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await findUserByEmail(email);
@@ -247,6 +252,7 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User logged in successfully"));
 });
 
+// logout user handler
 const logoutUserHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
   await prisma.user.update({
@@ -264,6 +270,7 @@ const logoutUserHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User logged out successfully"));
 });
 
+// get user profile handler
 const getUserProfileHandler = AsyncHandler(async (req, res) => {
   const id = req.user.id;
   const user = await prisma.user.findUnique({
@@ -288,6 +295,7 @@ const getUserProfileHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User profile fetched successfully", user));
 });
 
+// resend email verification handler
 const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await prisma.user.findUnique({
@@ -333,6 +341,7 @@ const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Verification email sent successfully"));
 });
 
+// forgot password handler
 const forgotPasswordHandler = AsyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await prisma.user.findUnique({
@@ -374,6 +383,7 @@ const forgotPasswordHandler = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Reset password email sent successfully"));
 });
 
+// reset password handler
 const resetPasswordHandler = AsyncHandler(async (req, res) => {
   const { token } = req.query;
   const { password, confirmPassword } = req.body;
@@ -406,6 +416,7 @@ const resetPasswordHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Password reset successfully"));
 });
+// change password handler
 const changePasswordHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { currentPassword, newPassword, confirmPassword } = req.body;
@@ -440,6 +451,7 @@ const changePasswordHandler = AsyncHandler(async (req, res) => {
     .cookie("refreshToken", "", cookiesOptions)
     .json(new ApiResponse(200, "Password changed successfully"));
 });
+// update user profile handler
 const updateUserProfileHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
 
@@ -524,6 +536,8 @@ const updateUserProfileHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "User updated successfully"));
 });
+
+// update user avatar handler
 const updateUserAvatarHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
   const avatar = req.file;
@@ -547,6 +561,8 @@ const updateUserAvatarHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Avatar updated successfully"));
 });
+
+// refresh access token handler
 const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {
@@ -598,8 +614,38 @@ const refreshAccessTokenHandler = AsyncHandler(async (req, res) => {
 
 //user account deletation
 const userAccountDeletionHandler = AsyncHandler(async (req, res) => {
-  //deactivate user account for 30 days
-  //if user is not active for 30 days, delete user account
+  const userId = req.user.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      isDeActivated: true,
+      deletionRequestedAt: new Date(),
+    },
+  });
+
+  //send mail to user
+  await sendEmail({
+    email: user.email,
+    subject: "Account Deletion",
+    mailgenContent: accountDeletionMailgenContent({
+      username: user.name,
+    }),
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Account deletion requested successfully"));
 });
 
 export {
@@ -616,4 +662,5 @@ export {
   updateUserAvatarHandler,
   refreshAccessTokenHandler,
   loginWithOAuth2UserHandler,
+  userAccountDeletionHandler,
 };

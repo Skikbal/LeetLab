@@ -34,6 +34,8 @@ model User {
   password                     String?
   refreshToken                 String?
   isVerified                   Boolean?        @default(false)
+  isDeActivated                Boolean?        @default(false)
+  deletionRequestedAt          DateTime?
   unverifiedEmail              String?
   emailVerificationToken       String?
   emailVerificationTokenExpiry DateTime?

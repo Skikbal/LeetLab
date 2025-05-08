@@ -86,9 +86,29 @@ const resetPasswordMailgenContent = ({ username, verificationURL }) => {
     },
   };
 };
+const accountDeletionMailgenContent = ({ username }) => {
+  return {
+    body: {
+      name: username,
+      intro: "You have requested to delete your account",
+      action: {
+        instructions:
+          "Your account will be deleted after 30 days of inactivity. To cancel deletion, please login to your account.",
+        button: {
+          color: "#22BC66", // Optional action button color
+          text: "Reset your password",
+          // link: verificationURL,
+        },
+      },
+      outro:
+        "Need help, or have questions? Just reply to this email, we'd love to help.",
+    },
+  };
+};
 
 export {
   sendEmail,
   emailVerificationMailgenContent,
   resetPasswordMailgenContent,
+  accountDeletionMailgenContent,
 };

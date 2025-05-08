@@ -13,6 +13,7 @@ import {
   refreshAccessTokenHandler,
   resendEmailVerificationHandler,
   loginWithOAuth2UserHandler,
+  userAccountDeletionHandler,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
@@ -71,5 +72,6 @@ router
   .post(isAuth, upload.single("avatar"), updateUserAvatarHandler);
 router.route("/user-profile").get(isAuth, getUserProfileHandler);
 router.route("/change-password").post(isAuth, changePasswordHandler);
+router.route("/delete-account").delete(isAuth, userAccountDeletionHandler);
 
 export default router;
