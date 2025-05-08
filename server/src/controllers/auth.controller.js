@@ -32,7 +32,7 @@ const cookiesOptions = {
   secure: NODE_ENV !== "development",
   maxAge: 24 * 60 * 60 * 1000,
 };
-const loginWithGoogleUserHandler = AsyncHandler(async (req, res) => {
+const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
   const { profile } = req.user;
   const provider = profile.provider;
   const existingUser = await prisma.user.findFirst({
@@ -50,14 +50,29 @@ const loginWithGoogleUserHandler = AsyncHandler(async (req, res) => {
 
   if (existingUser) {
     const { accessToken, refreshToken } = await generateToken(existingUser);
-    await prisma.user.update({
-      where: {
-        id: existingUser.id,
-      },
-      data: {
-        refreshToken: refreshToken,
-      },
-    });
+    if (provider === "google" && !existingUser.googleId) {
+      await prisma.user.update({
+        where: {
+          id: existingUser.id,
+        },
+        data: {
+          refreshToken: refreshToken,
+          googleId: profile.id,
+        },
+      });
+    }
+
+    if (provider === "github" && !existingUser.githubId) {
+      await prisma.user.update({
+        where: {
+          id: existingUser.id,
+        },
+        data: {
+          refreshToken: refreshToken,
+          githubId: profile.id,
+        },
+      });
+    }
 
     return res
       .status(200)
@@ -68,7 +83,7 @@ const loginWithGoogleUserHandler = AsyncHandler(async (req, res) => {
 
   const user = await prisma.user.create({
     data: {
-      name: profile.name?.givenName,
+      name: provider === "google" ? profile.name?.givenName : profile.username,
       email: profile.emails[0].value,
       ...(provider === "google"
         ? { googleId: profile.id }
@@ -600,5 +615,5 @@ export {
   updateUserProfileHandler,
   updateUserAvatarHandler,
   refreshAccessTokenHandler,
-  loginWithGoogleUserHandler,
+  loginWithOAuth2UserHandler,
 };

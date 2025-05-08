@@ -12,7 +12,7 @@ import {
   updateUserAvatarHandler,
   refreshAccessTokenHandler,
   resendEmailVerificationHandler,
-  loginWithGoogleUserHandler,
+  loginWithOAuth2UserHandler,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
@@ -23,20 +23,29 @@ import passport from "passport";
 const router = Router();
 
 //google auth
-router
-  .route("/google")
-  .get(
-    passport.authenticate("google", {
-      scope: ["profile", "email"],
-      accessType: "offline",
-      prompt: "consent",
-    }),
-  );
+router.route("/google").get(
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    accessType: "offline",
+    prompt: "consent",
+  }),
+);
 router
   .route("/google/callback")
   .get(
     passport.authenticate("google", { session: false }),
-    loginWithGoogleUserHandler,
+    loginWithOAuth2UserHandler,
+  );
+
+//github auth
+router
+  .route("/github")
+  .get(passport.authenticate("github", { scope: ["user:email"] }));
+router
+  .route("/github/callback")
+  .get(
+    passport.authenticate("github", { session: false }),
+    loginWithOAuth2UserHandler,
   );
 
 //public routes
