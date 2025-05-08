@@ -56,10 +56,12 @@ router
     validation(registerSchema),
     registerUserHandler,
   );
-router.route("/verify-email").get(verifyEmailHandler);
 router.route("/login").post(loginUserHandler);
+router.route("/verify-email").get(verifyEmailHandler);
 router.route("/resend-email-verification").post(resendEmailVerificationHandler);
 router.route("/refresh-token").get(refreshAccessTokenHandler);
+router.route("/forgot-password").post(forgotPasswordHandler);
+router.route("/reset-password").post(resetPasswordHandler);
 
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);
@@ -68,4 +70,6 @@ router
   .route("/update-avatar")
   .post(isAuth, upload.single("avatar"), updateUserAvatarHandler);
 router.route("/user-profile").get(isAuth, getUserProfileHandler);
+router.route("/change-password").post(isAuth, changePasswordHandler);
+
 export default router;
