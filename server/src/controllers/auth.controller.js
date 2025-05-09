@@ -2,7 +2,6 @@ import AsyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { prisma } from "../libs/db.js";
-import bcrypt from "bcryptjs";
 import { UserRole } from "../generated/prisma/index.js";
 import {
   NODE_ENV,
