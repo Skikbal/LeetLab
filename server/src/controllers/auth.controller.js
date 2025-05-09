@@ -236,6 +236,9 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateToken(user);
+  const shouldReactive =
+    user.isDeActivated === true &&
+    new Date() <= new Date(user.deletionRequestedAt);
 
   await prisma.user.update({
     where: {
@@ -243,6 +246,10 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
     },
     data: {
       refreshToken: refreshToken,
+      ...(shouldReactive && {
+        isDeActivated: false,
+        deletionRequestedAt: null,
+      }),
     },
   });
   return res
@@ -630,7 +637,7 @@ const userAccountDeletionHandler = AsyncHandler(async (req, res) => {
     },
     data: {
       isDeActivated: true,
-      deletionRequestedAt: new Date(),
+      deletionRequestedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     },
   });
 
