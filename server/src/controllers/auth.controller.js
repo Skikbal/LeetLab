@@ -52,29 +52,26 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
 
   if (existingUser) {
     const { accessToken, refreshToken } = await generateToken(existingUser);
-    if (provider === "google" && !existingUser.googleId) {
-      await prisma.user.update({
-        where: {
-          id: existingUser.id,
-        },
-        data: {
-          refreshToken: refreshToken,
-          googleId: profile.id,
-        },
-      });
-    }
+    const shouldReactive =
+      existingUser.isDeActivated === true &&
+      new Date() <= new Date(existingUser.deletionRequestedAt);
+    console.log(shouldReactive);
 
-    if (provider === "github" && !existingUser.githubId) {
-      await prisma.user.update({
-        where: {
-          id: existingUser.id,
-        },
-        data: {
-          refreshToken: refreshToken,
-          githubId: profile.id,
-        },
-      });
-    }
+    await prisma.user.update({
+      where: {
+        id: existingUser.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+        ...(provider === "google"
+          ? { googleId: profile.id }
+          : { githubId: profile.id }),
+        ...(shouldReactive && {
+          isDeActivated: false,
+          deletionRequestedAt: null,
+        }),
+      },
+    });
 
     return res
       .status(200)
@@ -109,10 +106,10 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
   });
 
   return res
-    .status(200)
+    .status(201)
     .cookie("accessToken", accessToken, cookiesOptions)
     .cookie("refreshToken", refreshToken, cookiesOptions)
-    .json(new ApiResponse(200, "User registered successfully"));
+    .json(new ApiResponse(200, "User registered successfully", accessToken));
 });
 
 //register user handler
