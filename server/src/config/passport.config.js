@@ -6,7 +6,7 @@ import {
   GOOGLE_CLIENT_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
-} from "./envConfig.js";
+} from "./env.config.js";
 
 passport.use(
   new GoogleStrategy(

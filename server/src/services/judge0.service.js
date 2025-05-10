@@ -1,5 +1,5 @@
 import axios from "axios";
-import { JUDGE0_API_URL } from "../config/envConfig.js";
+import { JUDGE0_API_URL } from "../config/env.config.js";
 import ApiError from "../utils/ApiError.js";
 const getJudge0LanguageId = (language) => {
   const languageMap = {

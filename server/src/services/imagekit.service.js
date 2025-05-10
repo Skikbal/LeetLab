@@ -4,7 +4,7 @@ import {
   IMAGEKIT_PUBLIC_KEY,
   IMAGEKIT_PRIVATE_KEY,
   IMAGEKIT_ENDPOINT_URL,
-} from "../config/envConfig.js";
+} from "../config/env.config.js";
 import ApiError from "../utils/ApiError.js";
 
 const imagekit = new ImageKit({

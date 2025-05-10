@@ -1,4 +1,4 @@
-import { NODE_ENV } from "../config/envConfig.js";
+import { NODE_ENV } from "../config/env.config.js";
 const errorHandler = (err, req, res, next) => {
   const isProduction = NODE_ENV === "production";
 

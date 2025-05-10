@@ -6,7 +6,7 @@ import {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_EXPIRY,
   REFRESH_TOKEN_SECRET,
-} from "../config/envConfig.js";
+} from "../config/env.config.js";
 import crypto from "crypto";
 
 // Utility to hash password before saving

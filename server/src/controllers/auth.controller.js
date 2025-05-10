@@ -7,7 +7,7 @@ import {
   NODE_ENV,
   BASEURL,
   REFRESH_TOKEN_SECRET,
-} from "../config/envConfig.js";
+} from "../config/env.config.js";
 import imagekitUpload from "../services/imagekit.service.js";
 import {
   sendEmail,

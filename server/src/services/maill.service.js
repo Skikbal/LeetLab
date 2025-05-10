@@ -6,7 +6,7 @@ import {
   MAILTRAP_PORT,
   MAILTRAP_USERNAME,
   MAILTRAP_PASSWORD,
-} from "../config/envConfig.js";
+} from "../config/env.config.js";
 import ApiError from "../utils/ApiError.js";
 const sendEmail = async (options) => {
   const mailGenerator = new Mailgen({

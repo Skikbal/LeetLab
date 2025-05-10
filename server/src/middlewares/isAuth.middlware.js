@@ -1,6 +1,6 @@
 import ApiError from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET } from "../config/envConfig.js";
+import { ACCESS_TOKEN_SECRET } from "../config/env.config.js";
 import { prisma } from "../libs/db.js";
 const isAuth = async (req, res, next) => {
   const { accessToken } = req.cookies;

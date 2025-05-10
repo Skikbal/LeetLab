@@ -10,8 +10,8 @@ import errorHandler from "./middlewares/errorHandler.middleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger-output.json" with { type: "json" };
 import passport from "passport";
-import "./config/passport.js";
-import runAllCroneJobs from "./config/cron.js";
+import "./config/passport.config.js";
+import runAllCroneJobs from "./config/cron.config.js";
 
 const server = express();
 

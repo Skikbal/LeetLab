@@ -1,5 +1,5 @@
 import server from "./server.js";
-import { PORT } from "./config/envConfig.js";
+import { PORT } from "./config/env.config.js";
 import { connectDB } from "./libs/db.js";
 
 connectDB()
