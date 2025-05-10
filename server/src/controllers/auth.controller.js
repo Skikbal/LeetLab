@@ -648,6 +648,8 @@ const userAccountDeletionHandler = AsyncHandler(async (req, res) => {
 
   return res
     .status(200)
+    .cookie("accessToken", cookiesOptions)
+    .cookie("refreshToken", cookiesOptions)
     .json(new ApiResponse(200, "Account deletion requested successfully"));
 });
 

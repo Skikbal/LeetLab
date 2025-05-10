@@ -1,9 +1,7 @@
 import deleteInActiveUser from "../jobs/deleteInActiveUser.js";
 
 const runAllCroneJobs = async () => {
-  try {
-    await deleteInActiveUser();
-  } catch (error) {}
+  deleteInActiveUser();
 };
 
 export default runAllCroneJobs;
