@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import AppRoutes from "./routes/AppRoutes.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
   return (
-    <div className='font-bold bg-indigo-600'>App</div>
-  )
-}
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
