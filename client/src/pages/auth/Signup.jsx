@@ -5,16 +5,30 @@ import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { SignupSchema } from "../../validators/ValidationSchema.js";
 import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
+
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(SignupSchema) });
 
-  const onSubmit = async(data) => {
-    console.log(data);
+  const onSubmit = (data) => {
+    try {
+      setIsLoading(true);
+      setTimeout(() => {
+        console.log(isLoading);
+        console.log(data);
+      }, 10 * 1000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("finally");
+      // setIsLoading(false);
+    }
   };
 
   return (
@@ -114,8 +128,19 @@ const Signup = () => {
               </p>
             )}
           </div>
-          <button type="submit" className="btn btn-primary w-full mt-2">
-            Sign up
+          <button
+            type="submit"
+            className="btn btn-primary w-full mt-2"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                loading...
+              </>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </div>
       </form>

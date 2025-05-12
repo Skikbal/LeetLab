@@ -7,6 +7,7 @@ import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,7 +15,14 @@ const Login = () => {
   } = useForm({ resolver: zodResolver(LoginSchema) });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      setIsLoading(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log(isLoading);
+      // setIsLoading(false);
+    }
   };
 
   return (
@@ -92,8 +100,19 @@ const Login = () => {
               </p>
             )}
           </div>
-          <button type="submit" className="btn btn-primary w-full mt-2">
-            Signin
+          <button
+            type="submit"
+            className="btn btn-primary w-full mt-2"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Signin"
+            )}
           </button>
         </div>
       </form>
