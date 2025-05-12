@@ -1,5 +1,6 @@
 import { Signup, Login, Dashboard } from "../pages/index.js";
 import { Routes, Route } from "react-router-dom";
+import OnboardLayout from "../layout/OnboardLayout.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
