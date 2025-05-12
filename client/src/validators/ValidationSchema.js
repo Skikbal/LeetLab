@@ -8,12 +8,16 @@ const passwordValidation = z
     /[@$!%*?&]/,
     "Password must contain at least one special character (@$!%*?&)"
   );
-  
+
 const SignupSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: passwordValidation,
   name: z.string().min(1, "Please enter your name"),
 });
 
+const LoginSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+  password: passwordValidation,
+});
 
-export { SignupSchema };
+export { SignupSchema, LoginSchema };

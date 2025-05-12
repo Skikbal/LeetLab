@@ -13,7 +13,7 @@ const Signup = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(SignupSchema) });
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     console.log(data);
   };
 
@@ -23,15 +23,15 @@ const Signup = () => {
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-zinc-950 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-zinc-800"
       >
-        <div class="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
-          <h2 class="text-xl font-semibold text-white text-center">
+        <div className="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
+          <h2 className="text-xl font-semibold text-white text-center">
             Code Smarter with CodeZero
           </h2>
-          <p class="text-sm text-zinc-400">
+          <p className="text-sm text-zinc-400 text-center">
             Create your account and start solving, learning, and improving.
           </p>
         </div>
-        <div class="p-6 space-y-2">
+        <div className="p-6 space-y-2">
           <div className="form-control">
             <label className="label pb-1" htmlFor="name">
               <span className="label-text">Name</span>
@@ -72,7 +72,7 @@ const Signup = () => {
                 placeholder="john_doe@example.com"
               />
             </div>
-            {errors.name && (
+            {errors.email && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.email.message}
               </p>
@@ -108,14 +108,14 @@ const Signup = () => {
               </button>
             </div>
 
-            {errors.name && (
+            {errors.password && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.password.message}
               </p>
             )}
           </div>
           <button type="submit" className="btn btn-primary w-full mt-2">
-            Sign In
+            Sign up
           </button>
         </div>
       </form>
