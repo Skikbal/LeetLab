@@ -26,7 +26,12 @@ const Login = () => {
   };
 
   return (
-    <OnboardLayout>
+    <OnboardLayout
+      title={"Welcome Back!"}
+      subtitle={
+        "Sign in to continue your journey with us. Don't have an account? Sign up now!"
+      }
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-zinc-950 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-zinc-800"

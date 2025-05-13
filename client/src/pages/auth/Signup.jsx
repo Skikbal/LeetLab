@@ -32,7 +32,10 @@ const Signup = () => {
   };
 
   return (
-    <OnboardLayout>
+    <OnboardLayout
+      title={"Welcome to our platform!"}
+      subtitle={"Sign up to access our platform and start using our services."}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-zinc-950 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-zinc-800"
