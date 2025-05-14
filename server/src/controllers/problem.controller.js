@@ -61,6 +61,9 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 //get all problems
 const getAllProblemsHandler = AsyncHandler(async (req, res) => {
   const problems = await prisma.problem.findMany({
+    where: {
+      isDeleted: false,
+    },
     select: {
       id: true,
       title: true,
@@ -82,10 +85,10 @@ const getAllProblemsHandler = AsyncHandler(async (req, res) => {
 //get single problem by id
 const getProblemHandler = AsyncHandler(async (req, res) => {
   const { id } = req.params;
-
   const problem = await prisma.problem.findUnique({
     where: {
       id,
+      isDeleted: false,
     },
   });
 
@@ -215,18 +218,58 @@ const deleteProblemHandler = AsyncHandler(async (req, res) => {
     throw new ApiError(404, "Problem not found");
   }
 
-  const deletedProblem = await prisma.problem.delete({
+  const deletedProblem = await prisma.problem.update({
     where: {
       id,
     },
+    data: {
+      isDeleted: true,
+    },
   });
-
+  
   if (!deletedProblem) {
     throw new ApiError(404, "Error deleting problem");
   }
   return res
     .status(200)
     .json(new ApiResponse(200, "Problem deleted successfully"));
+});
+
+//bulk delete problem handler
+const bulkDeleteProblemHandler = AsyncHandler(async (req, res) => {
+  const problemIds = req.body.problemIds;
+  const { role: userRole } = req.user;
+
+  if (userRole !== "ADMIN") {
+    throw new ApiError(403, "You are not authorized to delete a problem");
+  }
+
+  // validate if problems exist before deletion
+  const problems = await prisma.problem.findMany({
+    where: {
+      id: {
+        in: problemIds,
+      },
+    },
+  });
+
+  if (problems.length !== problemIds.length) {
+    throw new ApiError(404, "Problem not found");
+  }
+
+  await prisma.problem.updateMany({
+    where: {
+      id: {
+        in: problemIds,
+      },
+    },
+    data: {
+      isDeleted: true,
+    },
+  });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Problems deleted successfully"));
 });
 const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {});
 
@@ -236,5 +279,6 @@ export {
   getProblemHandler,
   updateProblemHandler,
   deleteProblemHandler,
+  bulkDeleteProblemHandler,
   getSolvedProblemsHandler,
 };

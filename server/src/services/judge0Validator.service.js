@@ -6,7 +6,6 @@ import {
 import ApiError from "../utils/ApiError.js";
 const judge0Validator = async ({ testcases, refrencesolution }) => {
   try {
-    console.log(testcases,refrencesolution)
     for (const [language, solutionCode] of Object.entries(refrencesolution)) {
       const languageId = await getJudge0LanguageId(language);
       if (!languageId) {
@@ -19,10 +18,8 @@ const judge0Validator = async ({ testcases, refrencesolution }) => {
         stdin: input,
         expected_output: output,
       }));
-      console.log(submission)
       // Submit the batch and get the tokens
       const submissionResult = await submitBatch(submission);
-      console.log(submissionResult)
       //pool the results
       const tokens = submissionResult.map((result) => result.token);
       const results = await poolBatchResult(tokens);
