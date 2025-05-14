@@ -5,10 +5,11 @@ import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { SignupSchema } from "../../validators/ValidationSchema.js";
 import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, signupUser } = useAuthStore();
 
   const {
     register,
@@ -16,18 +17,11 @@ const Signup = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(SignupSchema) });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
-      setIsLoading(true);
-      setTimeout(() => {
-        console.log(isLoading);
-        console.log(data);
-      }, 10 * 1000);
+      await signupUser(data);
     } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("finally");
-      // setIsLoading(false);
+      console.log("Error signing up: ", error);
     }
   };
 
