@@ -20,6 +20,10 @@ import isAuth from "../middlewares/isAuth.middlware.js";
 import { registerSchema } from "../validators/Auth.validators.js";
 import validation from "../middlewares/validation.middleware.js";
 import passport from "passport";
+import {
+  loginRateLimit,
+  loginAttemtHandler,
+} from "../middlewares/rate-limiters/index.js";
 
 const router = Router();
 
@@ -59,7 +63,9 @@ router
     validation(registerSchema),
     registerUserHandler,
   );
-router.route("/login").post(loginUserHandler);
+router
+  .route("/login")
+  .post(loginRateLimit, loginAttemtHandler, loginUserHandler);
 router.route("/verify-email").get(verifyEmailHandler);
 router.route("/resend-email-verification").post(resendEmailVerificationHandler);
 router.route("/refresh-token").get(refreshAccessTokenHandler);

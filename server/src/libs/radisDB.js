@@ -19,4 +19,4 @@ redis.on("error", (err) => {
   console.log("Redis connection error:", err);
 });
 
-export default redisConnect;
+export default redis;

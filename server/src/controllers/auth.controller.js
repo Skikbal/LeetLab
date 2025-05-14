@@ -24,6 +24,7 @@ import {
   findUserByEmail,
   genrateRandomToken,
 } from "../services/auth.service.js";
+import { rewardRateLimit } from "../middlewares/rate-limiters/index.js";
 
 //cookie option
 const cookiesOptions = {
@@ -219,6 +220,8 @@ const verifyEmailHandler = AsyncHandler(async (req, res) => {
 // login user handler
 const loginUserHandler = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  //get ip from req
+  const { ip } = req.rateLimitInfo;
   const user = await findUserByEmail(email);
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -230,7 +233,7 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
   if (!user.isVerified) {
     throw new ApiError(401, "Email not verified");
   }
-
+  
   const { accessToken, refreshToken } = await generateToken(user);
   const shouldReactive =
     user.isDeActivated === true &&
@@ -248,6 +251,7 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
       }),
     },
   });
+  await rewardRateLimit(ip,email)
   return res
     .status(200)
     .cookie("accessToken", accessToken, cookiesOptions)
