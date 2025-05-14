@@ -5,9 +5,10 @@ import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
 import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore.js";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { loginUser, isLoading } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -16,12 +17,9 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      setIsLoading(true);
+      await loginUser(data);
     } catch (error) {
-      console.log(error);
-    } finally {
-      console.log(isLoading);
-      // setIsLoading(false);
+      console.log("Error logging in: ", error);
     }
   };
 
