@@ -1,7 +1,10 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import { Code, User, Settings, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 const Navbar = () => {
-  const { logoutUser } = useAuthStore();
+  const { logoutUser, authUser } = useAuthStore();
+  const role = authUser.role;
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -77,13 +80,30 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a className="">Profile</a>
+              <a className="">
+                <User className="h-5 w-5 text-primary" />
+                Profile
+              </a>
             </li>
+            {role === "ADMIN" && (
+              <li>
+                <Link to={"/add-problem"}>
+                  <Code className="h-5 w-5 text-primary" />
+                  Add Problem
+                </Link>
+              </li>
+            )}
             <li>
-              <a>Settings</a>
+              <a>
+                <Settings className="h-5 w-5 text-primary" />
+                Settings
+              </a>
             </li>
-            <li className="bg-primary rounded-sm" onClick={handleLogout}>
-              <a>Logout</a>
+            <li className="bg-primary rounded-sm mt-3" onClick={handleLogout}>
+              <a>
+                <LogOut className="h-5 w-5 text-white" />
+                Logout
+              </a>
             </li>
           </ul>
         </div>
