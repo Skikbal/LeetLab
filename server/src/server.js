@@ -12,6 +12,7 @@ import swaggerDocument from "../swagger-output.json" with { type: "json" };
 import passport from "passport";
 import "./config/passport.config.js";
 import runAllCroneJobs from "./config/cron.config.js";
+import cors from "cors";
 
 const server = express();
 
@@ -25,6 +26,14 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use("/public", express.static(path.join(__dirname, "public")));
 server.use(cookieParser());
+server.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 server.use("/api/v1/auth", /* #swagger.tags = ['Auth'] */ authRouter);
 server.use("/api/v1/problems", /* #swagger.tags = ['Problem'] */ problemRouter);

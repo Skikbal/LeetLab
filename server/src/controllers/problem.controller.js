@@ -100,6 +100,7 @@ const getProblemHandler = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Problem fetched successfully", problem));
 });
+
 //update problem handler
 const updateProblemHandler = AsyncHandler(async (req, res) => {
   const { id } = req.params;

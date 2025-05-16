@@ -233,13 +233,13 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
   if (!user.isVerified) {
     throw new ApiError(401, "Email not verified");
   }
-  
+
   const { accessToken, refreshToken } = await generateToken(user);
   const shouldReactive =
     user.isDeActivated === true &&
     new Date() <= new Date(user.deletionRequestedAt);
 
-  await prisma.user.update({
+  const loggedInUser = await prisma.user.update({
     where: {
       id: user.id,
     },
@@ -250,13 +250,21 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
         deletionRequestedAt: null,
       }),
     },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      avatar: true,
+      role: true,
+      isVerified: true,
+    },
   });
-  await rewardRateLimit(ip,email)
+  await rewardRateLimit(ip, email);
   return res
     .status(200)
     .cookie("accessToken", accessToken, cookiesOptions)
     .cookie("refreshToken", refreshToken, cookiesOptions)
-    .json(new ApiResponse(200, "User logged in successfully"));
+    .json(new ApiResponse(200, "User logged in successfully", loggedInUser));
 });
 
 // logout user handler
@@ -358,7 +366,10 @@ const forgotPasswordHandler = AsyncHandler(async (req, res) => {
   });
 
   if (!user) {
-    throw new ApiError(404, "User not found");
+    throw new ApiError(
+      200,
+      " you’ll receive password reset instructions shortly in your registered email.",
+    );
   }
 
   const { unhashedToken, hashedToken, tokenExpiry } =
@@ -387,7 +398,12 @@ const forgotPasswordHandler = AsyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "Reset password email sent successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        "you’ll receive password reset instructions shortly in your registered email.",
+      ),
+    );
 });
 
 // reset password handler
@@ -426,11 +442,20 @@ const resetPasswordHandler = AsyncHandler(async (req, res) => {
 // change password handler
 const changePasswordHandler = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      password: true,
+    },
+  });
   const { currentPassword, newPassword, confirmPassword } = req.body;
 
   if (newPassword !== confirmPassword) {
     throw new ApiError(400, "Passwords do not match");
   }
+  console.log(currentPassword, newPassword, confirmPassword);
 
   const isMatch = await comparePassword(currentPassword, user.password);
   if (!isMatch) {
