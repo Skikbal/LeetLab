@@ -15,7 +15,10 @@ const metaMap = {
 };
 const OnboardLayout = ({ children }) => {
   const location = useLocation();
-  const meta = metaMap[location.pathname];
+  const meta = metaMap[location.pathname] || {
+    title: "Welcome",
+    description: "Get started",
+  };
   return (
     <div className="h-screen grid lg:grid-cols-2 bg-[#0d1117]">
       <div className="bg-[#0d1117] flex flex-col justify-center items-center">

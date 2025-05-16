@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
-import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
 const Login = () => {

@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/Axios.js";
 import toast from "react-hot-toast";
 import { persist } from "zustand/middleware";
 
+
 export const useAuthStore = create(
   persist(
     (set) => ({
@@ -65,6 +66,20 @@ export const useAuthStore = create(
         } catch (error) {
           console.log("Error logging out: ", error);
           set({ authUser: null });
+          toast.error(error.response.data.message);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      forgotPassword: async (data,navigate) => {
+        set({ isLoading: true });
+        try {
+          const res = await axiosInstance.post("/auth/forgot-password", data);
+          toast.success(res.data.message);
+          navigate('/login')
+        } catch (error) {
+          console.log(error);
           toast.error(error.response.data.message);
         } finally {
           set({ isLoading: false });

@@ -1,6 +1,5 @@
-import { Signup, Login, Dashboard } from "../pages/index.js";
+import { Signup, Login, Dashboard, Forgotpassword } from "../pages/index.js";
 import { Routes, Route } from "react-router-dom";
-import OnboardLayout from "../layout/OnboardLayout.jsx";
 import ProtectedRoutes from "./protectedRoutes.jsx";
 import GuestGuard from "./GuestGuard.jsx";
 const AppRoutes = () => {
@@ -9,6 +8,7 @@ const AppRoutes = () => {
       <Route element={<GuestGuard />}>
         <Route path="/login" index element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<Forgotpassword />} />
       </Route>
       //ProtectedRoutes
       <Route element={<ProtectedRoutes />}>
