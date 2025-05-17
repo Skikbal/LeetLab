@@ -13,7 +13,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div className="navbar bg-zinc-900 shadow-sm justify-between">
+    <div className="navbar flex bg-base-100 shadow-sm justify-between">
       <div className="flex">
         <a className="btn btn-ghost text-xl">daisyUI</a>
       </div>
@@ -109,6 +109,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

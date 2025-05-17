@@ -69,4 +69,4 @@ const ProblemSchema = z.object({
   }),
 });
 
-export { SignupSchema, LoginSchema };
+export { SignupSchema, LoginSchema,ProblemSchema };
