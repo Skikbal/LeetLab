@@ -17,9 +17,8 @@ import {
   Download,
   Car,
 } from "lucide-react";
-import SampleProblem from "./SampleProblem.jsx";
-import Card from "../cards/Card.jsx";
-import Editor from "@monaco-editor/react";
+import SampleProblem from "../sample/SampleProblem.jsx";
+
 const CreateProblemForm = () => {
   const {
     register,
@@ -41,8 +40,8 @@ const CreateProblemForm = () => {
     console.log(data);
   };
   return (
-    <div className="container flex">
-      <Cards flex="2">
+    <div className="flex flex-wrap">
+      <Cards className="w-full sm:w-full md:w-full lg:w-2/3 xl:w-3/5 2xl:w-1/2">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
           <h2 className="card-title text-2xl md:text-xl flex items-center gap-3">
             <SquarePen className="w-6 h-6 md:w-8 md:h-8 text-primary" />
@@ -469,7 +468,9 @@ const CreateProblemForm = () => {
           </div>
         </form>
       </Cards>
-      <SampleProblem />
+      <Cards className="hidden md:block md:w-full lg:w-1/3 xl:w-2/5">
+        <SampleProblem />
+      </Cards>
     </div>
   );
 };

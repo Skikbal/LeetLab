@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   sampleDPProblem,
   sampleStringProblem,
-} from "../components/problem/sampleData";
+} from "../components/sample/sampleData.js";
 export const useSampleData = ({ sampleType = "DP" }) => {
   const [sampleData, setSampleData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
