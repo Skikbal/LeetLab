@@ -42,7 +42,7 @@ const sampleStringProblem = {
       explanation: '"amanaplanacanalpanama" is a palindrome.',
     },
   },
-  codeSnippets: {
+  codesnippets: {
     JAVASCRIPT: `/**
      * @param {string} s
      * @return {boolean}
@@ -244,7 +244,7 @@ const sampleDPProblem = {
         "There are five ways to climb to the top:\n1. 1 step + 1 step + 1 step + 1 step\n2. 1 step + 1 step + 2 steps\n3. 1 step + 2 steps + 1 step\n4. 2 steps + 1 step + 1 step\n5. 2 steps + 2 steps",
     },
   },
-  codeSnippets: {
+  codesnippets: {
     JAVASCRIPT: `/**
   * @param {number} n
   * @return {number}

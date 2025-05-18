@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { sampleDPProblem, sampleStringProblem } from "./sampleData.js";
 import Card from "../cards/Card.jsx";
+import Editor from "@monaco-editor/react";
 const CreateProblemForm = () => {
   const {
     register,
@@ -37,8 +38,8 @@ const CreateProblemForm = () => {
   // });
   const [sampleType, setSampleType] = useState("DP");
   const [sampleData, setSampleData] = useState({});
-  const loadSampleData = async() => {
-    const sample =  sampleType === "DP" ? sampleDPProblem : sampleStringProblem;
+  const loadSampleData = async () => {
+    const sample = sampleType === "DP" ? sampleDPProblem : sampleStringProblem;
     setSampleData(sample);
     console.log(sample);
   };
@@ -548,8 +549,10 @@ const CreateProblemForm = () => {
                 </h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-                {sampleData?.tags?.map((tag,index) => (
-                  <div className="badge badge-md badge-primary" key={index}>{tag}</div>
+                {sampleData?.tags?.map((tag, index) => (
+                  <div className="badge badge-md badge-primary" key={index}>
+                    {tag}
+                  </div>
                 ))}
               </div>
             </div>
@@ -597,13 +600,6 @@ const CreateProblemForm = () => {
                   </div>
                 ))}
               </div>
-              {errors.testcases && !Array.isArray(errors.testcases) && (
-                <div className="mt-2">
-                  <span className="text-error text-sm">
-                    {errors.testcases.message}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Code Editor Sections */}
@@ -626,35 +622,22 @@ const CreateProblemForm = () => {
                           Starter Code Template
                         </h4>
                         <div className="border rounded-md overflow-hidden">
-                          {/* <Controller
-                            name={`codeSnippets.${language}`}
-                            // control={control}
-                            render={({ field }) => (
-                              <Editor
-                                height="300px"
-                                language={language.toLowerCase()}
-                                theme="vs-dark"
-                                value={field.value}
-                                onChange={field.onChange}
-                                options={{
-                                  minimap: { enabled: false },
-                                  fontSize: 14,
-                                  lineNumbers: "on",
-                                  roundedSelection: false,
-                                  scrollBeyondLastLine: false,
-                                  automaticLayout: true,
-                                }}
-                              />
-                            )}
-                          /> */}
+                          <Editor
+                            height="300px"
+                            language={language.toLowerCase()}
+                            theme="vs-dark"
+                            value={sampleData?.codesnippets?.[language]}
+                            options={{
+                              readOnly: true,
+                              minimap: { enabled: false },
+                              fontSize: 12,
+                              lineNumbers: "on",
+                              roundedSelection: false,
+                              scrollBeyondLastLine: false,
+                              automaticLayout: true,
+                            }}
+                          />
                         </div>
-                        {errors.codeSnippets?.[language] && (
-                          <div className="mt-2">
-                            <span className="text-error text-sm">
-                              {errors.codeSnippets[language].message}
-                            </span>
-                          </div>
-                        )}
                       </div>
                     </div>
 
@@ -666,35 +649,22 @@ const CreateProblemForm = () => {
                           Reference Solution
                         </h4>
                         <div className="border rounded-md overflow-hidden">
-                          {/* <Controller
-                            name={`referenceSolutions.${language}`}
-                            // control={control}
-                            render={({ field }) => (
-                              <Editor
-                                height="300px"
-                                language={language.toLowerCase()}
-                                theme="vs-dark"
-                                value={field.value}
-                                onChange={field.onChange}
-                                options={{
-                                  minimap: { enabled: false },
-                                  fontSize: 14,
-                                  lineNumbers: "on",
-                                  roundedSelection: false,
-                                  scrollBeyondLastLine: false,
-                                  automaticLayout: true,
-                                }}
-                              />
-                            )}
-                          /> */}
+                          <Editor
+                            height="300px"
+                            language={language.toLowerCase()}
+                            theme="vs-dark"
+                            value={sampleData?.referenceSolutions?.[language]}
+                            options={{
+                              readOnly: true,
+                              minimap: { enabled: false },
+                              fontSize: 12,
+                              lineNumbers: "on",
+                              roundedSelection: false,
+                              scrollBeyondLastLine: false,
+                              automaticLayout: true,
+                            }}
+                          />
                         </div>
-                        {errors.referenceSolutions?.[language] && (
-                          <div className="mt-2">
-                            <span className="text-error text-sm">
-                              {errors.referenceSolutions[language].message}
-                            </span>
-                          </div>
-                        )}
                       </div>
                     </div>
 
@@ -706,23 +676,17 @@ const CreateProblemForm = () => {
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                           <div className="form-control">
-                            <label className="label">
-                              <span className="label-text font-medium">
+                            <label className="label mb-1">
+                              <span className="label-text font-medium text-base-content">
                                 Input
                               </span>
                             </label>
-                            <textarea
-                              className="textarea textarea-bordered min-h-20 w-full p-3 resize-y"
-                              {...register(`examples.${language}.input`)}
-                              placeholder="Example input"
-                            />
-                            {errors.examples?.[language]?.input && (
-                              <label className="label">
-                                <span className="label-text-alt text-error">
-                                  {errors.examples[language].input.message}
-                                </span>
-                              </label>
-                            )}
+                            <Card>
+                              {sampleData?.examples?.[language]?.input && (
+                                <p>{sampleData?.examples?.[language]?.input}</p>
+                              )}
+                            </Card>
+                            
                           </div>
                           <div className="form-control">
                             <label className="label">
