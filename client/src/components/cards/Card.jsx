@@ -1,10 +1,8 @@
 import React from "react";
 
-const Card = ({ title, children, className }) => {
+const Card = ({ title, children,className }) => {
   return (
-    <div
-      className={`card border border-base-200 bg-base-200 w-full rounded-sm ${className}`}
-    >
+    <div className={`card border border-base-200 bg-base-200 w-full rounded-sm ${className}`}>
       <div className="card-body px-4 py-2">
         {title ? <h2 className="card-title">{title}</h2> : null}
         {children}
