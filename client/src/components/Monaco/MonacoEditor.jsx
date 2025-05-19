@@ -2,9 +2,10 @@ import React from "react";
 import { Editor } from "@monaco-editor/react";
 const MonacoEditor = ({
   language,
-  sampleData,
+  value,
   readOnly,
   lineNumbers = "off",
+  onChange,
 }) => {
   return (
     <div className="relative border rounded-md overflow-hidden ">
@@ -12,7 +13,8 @@ const MonacoEditor = ({
         height="300px"
         language={language.toLowerCase()}
         theme="vs-dark"
-        value={sampleData?.codesnippets?.[language]}
+        value={value}
+        onChange={onChange}
         options={{
           readOnly: readOnly,
           minimap: { enabled: false },
@@ -23,7 +25,6 @@ const MonacoEditor = ({
           automaticLayout: true,
         }}
       />
-      <button className="absolute bg-black text-white">copy</button>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const Notfound = () => {
         <p className="text-lg my-4 md:text-xl text-center">
           The page you're searching for isn't available.{" "}
         </p>
-        <Link className="btn btn-success" to={"/"}>
+        <Link className="btn btn-success z-10" to={"/"}>
           Go home
         </Link>
       </div>

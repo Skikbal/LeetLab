@@ -106,7 +106,7 @@ const sampleStringProblem = {
   }
   `,
   },
-  referenceSolutions: {
+  referencesolutions: {
     JAVASCRIPT: `/**
      * @param {string} s
      * @return {boolean}
@@ -307,7 +307,7 @@ const sampleDPProblem = {
     }
   }`,
   },
-  referenceSolutions: {
+  referencesolutions: {
     JAVASCRIPT: `/**
   * @param {number} n
   * @return {number}
