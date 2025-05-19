@@ -29,30 +29,30 @@ const Signup = () => {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" bg-zinc-950 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-zinc-800"
+        className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"
       >
-        <div className="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
+        <div className="rounded-t-2xl px-6 py-4 shadow-lg ">
           <h2 className="text-xl font-semibold text-white text-center">
             Code Smarter with CodeZero
           </h2>
-          <p className="text-sm text-zinc-400 text-center">
+          <p className="text-sm text-accent text-center">
             Create your account and start solving, learning, and improving.
           </p>
         </div>
         <div className="p-6 space-y-2">
           <div className="form-control">
-            <label className="label pb-1" htmlFor="name">
-              <span className="label-text">Name</span>
+            <label className="label mb-1" htmlFor="name">
+              <span className="label-text text-base-content">Name</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Code className="h-5 w-5 text-base-content/40" />
+                <Code className="h-5 w-5 text-accent" />
               </div>
               <input
                 id="name"
                 type="text"
                 {...register("name")}
-                className={` w-full bg-zinc-900 border border-zinc-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 pl-10 ${
+                className={` w-full bg-base-200  text-white rounded px-4 py-2  pl-10 ${
                   errors.name ? "input-error" : ""
                 }`}
                 placeholder="john_doe"
@@ -63,18 +63,18 @@ const Signup = () => {
             )}
           </div>
           <div className="form-control">
-            <label className="label" htmlFor="email">
-              <span className="label-text">Email</span>
+            <label className="label mb-1" htmlFor="email">
+              <span className="label-text text-base-content">Email</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-base-content/40" />
+                <Mail className="h-5 w-5 text-accent" />
               </div>
               <input
                 id="email"
                 type="text"
                 {...register("email")}
-                className={` w-full bg-zinc-900 border border-zinc-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 pl-10 ${
+                className={` w-full bg-base-200  text-white rounded px-4 py-2  pl-10  ${
                   errors.email ? "input-error" : ""
                 }`}
                 placeholder="john_doe@example.com"
@@ -87,18 +87,18 @@ const Signup = () => {
             )}
           </div>
           <div className="form-control">
-            <label className="label pb-1" htmlFor="password">
-              <span className="label-text">Password</span>
+            <label className="label mb-1" htmlFor="password">
+              <span className="label-text text-base-content">Password</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-base-content/40" />
+                <Lock className="h-5 w-5 text-accent" />
               </div>
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className={` w-full bg-zinc-900 border border-zinc-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 pl-10 ${
+                className={` w-full bg-base-200  text-white rounded px-4 py-2  pl-10  ${
                   errors.password ? "input-error" : ""
                 }`}
                 placeholder="••••••••"
@@ -109,9 +109,9 @@ const Signup = () => {
                 className="cursor-pointer absolute  inset-y-0 right-0 pr-3 flex items-center"
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-base-content/40" />
+                  <EyeOff className="h-5 w-5 text-accent" />
                 ) : (
-                  <Eye className="h-5 w-5 text-base-content/40" />
+                  <Eye className="h-5 w-5 text-accent" />
                 )}
               </button>
             </div>

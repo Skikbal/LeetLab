@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import { Circle, CircleHelp, Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
@@ -26,20 +26,20 @@ const Login = () => {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" bg-zinc-950 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-zinc-800"
+        className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"
       >
         <div className="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
           <h2 className="text-xl font-semibold text-white text-center">
             Welcome Back to CodeZero
           </h2>
-          <p className="text-sm text-zinc-400 text-center">
+          <p className="text-sm text-accent text-center">
             Your journey to clean code and zero noise begins here.
           </p>
         </div>
         <div className="p-6 space-y-2">
           <div className="form-control">
-            <label className="label" htmlFor="email">
-              <span className="label-text">Email</span>
+            <label className="label mb-1" htmlFor="email">
+              <span className="label-text text-base-content">Email</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -49,7 +49,7 @@ const Login = () => {
                 id="email"
                 type="text"
                 {...register("email")}
-                className={` w-full bg-zinc-900 border border-zinc-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 pl-10 ${
+                className={`  w-full bg-base-200  text-white rounded px-4 py-2  pl-10 ${
                   errors.email ? "input-error" : ""
                 }`}
                 placeholder="john_doe@example.com"
@@ -62,8 +62,12 @@ const Login = () => {
             )}
           </div>
           <div className="form-control">
-            <label className="label pb-1" htmlFor="password">
-              <span className="label-text">Password</span>
+            <label
+              className="label pb-1 flex justify-between"
+              htmlFor="password"
+            >
+              <span className="label-text text-base-content">Password</span>{" "}
+              <Link to="/forgot-password" className="flex items-center justify-between">Forgot password <CircleHelp className="w-4 h-4 ml-1"/></Link>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -73,7 +77,7 @@ const Login = () => {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className={` w-full bg-zinc-900 border border-zinc-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 pl-10 ${
+                className={` w-full bg-base-200  text-white rounded px-4 py-2  pl-10 ${
                   errors.password ? "input-error" : ""
                 }`}
                 placeholder="••••••••"
@@ -84,9 +88,9 @@ const Login = () => {
                 className="cursor-pointer absolute  inset-y-0 right-0 pr-3 flex items-center"
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-base-content/40" />
+                  <EyeOff className="h-5 w-5 text-accent" />
                 ) : (
-                  <Eye className="h-5 w-5 text-base-content/40" />
+                  <Eye className="h-5 w-5 text-accent" />
                 )}
               </button>
             </div>

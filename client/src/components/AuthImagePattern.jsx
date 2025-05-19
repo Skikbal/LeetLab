@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Code, Terminal, FileCode, Braces } from "lucide-react";
+import { Code, Terminal, FileCode, Braces,TextCursor } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -67,7 +67,7 @@ const AuthImagePattern = ({ title, subtitle }) => {
   return (
     <div className="hidden lg:flex flex-col items-center justify-center bg-black text-white p-12 relative overflow-hidden border-l border-slate-900">
       {/* Animated code symbols in background */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 text-primary">
         <div className="absolute top-[10%] left-[15%] animate-pulse">
           <Braces size={40} />
         </div>
@@ -89,13 +89,13 @@ const AuthImagePattern = ({ title, subtitle }) => {
       </div>
       <div className="z-10 max-w-md flex flex-col items-center">
         {/* Code editor mockup */}
-        <div className="w-full bg-zinc-900 rounded-lg shadow-md shadow-zinc-900/40 mb-8 overflow-hidden ">
+        <div className="w-full bg-base-300 rounded-lg shadow-md shadow-zinc-900/40 mb-8 overflow-hidden ">
           {/* Editor header */}
-          <div className="bg-slate-800 px-4 py-2 flex items-center">
+          <div className="bg-base-200 px-4 py-2 flex items-center">
             <div className="flex space-x-2 mr-4">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <div className="w-3 h-3 rounded-full bg-secondary"></div>
+              <div className="w-3 h-3 rounded-full bg-primary"></div>
             </div>
             <div className="text-xs font-mono opacity-70">problem.js</div>
           </div>
@@ -115,7 +115,8 @@ const AuthImagePattern = ({ title, subtitle }) => {
             </SyntaxHighlighter>
 
             {/* Blinking cursor */}
-            <div className="absolute bottom-4 right-4 w-2 h-4 bg-white animate-blink"></div>
+            <div className="absolute bottom-4 right-4 w-0.5 h-4 bg-white animate-pulse delay-75">
+            </div>
           </div>
         </div>
       </div>

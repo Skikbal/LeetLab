@@ -7,7 +7,7 @@ const MonacoEditor = ({
   lineNumbers = "off",
 }) => {
   return (
-    <div className="border rounded-md overflow-hidden">
+    <div className="relative border rounded-md overflow-hidden ">
       <Editor
         height="300px"
         language={language.toLowerCase()}
@@ -23,6 +23,7 @@ const MonacoEditor = ({
           automaticLayout: true,
         }}
       />
+      <button className="absolute bg-black text-white">copy</button>
     </div>
   );
 };
