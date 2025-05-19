@@ -22,15 +22,15 @@ const SampleProblem = () => {
     return <Loader2 />;
   }
   return (
-    <div className="flex flex-col md:flex-col justify-between items-start md:items-center  ">
-      <div className="w-full flex justify-between pb-4 border-b mb-6 md:mb-8">
+    <div className="flex flex-col w-full">
+      <div className="w-full flex lg:flex-col lg:items-center lg:gap-4 xl:flex-row justify-between pb-4 border-b mb-6 md:mb-8">
         <h2 className="card-title text-xl md:text-base flex items-center gap-3">
           <ClipboardCheck className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
           Sample Problem
         </h2>
         <div className="join">
           <button
-            className={`btn xl:btn-sm join-item ${
+            className={`btn lg:btn-sm join-item ${
               sampleType === "DP" ? "btn-primary" : ""
             }`}
             onClick={() => setSampleType("DP")}
@@ -38,7 +38,7 @@ const SampleProblem = () => {
             DP Problem
           </button>
           <button
-            className={`btn xl:btn-sm join-item ${
+            className={`btn lg:btn-sm join-item ${
               sampleType === "STRING" ? "btn-primary" : ""
             }`}
             onClick={() => setSampleType("STRING")}
@@ -57,7 +57,7 @@ const SampleProblem = () => {
               </span>
             </label>
             <Card>
-              <p className="text-wrap">{sampleData?.title}</p>
+              <p className="text-wrap w-full">{sampleData?.title}</p>
             </Card>
           </div>
 
@@ -68,7 +68,7 @@ const SampleProblem = () => {
               </span>
             </label>
             <Card className="min-h-32">
-              <p className="text-wrap">{sampleData?.description}</p>
+              <p className="text-wrap w-full">{sampleData?.description}</p>
             </Card>
           </div>
 
@@ -78,13 +78,13 @@ const SampleProblem = () => {
             </span>
           </label>
           <Card>
-            <p className="text-wrap">{sampleData?.difficulty}</p>
+            <p className="text-wrap w-full">{sampleData?.difficulty}</p>
           </Card>
         </div>
 
         {/* Tags */}
         <SampleCardLayout icon={<BookOpen className="w-5 h-5" />} title="Tags">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid,cols-3 gap-3">
             {sampleData?.tags?.map((tag, index) => (
               <div className="badge badge-md  badge-primary" key={index}>
                 {tag}
@@ -107,7 +107,7 @@ const SampleProblem = () => {
                       Test Case #{index + 1}
                     </h4>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                     <div className="form-control">
                       <label className="label mb-1">
                         <span className="label-text font-medium text-base-content">

@@ -73,8 +73,8 @@ const [isLoading,setIsLoading]= useState(false)
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="form-control md:col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="form-control sm:col-span-2">
               <label className="label mb-1">
                 <span className="label-text text-base-content text-base font-semibold">
                   Title
@@ -95,7 +95,7 @@ const [isLoading,setIsLoading]= useState(false)
               )}
             </div>
 
-            <div className="form-control md:col-span-2">
+            <div className="form-control sm:col-span-2">
               <label className="label mb-1">
                 <span className="label-text text-base font-semibold text-base-content">
                   Description
@@ -115,14 +115,14 @@ const [isLoading,setIsLoading]= useState(false)
               )}
             </div>
 
-            <div className="form-control md:col-span-2 flex justify-between items-center">
+            <div className="form-control flex flex-col sm:flex-row sm:justify-between  sm:col-span-2">
               <label className="label mb-1">
                 <span className="label-text text-base text-base-content font-semibold">
                   Difficulty
                 </span>
               </label>
               <select
-                className="select select-ghost border border-accent text-base rounded bg-base-200"
+                className="w-full sm:w-[40%]  select select-ghost border border-accent text-base rounded bg-base-200"
                 {...register("difficulty")}
               >
                 <option value="EASY">Easy</option>
@@ -154,7 +154,7 @@ const [isLoading,setIsLoading]= useState(false)
                 <Plus className="w-4 h-4 mr-1" /> Add Tag
               </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {tagFields?.map((field, index) => (
                 <div key={field.id} className="flex gap-2 items-center">
                   <input
@@ -367,8 +367,8 @@ const [isLoading,setIsLoading]= useState(false)
             </div>
           </div>
 
-          <div className="card-actions justify-end pt-4">
-            <button type="submit" className="btn btn-md btn-primary gap-2">
+          <div className="card-actions justify-center md:justify-end pt-4">
+            <button type="submit" className="btn btn-md w-full md:w-auto btn-primary gap-2">
               {isLoading ? (
                   <span className="loading loading-spinner text-white"></span>
                 ) : (
@@ -381,7 +381,7 @@ const [isLoading,setIsLoading]= useState(false)
           </div>
         </form>
       </Cards>
-      <Cards className="hidden md:block md:w-full lg:w-1/3 xl:w-2/5">
+      <Cards className="hidden lg:block lg:w-1/3 xl:w-2/5 2xl:w-1/2">
         <SampleProblem />
       </Cards>
     </div>

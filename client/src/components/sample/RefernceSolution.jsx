@@ -9,7 +9,7 @@ const RefernceSolution = ({ children, language, errors }) => {
           <CheckCircle2 className="w-5 h-5 text-success" />
           Reference Solution
         </h4>
-        <div className="border rounded-md overflow-hidden">{children}</div>
+        <div className="w-full border rounded-md overflow-hidden">{children}</div>
         {errors?.referenceSolutions?.[language] && (
           <div className="mt-2">
             <span className="text-error text-sm">

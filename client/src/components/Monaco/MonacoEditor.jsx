@@ -8,7 +8,7 @@ const MonacoEditor = ({
   onChange,
 }) => {
   return (
-    <div className="relative border rounded-md overflow-hidden ">
+    <div className="relative w-full border rounded-md overflow-hidden ">
       <Editor
         height="300px"
         language={language.toLowerCase()}

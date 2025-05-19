@@ -8,7 +8,7 @@ const StarterCode = ({ children,errors,language }) => {
         <h4 className="font-semibold text-base md:text-lg xl:text-base mb-4">
           Starter Code Template
         </h4>
-        <div className="border rounded-md overflow-hidden">{children}</div>
+        <div className="w-full border rounded-md overflow-hidden">{children}</div>
         {errors?.codesnippets?.[language] && (
           <div className="mt-2">
             <span className="text-error text-sm">
