@@ -4,6 +4,7 @@ import ProtectedRoutes from "./protectedRoutes.jsx";
 import GuestGuard from "./GuestGuard.jsx";
 import AdminRoutes from "./AdminRoutes.jsx";
 import Problem from "../pages/problem/Problem.jsx";
+import Notfound from "../pages/404/Notfound.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -19,6 +20,7 @@ const AppRoutes = () => {
       <Route element={<AdminRoutes />}>
         <Route path="/add-problem" element={<Problem />} />
       </Route>
+      <Route path="*" element={<Notfound />} />
     </Routes>
   );
 };

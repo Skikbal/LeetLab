@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 const passwordValidation = z
   .string()
   .min(8, "Password must be at least 8 characters long")
@@ -20,6 +21,9 @@ const LoginSchema = z.object({
   password: passwordValidation,
 });
 
+const emailValidation = z.object({
+  email: z.string().email("Please enter a valid email"),
+});
 const ProblemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
   description: z
@@ -69,4 +73,4 @@ const ProblemSchema = z.object({
   }),
 });
 
-export { SignupSchema, LoginSchema,ProblemSchema };
+export { SignupSchema, LoginSchema, ProblemSchema, emailValidation };

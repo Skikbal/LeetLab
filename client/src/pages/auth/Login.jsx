@@ -29,7 +29,7 @@ const Login = () => {
         className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"
       >
         <div className="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
-          <h2 className="text-xl font-semibold text-white text-center">
+          <h2 className="text-xl font-semibold text-base-content text-center">
             Welcome Back to CodeZero
           </h2>
           <p className="text-sm text-accent text-center">
