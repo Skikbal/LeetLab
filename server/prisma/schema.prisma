@@ -64,16 +64,16 @@ model Problem {
   hints       String?
   editorial   String?
 
-  testcases        Json
-  codesnippets     Json
-  refrencesolution Json
-  isDeleted        Boolean         @default(false)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  testcases         Json
+  codesnippets      Json
+  referencesolution Json
+  isDeleted         Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
   //relations
-  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  submissions      Submission[]
-  problemSolvedBy  problemSolved[]
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submissions       Submission[]
+  problemSolvedBy   problemSolved[]
 }
 
 //submission

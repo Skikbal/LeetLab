@@ -4,9 +4,9 @@ import {
   poolBatchResult,
 } from "./judge0.service.js";
 import ApiError from "../utils/ApiError.js";
-const judge0Validator = async ({ testcases, refrencesolution }) => {
+const judge0Validator = async ({ testcases, referencesolution }) => {
   try {
-    for (const [language, solutionCode] of Object.entries(refrencesolution)) {
+    for (const [language, solutionCode] of Object.entries(referencesolution)) {
       const languageId = await getJudge0LanguageId(language);
       if (!languageId) {
         throw new ApiError(400, `${language} is not supported`);
@@ -20,6 +20,7 @@ const judge0Validator = async ({ testcases, refrencesolution }) => {
       }));
       // Submit the batch and get the tokens
       const submissionResult = await submitBatch(submission);
+
       //pool the results
       const tokens = submissionResult.map((result) => result.token);
       const results = await poolBatchResult(tokens);

@@ -10,12 +10,14 @@ import {
 } from "../controllers/problem.controller.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
 import isAdmin from "../middlewares/isAdmin.middleware.js";
+import { ProblemSchema } from "../validators/Problem.validators.js";
+import validation from "../middlewares/validation.middleware.js";
 const problemRoutes = Router();
 
 //admin routes
 problemRoutes
   .route("/create-problem")
-  .post(isAuth, isAdmin, createProblemHandler);
+  .post(validation(ProblemSchema), isAuth, isAdmin, createProblemHandler);
 problemRoutes
   .route("/update-problem/:id")
   .put(isAuth, isAdmin, updateProblemHandler);

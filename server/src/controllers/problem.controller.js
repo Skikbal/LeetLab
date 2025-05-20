@@ -18,7 +18,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     editorial,
     testcases,
     codesnippets,
-    refrencesolution,
+    referencesolution,
   } = req.body;
   const { id: userId, role: userRole } = req.user;
   //check user role again
@@ -26,8 +26,8 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     throw new ApiError(403, "You are not authorized to create a problem");
   }
 
-  //here we extracting language and code from refrencesolution
-  const result = await judge0Validator({ refrencesolution, testcases });
+  //here we extracting language and code from referencesolution
+  const result = await judge0Validator({ referencesolution, testcases });
   if (!result.success) {
     throw new ApiError(400, result.message);
   }
@@ -44,7 +44,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
       editorial,
       testcases,
       codesnippets,
-      refrencesolution,
+      referencesolution,
       userId,
     },
   });
@@ -137,7 +137,7 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     }
   }
 
-  const { codesnippets, refrencesolution, testcases } = req.body;
+  const { codesnippets, referencesolution, testcases } = req.body;
 
   //this will strip the extra spaces and new lines
   const normalizeCode = (code) => code.replace(/\s+/g, " ").trim();
@@ -156,23 +156,23 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
   } else {
     delete updateData.codesnippets;
   }
-  //check if refrencesolution are same or not
-  const refrencesolutionEquals =
-    Object.entries(refrencesolution).length ===
-      Object.entries(problem.refrencesolution).length &&
-    Object.entries(refrencesolution).every(
+  //check if referencesolution are same or not
+  const referencesolutionEquals =
+    Object.entries(referencesolution).length ===
+      Object.entries(problem.referencesolution).length &&
+    Object.entries(referencesolution).every(
       ([language, solution]) =>
-        Object.hasOwn(problem.refrencesolution, language) &&
-        solution === problem.refrencesolution[language],
+        Object.hasOwn(problem.referencesolution, language) &&
+        solution === problem.referencesolution[language],
     );
 
-  if (!refrencesolutionEquals) {
-    const result = await judge0Validator({ refrencesolution, testcases });
+  if (!referencesolutionEquals) {
+    const result = await judge0Validator({ referencesolution, testcases });
     if (result.success) {
-      updateData.refrencesolution = refrencesolution;
+      updateData.referencesolution = referencesolution;
     }
   } else {
-    delete updateData.refrencesolution;
+    delete updateData.referencesolution;
   }
 
   // donot db update if updateData is empty
