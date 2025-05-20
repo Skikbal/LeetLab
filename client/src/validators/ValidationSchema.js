@@ -66,7 +66,7 @@ const ProblemSchema = z.object({
     PYTHON: z.string().min(1, "Code snippet is required"),
     JAVA: z.string().min(1, "Code snippet is required"),
   }),
-  referencesolution: z.object({
+  referencesolutions: z.object({
     JAVASCRIPT: z.string().min(1, "Code snippet is required"),
     PYTHON: z.string().min(1, "Code snippet is required"),
     JAVA: z.string().min(1, "Code snippet is required"),

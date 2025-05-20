@@ -64,7 +64,7 @@ const CreateProblemForm = () => {
   };
   return (
     <div className="flex flex-wrap">
-      <Cards className="w-full sm:w-full md:w-full lg:w-2/3 xl:w-3/5 2xl:w-1/2">
+      <Cards className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-3/5 2xl:w-1/2">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
           <h2 className="card-title text-2xl md:text-base flex items-center gap-3">
             <SquarePen className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
@@ -105,9 +105,7 @@ const CreateProblemForm = () => {
                 className="w-full sm:w-[40%]  select select-ghost border border-accent text-base rounded bg-base-200 mb-2"
                 {...register("difficulty")}
               >
-                <option value="" >
-                  Select a value
-                </option>
+                <option value="">Select a value</option>
                 <option value="EASY">Easy</option>
                 <option value="MEDIUM">Medium</option>
                 <option value="HARD">Hard</option>
@@ -238,10 +236,11 @@ const CreateProblemForm = () => {
                   {/*codesnippets*/}
                   <StarterCode errors={errors} language={language}>
                     <Controller
-                      name={`codeSnippets.${language}`}
+                      name={`codesnippets.${language}`}
                       control={control}
                       render={({ field }) => (
                         <MonacoEditor
+                          value={field.value}
                           language={language}
                           readOnly={false}
                           lineNumbers="on"
@@ -262,6 +261,7 @@ const CreateProblemForm = () => {
                           readOnly={false}
                           lineNumbers="on"
                           onChange={field.onChange}
+                          value={field.value}
                         />
                       )}
                     />
@@ -348,7 +348,7 @@ const CreateProblemForm = () => {
           </div>
         </form>
       </Cards>
-      <Cards className="hidden lg:block lg:w-1/3 xl:w-2/5 2xl:w-1/2">
+      <Cards className="hidden lg:block lg:w-1/2 xl:w-2/5 2xl:w-1/2">
         <SampleProblem />
       </Cards>
     </div>

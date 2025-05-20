@@ -13,8 +13,8 @@ const RefernceSolution = ({ children, language, errors }) => {
         <div className="w-full border rounded-md overflow-hidden">
           {children}
         </div>
-        {errors?.referenceSolutions?.[language] && (
-          <ErrorSpan error={errors?.referenceSolutions?.[language]?.message} />
+        {errors?.referencesolutions?.[language] && (
+          <ErrorSpan error={errors?.referencesolutions?.[language]?.message} />
         )}
       </div>
     </div>
