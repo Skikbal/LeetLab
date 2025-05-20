@@ -1,6 +1,7 @@
 import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
+import ErrorSpan from "../form/ErrorSpan.jsx";
 const RefernceSolution = ({ children, language, errors }) => {
   return (
     <div className="card bg-base-100 shadow-md">
@@ -9,13 +10,11 @@ const RefernceSolution = ({ children, language, errors }) => {
           <CheckCircle2 className="w-5 h-5 text-success" />
           Reference Solution
         </h4>
-        <div className="w-full border rounded-md overflow-hidden">{children}</div>
+        <div className="w-full border rounded-md overflow-hidden">
+          {children}
+        </div>
         {errors?.referenceSolutions?.[language] && (
-          <div className="mt-2">
-            <span className="text-error text-sm">
-              {errors?.referenceSolutions[language].message}
-            </span>
-          </div>
+          <ErrorSpan error={errors?.referenceSolutions?.[language]?.message} />
         )}
       </div>
     </div>

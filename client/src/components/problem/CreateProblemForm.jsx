@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { ProblemSchema } from "../../validators/ValidationSchema.js";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +23,10 @@ import StarterCode from "../sample/StarterCode.jsx";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
 import RefernceSolution from "../sample/RefernceSolution.jsx";
 import ProblemExample from "./ProblemExample.jsx";
+import Label from "../form/Label.jsx";
+import Input from "../form/Input.jsx";
+import ErrorSpan from "../form/ErrorSpan.jsx";
+import TextArea from "../form/TextArea.jsx";
 
 const CreateProblemForm = () => {
   const {
@@ -32,11 +36,8 @@ const CreateProblemForm = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(ProblemSchema),
-    defaultValues: {
-      tags: ["Demo"],
-    },
   });
-const [isLoading,setIsLoading]= useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   //testcases
   const {
     fields: testCaseFields,
@@ -75,93 +76,68 @@ const [isLoading,setIsLoading]= useState(false)
           {/* Basic Information */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="form-control sm:col-span-2">
-              <label className="label mb-1">
-                <span className="label-text text-base-content text-base font-semibold">
-                  Title
-                </span>
-              </label>
-              <input
-                type="text"
-                className="w-full input-bordered rounded px-4 py-2 bg-base-200 border-1 border-accent"
-                {...register("title")}
-                placeholder="Enter problem title"
+              <Label children={"Title"} />
+              <Input
+                register={register}
+                name={"title"}
+                placeholder={"Enter problem title"}
+                type={"text"}
               />
-              {errors.title && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.title.message}
-                  </span>
-                </label>
-              )}
+              {errors.title && <ErrorSpan error={errors.title.message} />}
             </div>
 
             <div className="form-control sm:col-span-2">
-              <label className="label mb-1">
-                <span className="label-text text-base font-semibold text-base-content">
-                  Description
-                </span>
-              </label>
-              <textarea
-                className="rounded border border-accent bg-base-200 min-h-32 w-full text-base p-4 resize-y"
-                {...register("description")}
-                placeholder="Enter problem description"
+              <Label children={"Description"} />
+              <TextArea
+                register={register}
+                name={"description"}
+                placeholder={"Enter problem description"}
+                className={"min-h-32"}
               />
               {errors.description && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.description.message}
-                  </span>
-                </label>
+                <ErrorSpan error={errors.description.message} />
               )}
             </div>
 
-            <div className="form-control flex flex-col sm:flex-row sm:justify-between  sm:col-span-2">
-              <label className="label mb-1">
-                <span className="label-text text-base text-base-content font-semibold">
-                  Difficulty
-                </span>
-              </label>
+            <div className="form-control flex flex-col sm:flex-row sm:justify-between  sm:col-span-2 flex-wrap">
+              <Label children={"Difficulty"} />
               <select
-                className="w-full sm:w-[40%]  select select-ghost border border-accent text-base rounded bg-base-200"
+                className="w-full sm:w-[40%]  select select-ghost border border-accent text-base rounded bg-base-200 mb-2"
                 {...register("difficulty")}
               >
+                <option value="" >
+                  Select a value
+                </option>
                 <option value="EASY">Easy</option>
                 <option value="MEDIUM">Medium</option>
                 <option value="HARD">Hard</option>
               </select>
-              {errors.difficulty && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.difficulty.message}
-                  </span>
-                </label>
+              {errors?.difficulty && (
+                <ErrorSpan error={errors?.difficulty?.message} />
               )}
             </div>
           </div>
 
           {/* Tags */}
-          <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold flex items-center gap-2">
-                <BookOpen className="w-5 h-5" />
-                Tags
-              </h3>
-              <button
-                type="button"
-                className="btn btn-primary btn-sm"
-                onClick={() => appendTag("")}
-              >
-                <Plus className="w-4 h-4 mr-1" /> Add Tag
-              </button>
-            </div>
+          <SampleCardLayout
+            title={"Tags"}
+            icon={<BookOpen className="w-5 h-5" />}
+            button={true}
+            onClick={() => appendTag("")}
+            buttonTitle={
+              <>
+                <Plus className="w-4 h-4" /> Add Tags
+              </>
+            }
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {tagFields?.map((field, index) => (
                 <div key={field.id} className="flex gap-2 items-center">
-                  <input
-                    type="text"
-                    className="w-full border border-accent rounded px-4 py-2 bg-base-100 flex-1"
-                    {...register(`tags.${index}`)}
-                    placeholder="Enter tag"
+                  <Input
+                    register={register}
+                    name={`tags.${index}`}
+                    placeholder={"Enter tag"}
+                    type={"text"}
                   />
                   <button
                     type="button"
@@ -174,30 +150,21 @@ const [isLoading,setIsLoading]= useState(false)
                 </div>
               ))}
             </div>
-            {errors.tags && (
-              <div className="mt-2">
-                <span className="text-error text-sm">
-                  {errors.tags.message}
-                </span>
-              </div>
-            )}
-          </div>
+            {errors.tags && <ErrorSpan error={errors.tags.message} />}
+          </SampleCardLayout>
 
           {/* Test Cases */}
-          <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-base font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                Test Cases
-              </h3>
-              <button
-                type="button"
-                className="btn btn-primary btn-sm"
-                onClick={() => appendTestCase({ input: "", output: "" })}
-              >
+          <SampleCardLayout
+            icon={<CheckCircle2 className="w-5 h-5" />}
+            title={"Test Cases"}
+            button={true}
+            onClick={() => appendTestCase({ input: "", output: "" })}
+            buttonTitle={
+              <>
                 <Plus className="w-4 h-4 mr-1" /> Add Test Case
-              </button>
-            </div>
+              </>
+            }
+          >
             <div className="space-y-6">
               {testCaseFields.map((field, index) => (
                 <div key={field.id} className="card bg-base-100 shadow-md">
@@ -217,41 +184,32 @@ const [isLoading,setIsLoading]= useState(false)
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <div className="form-control">
-                        <label className="label mb-1">
-                          <span className="label-text font-medium text-base-content">
-                            Input
-                          </span>
-                        </label>
-                        <textarea
-                          className="border border-accent rounded bg-base-200 min-h-24 w-full p-3 resize-y"
-                          {...register(`testcases.${index}.input`)}
-                          placeholder="Enter test case input"
+                        <Label children={"Input"} />
+                        <TextArea
+                          register={register}
+                          name={`testcases.${index}.input`}
+                          placeholder={"Enter test case input"}
+                          className={"min-h-24"}
                         />
+
                         {errors.testcases?.[index]?.input && (
-                          <label className="label">
-                            <span className="label-text-alt text-error">
-                              {errors.testcases[index].input.message}
-                            </span>
-                          </label>
+                          <ErrorSpan
+                            error={errors.testcases[index].input.message}
+                          />
                         )}
                       </div>
                       <div className="form-control">
-                        <label className="label mb-1">
-                          <span className="label-text font-medium text-base-content">
-                            Expected Output
-                          </span>
-                        </label>
-                        <textarea
-                          className="border border-accent rounded bg-base-200 min-h-24 w-full p-3 resize-y"
-                          {...register(`testcases.${index}.output`)}
-                          placeholder="Enter expected output"
+                        <Label children={" Expected Output"} />
+                        <TextArea
+                          register={register}
+                          name={`testcases.${index}.output`}
+                          placeholder={"Enter expected output"}
+                          className={"min-h-24"}
                         />
                         {errors.testcases?.[index]?.output && (
-                          <label className="label">
-                            <span className="label-text-alt text-error">
-                              {errors.testcases[index].output.message}
-                            </span>
-                          </label>
+                          <ErrorSpan
+                            error={errors.testcases?.[index]?.output.message}
+                          />
                         )}
                       </div>
                     </div>
@@ -266,7 +224,7 @@ const [isLoading,setIsLoading]= useState(false)
                 </span>
               </div>
             )}
-          </div>
+          </SampleCardLayout>
 
           {/* Code Editor Sections */}
           <div className="space-y-8">
@@ -310,7 +268,11 @@ const [isLoading,setIsLoading]= useState(false)
                   </RefernceSolution>
 
                   {/* Examples */}
-                  <ProblemExample register={register} language={language} errors={errors}/>
+                  <ProblemExample
+                    register={register}
+                    language={language}
+                    errors={errors}
+                  />
                 </div>
               </SampleCardLayout>
             ))}
@@ -325,7 +287,9 @@ const [isLoading,setIsLoading]= useState(false)
             <div className="space-y-6">
               <div className="form-control">
                 <label className="label mb-1">
-                  <span className="label-text font-medium text-base-content">Constraints</span>
+                  <span className="label-text font-medium text-base-content">
+                    Constraints
+                  </span>
                 </label>
                 <textarea
                   className="border border-accent bg-base-100 rounded min-h-24 w-full p-3 resize-y"
@@ -368,15 +332,18 @@ const [isLoading,setIsLoading]= useState(false)
           </div>
 
           <div className="card-actions justify-center md:justify-end pt-4">
-            <button type="submit" className="btn btn-md w-full md:w-auto btn-primary gap-2">
+            <button
+              type="submit"
+              className="btn btn-md w-full md:w-auto btn-primary gap-2"
+            >
               {isLoading ? (
-                  <span className="loading loading-spinner text-white"></span>
-                ) : (
-                  <>
-                    <CheckCircle2 className="w-5 h-5" />
-                    Create Problem
-                  </>
-                )}
+                <span className="loading loading-spinner text-white"></span>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  Create Problem
+                </>
+              )}
             </button>
           </div>
         </form>

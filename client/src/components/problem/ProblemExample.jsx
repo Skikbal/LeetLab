@@ -1,4 +1,7 @@
 import React from "react";
+import Label from "../form/Label";
+import ErrorSpan from "../form/ErrorSpan";
+import TextArea from "../form/TextArea";
 
 const ProblemExample = ({ register, language, errors }) => {
   return (
@@ -7,47 +10,37 @@ const ProblemExample = ({ register, language, errors }) => {
         <h4 className="font-semibold text-base mb-4">Example</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="form-control">
-            <label className="label mb-1">
-              <span className="label-text font-medium text-base-content">Input</span>
-            </label>
-            <textarea
-              className="border border-accent bg-base-300 rounded min-h-20 w-full p-3 resize-y"
-              {...register(`examples.${language}.input`)}
-              placeholder="Example input"
+            <Label children="Input" />
+            <TextArea
+              register={register}
+              name={`examples.${language}.input`}
+              placeholder={"Example input"}
+              className={"min-h-20"}
             />
             {errors.examples?.[language]?.input && (
-              <label className="label">
-                <span className="label-text-alt text-error">
-                  {errors.examples[language].input.message}
-                </span>
-              </label>
+              <ErrorSpan error={errors.examples?.[language]?.input?.message} />
             )}
           </div>
           <div className="form-control">
-            <label className="label mb-1">
-              <span className="label-text font-medium text-base-content">Output</span>
-            </label>
-            <textarea
-              className="border border-accent rounded bg-base-300 min-h-20 w-full p-3 resize-y"
-              {...register(`examples.${language}.output`)}
-              placeholder="Example output"
+            <Label children="Output" />
+
+            <TextArea
+              register={register}
+              name={`examples.${language}.output`}
+              placeholder={"Example output"}
+              className={"min-h-20"}
             />
             {errors.examples?.[language]?.output && (
-              <label className="label">
-                <span className="label-text-alt text-error">
-                  {errors.examples[language].output.message}
-                </span>
-              </label>
+              <ErrorSpan error={errors.examples?.[language]?.output?.message} />
             )}
           </div>
           <div className="form-control md:col-span-2">
-            <label className="label mb-1">
-              <span className="label-text font-medium text-base-content">Explanation</span>
-            </label>
-            <textarea
-              className="border border-accent rounded bg-base-300 min-h-24 w-full p-3 resize-y"
-              {...register(`examples.${language}.explanation`)}
-              placeholder="Explain the example"
+            <Label children="Explanation" />
+            <TextArea
+              register={register}
+              name={`examples.${language}.explanation`}
+              placeholder={"Explain the example"}
+              className={"min-h-24"}
             />
           </div>
         </div>
