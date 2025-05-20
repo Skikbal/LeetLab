@@ -272,20 +272,22 @@ const sampleDPProblem = {
     def climbStairs(self, n: int) -> int:
         # Write your code here
         pass
-  
-  # Input parsing
-  if __name__ == "__main__":
+
+
+# Input parsing
+if __name__ == "__main__":
     import sys
-    
+
     # Parse input
     n = int(sys.stdin.readline().strip())
-    
+
     # Solve
     sol = Solution()
     result = sol.climbStairs(n)
-    
+
     # Print result
-    print(result)`,
+    print(result)
+`,
     JAVA: `import java.util.Scanner;
   
   class Main {
@@ -363,38 +365,40 @@ const sampleDPProblem = {
         # Base cases
         if n <= 2:
             return n
-        
+
         # Dynamic programming approach
         dp = [0] * (n + 1)
         dp[1] = 1
         dp[2] = 2
-        
+
         for i in range(3, n + 1):
             dp[i] = dp[i - 1] + dp[i - 2]
-        
+
         return dp[n]
-        
+
         # Alternative approach with O(1) space
         # a, b = 1, 2
-        # 
+        #
         # for i in range(3, n + 1):
         #     a, b = b, a + b
-        # 
+        #
         # return a if n == 1 else b
-  
-  # Input parsing
-  if __name__ == "__main__":
+
+
+# Input parsing
+if __name__ == "__main__":
     import sys
-    
+
     # Parse input
     n = int(sys.stdin.readline().strip())
-    
+
     # Solve
     sol = Solution()
     result = sol.climbStairs(n)
-    
+
     # Print result
-    print(result)`,
+    print(result)
+`,
     JAVA: `import java.util.Scanner;
   
   class Main {

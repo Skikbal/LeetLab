@@ -23,6 +23,9 @@ const MonacoEditor = ({
           roundedSelection: false,
           scrollBeyondLastLine: false,
           automaticLayout: true,
+          tabSize: 4,
+          insertSpaces: true,
+          detectIndentation: false,
         }}
       />
     </div>

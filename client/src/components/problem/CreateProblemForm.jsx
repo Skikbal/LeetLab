@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ProblemSchema } from "../../validators/ValidationSchema.js";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +27,10 @@ import Label from "../form/Label.jsx";
 import Input from "../form/Input.jsx";
 import ErrorSpan from "../form/ErrorSpan.jsx";
 import TextArea from "../form/TextArea.jsx";
-
+import { useProblemStore } from "../../store/useProblemStore.js";
+import { useNavigate } from "react-router-dom";
 const CreateProblemForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -37,13 +39,13 @@ const CreateProblemForm = () => {
   } = useForm({
     resolver: zodResolver(ProblemSchema),
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { createProblem, isLoading } = useProblemStore();
   //testcases
   const {
     fields: testCaseFields,
     append: appendTestCase,
     remove: removeTestCase,
-    replace: replacetestcases,
+    // replace: replacetestcases,
   } = useFieldArray({
     control,
     name: "testcases",
@@ -54,13 +56,17 @@ const CreateProblemForm = () => {
     fields: tagFields,
     append: appendTag,
     remove: removeTag,
-    replace: replaceTag,
+    // replace: replaceTag,
   } = useFieldArray({
     control,
     name: "tags",
   });
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await createProblem(data,navigate);
+    } catch (error) {
+      console.log("Error creating problem: ", error);
+    }
   };
   return (
     <div className="flex flex-wrap">
@@ -253,7 +259,7 @@ const CreateProblemForm = () => {
                   {/* Reference Solution */}
                   <RefernceSolution errors={errors} language={language}>
                     <Controller
-                      name={`referencesolutions.${language}`}
+                      name={`referencesolution.${language}`}
                       control={control}
                       render={({ field }) => (
                         <MonacoEditor

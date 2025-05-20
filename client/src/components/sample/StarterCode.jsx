@@ -1,7 +1,6 @@
 import React from "react";
 import ErrorSpan from "../form/ErrorSpan.jsx";
 const StarterCode = ({ children, errors, language }) => {
-  console.log(errors)
   return (
     <div className="card bg-base-100 shadow-md">
       <div className="card-body p-4 md:p-6">
