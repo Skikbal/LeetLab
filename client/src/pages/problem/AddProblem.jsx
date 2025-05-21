@@ -1,6 +1,6 @@
 import React from 'react'
 import CreateProblemForm from '../../components/problem/CreateProblemForm'
-const Problem = () => {
+const AddProblem = () => {
   return (
     <div>
       <CreateProblemForm />
@@ -8,4 +8,4 @@ const Problem = () => {
   )
 }
 
-export default Problem
+export default AddProblem
