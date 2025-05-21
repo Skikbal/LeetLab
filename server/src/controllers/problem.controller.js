@@ -6,7 +6,7 @@ import judge0Validator from "../services/judge0Validator.service.js";
 
 //create problem
 const createProblemHandler = AsyncHandler(async (req, res) => {
-  //get data from re body
+  // Get data from request body
   const {
     title,
     description,
@@ -21,22 +21,37 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     referencesolution,
   } = req.body;
   const { id: userId, role: userRole } = req.user;
-  //check user role again
+
+  // Check user role again
   if (userRole !== "ADMIN") {
     throw new ApiError(403, "You are not authorized to create a problem");
   }
 
-  //here we extracting language and code from referencesolution
+  // Here we're extracting language and code from referencesolution
   const result = await judge0Validator({ referencesolution, testcases });
   if (!result.success) {
     throw new ApiError(400, result.message);
   }
-  //here we will create the problem in our database
+
+  // Create or update tags and get their records
+  const tagRecords = await Promise.all(
+    tags.map(async (tag) => {
+      return await prisma.tag.upsert({
+        where: {
+          name: tag.toLowerCase(),
+        },
+        update: {},
+        create: {
+          name: tag.toLowerCase(),
+        },
+      });
+    }),
+  );
+  // Here we will create the problem in our database
   const problem = await prisma.problem.create({
     data: {
       title,
       description,
-      tags,
       difficulty,
       examples,
       constraints,
@@ -46,6 +61,19 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
       codesnippets,
       referencesolution,
       userId,
+      tags: {
+        connect: tagRecords.map((tag) => ({
+          id: tag.id,
+        })),
+      },
+    },
+    include: {
+      tags: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
 
@@ -60,14 +88,36 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
 //get all problems
 const getAllProblemsHandler = AsyncHandler(async (req, res) => {
-  const { search } = req.query;
+  const { search, tags } = req.query;
+  const tag = Array.isArray(tags)
+    ? tags
+    : typeof tags === "string"
+      ? [tags]
+      : [];
   const problems = await prisma.problem.findMany({
     where: {
-      isDeleted: false,
-      title: {
-        contains: search,
-        mode: "insensitive",
-      },
+      AND: [
+        {
+          isDeleted: false,
+        },
+        {
+          title: {
+            contains: search,
+            mode: "insensitive",
+          },
+        },
+        {
+          ...(tag.length > 0 && {
+            tags: {
+              some: {
+                name: {
+                  in: tag,
+                },
+              },
+            },
+          }),
+        },
+      ],
     },
     select: {
       id: true,
@@ -279,6 +329,16 @@ const bulkDeleteProblemHandler = AsyncHandler(async (req, res) => {
 });
 const getSolvedProblemsHandler = AsyncHandler(async (req, res) => {});
 
+const getAllTagsHandler = AsyncHandler(async (req, res, next) => {
+  const tags = await prisma.tag.findMany();
+  if (!tags) {
+    throw new ApiError(404, "Tags not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Tags fetched successfully", tags));
+});
+
 export {
   createProblemHandler,
   getAllProblemsHandler,
@@ -287,4 +347,5 @@ export {
   deleteProblemHandler,
   bulkDeleteProblemHandler,
   getSolvedProblemsHandler,
+  getAllTagsHandler,
 };

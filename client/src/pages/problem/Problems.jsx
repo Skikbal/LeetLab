@@ -5,28 +5,46 @@ import {
   Funnel,
   ListFilter,
   Pencil,
+  Tag,
   Tags,
   Trash,
+  X,
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchBar from "../../components/form/SearchBar";
 import { useDebounce } from "../../hooks/useDebounceHook";
+import TagsDown from "../../components/Dropdown/TagsDown";
 const Problems = () => {
-  const { isLoading, getAllProblems, problems } = useProblemStore();
-  const [searchQuery, setSearchQuery] = useState('');
+  const { isLoading, getAllProblems, problems, tags, getAllTags } =
+    useProblemStore();
+  const [searchQuery, setSearchQuery] = useState("");
   const debounceQuery = useDebounce(searchQuery, 1000);
+  const [selectedTags, setSelectedTags] = useState([]);
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        await getAllTags();
+      } catch (error) {
+        console.log("Error getting all tags: ", error);
+      }
+    };
+    fetchTags();
+  }, [getAllTags]);
 
   useEffect(() => {
     const fecthProblems = async () => {
       try {
-        await getAllProblems({search:debounceQuery});
+        const queryTags = selectedTags
+          .map((tag) => `tags=${encodeURIComponent(tag)}`)
+          .join("&");
+        await getAllProblems({ search: debounceQuery, tags: queryTags });
       } catch (error) {
         console.log("Error getting all problems: ", error);
       }
     };
     fecthProblems();
-  }, [debounceQuery, getAllProblems]);
+  }, [debounceQuery, getAllProblems, selectedTags]);
   if (isLoading && problems.length === 0) return <div>Loading...</div>;
   return (
     <div className="bg-base-200">
@@ -51,26 +69,13 @@ const Problems = () => {
                 },
               },
             ]}
-            name={"Status"}
+            name={"Difficulty"}
             icon={<Funnel className="h-5 w-5" />}
           />
-          <Dropdown
-            list={[
-              {
-                name: "Tags",
-                onClick: () => {
-                  "";
-                },
-              },
-              {
-                name: "Difficulty",
-                onClick: () => {
-                  "";
-                },
-              },
-            ]}
-            name={"Status"}
-            icon={<Tags className="h-5 w-5" />}
+          <TagsDown
+            tags={tags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
           />
           <Dropdown
             list={[
@@ -124,10 +129,12 @@ const Problems = () => {
                       {problem.title}
                     </p>
                   </td>
-                  <td className="w-2/10">
-                    <div className=" badge badge-soft badge-warning">
-                      {problem.tags}
-                    </div>
+                  <td className="w-2/10 flex gap-2">
+                    {problem.tags.map((tag) => {
+                      return (
+                        <div className=" badge badge-soft badge-warning">{tag.name}</div>
+                      );
+                    })}
                   </td>
                   <td className="w-1/10">
                     <div

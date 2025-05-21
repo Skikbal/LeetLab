@@ -148,7 +148,6 @@ exports.Prisma.ProblemScalarFieldEnum = {
   title: 'title',
   description: 'description',
   difficulty: 'difficulty',
-  tags: 'tags',
   userId: 'userId',
   examples: 'examples',
   constraints: 'constraints',
@@ -158,6 +157,13 @@ exports.Prisma.ProblemScalarFieldEnum = {
   codesnippets: 'codesnippets',
   referencesolution: 'referencesolution',
   isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -241,6 +247,7 @@ exports.Difficulty = exports.$Enums.Difficulty = {
 exports.Prisma.ModelName = {
   User: 'User',
   Problem: 'Problem',
+  Tag: 'Tag',
   Submission: 'Submission',
   TestCasesResult: 'TestCasesResult',
   problemSolved: 'problemSolved'

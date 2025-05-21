@@ -24,7 +24,7 @@ const judge0Validator = async ({ testcases, referencesolution }) => {
       //pool the results
       const tokens = submissionResult.map((result) => result.token);
       const results = await poolBatchResult(tokens);
-
+      console.log(results);
       // Check if all the testcases passed
       for (let i = 0; i < results.length; i++) {
         if (results[i].status.id !== 3) {
