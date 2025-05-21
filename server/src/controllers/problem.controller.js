@@ -60,9 +60,14 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
 //get all problems
 const getAllProblemsHandler = AsyncHandler(async (req, res) => {
+  const { search } = req.query;
   const problems = await prisma.problem.findMany({
     where: {
       isDeleted: false,
+      title: {
+        contains: search,
+        mode: "insensitive",
+      },
     },
     select: {
       id: true,
@@ -227,7 +232,7 @@ const deleteProblemHandler = AsyncHandler(async (req, res) => {
       isDeleted: true,
     },
   });
-  
+
   if (!deletedProblem) {
     throw new ApiError(404, "Error deleting problem");
   }
