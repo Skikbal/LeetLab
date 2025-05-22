@@ -55,9 +55,8 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
     const shouldReactive =
       existingUser.isDeActivated === true &&
       new Date() <= new Date(existingUser.deletionRequestedAt);
-    console.log(shouldReactive);
 
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: {
         id: existingUser.id,
       },
@@ -71,13 +70,24 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
           deletionRequestedAt: null,
         }),
       },
+      select: {
+        name: true,
+        email: true,
+        avatar: true,
+        role: true,
+        isVerified: true,
+      },
     });
 
     return res
       .status(200)
       .cookie("accessToken", accessToken, cookiesOptions)
-      .cookie("refreshToken", refreshToken, cookiesOptions)
-      .json(new ApiResponse(200, "User logged in successfully"));
+      .cookie("refreshToken", refreshToken, cookiesOptions).send(`
+  <script>
+   window.opener?.postMessage({ type: 'oauth-success' }, '*');
+    window.close();
+  </script>
+`);
   }
 
   const user = await prisma.user.create({
@@ -108,8 +118,12 @@ const loginWithOAuth2UserHandler = AsyncHandler(async (req, res) => {
   return res
     .status(201)
     .cookie("accessToken", accessToken, cookiesOptions)
-    .cookie("refreshToken", refreshToken, cookiesOptions)
-    .json(new ApiResponse(200, "User registered successfully", accessToken));
+    .cookie("refreshToken", refreshToken, cookiesOptions).send(`
+  <script>
+   window.opener?.postMessage({ type: 'oauth-success' }, '*');
+    window.close();
+  </script>
+`);
 });
 
 //register user handler
@@ -159,6 +173,8 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
       id: true,
       name: true,
       email: true,
+      role: true,
+      avatar: true,
     },
   });
 

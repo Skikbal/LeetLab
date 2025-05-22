@@ -35,12 +35,13 @@ router.route("/google").get(
     prompt: "consent",
   }),
 );
-router
-  .route("/google/callback")
-  .get(
-    passport.authenticate("google", { session: false }),
-    loginWithOAuth2UserHandler,
-  );
+router.route("/google/callback").get(
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false,
+  }),
+  loginWithOAuth2UserHandler,
+);
 
 //github auth
 router.route("/github").get(
@@ -51,7 +52,10 @@ router.route("/github").get(
 router
   .route("/github/callback")
   .get(
-    passport.authenticate("github", { session: false }),
+    passport.authenticate("github", {
+      failureRedirect: "/login",
+      session: false,
+    }),
     loginWithOAuth2UserHandler,
   );
 

@@ -88,7 +88,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
 //get all problems
 const getAllProblemsHandler = AsyncHandler(async (req, res) => {
-  const { search, tags } = req.query;
+  const { search, tags, difficulty } = req.query;
   const tag = Array.isArray(tags)
     ? tags
     : typeof tags === "string"
@@ -114,6 +114,13 @@ const getAllProblemsHandler = AsyncHandler(async (req, res) => {
                   in: tag,
                 },
               },
+            },
+          }),
+        },
+        {
+          ...(difficulty && {
+            difficulty: {
+              equals: difficulty,
             },
           }),
         },
