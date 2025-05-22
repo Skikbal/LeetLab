@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Circle, CircleHelp, Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import {
+  Circle,
+  CircleHelp,
+  Code,
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+} from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
+import GithubButton from "../../components/Buttons/GithubButton.jsx";
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser, isLoading } = useAuthStore();
   const {
@@ -21,6 +33,21 @@ const Login = () => {
       console.log("Error logging in: ", error);
     }
   };
+
+  useEffect(() => {
+    function handleMessage(event) {
+      //when message comes from the popup
+      if (event.data?.type === "oauth-success") {
+        window.location.reload();
+      }
+    }
+    //listinig when message comes
+    window.addEventListener("message", handleMessage);
+    //clean up on unmount
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  });
 
   return (
     <>
@@ -67,7 +94,12 @@ const Login = () => {
               htmlFor="password"
             >
               <span className="label-text text-base-content">Password</span>{" "}
-              <Link to="/forgot-password" className="flex items-center justify-between">Forgot password <CircleHelp className="w-4 h-4 ml-1"/></Link>
+              <Link
+                to="/forgot-password"
+                className="flex items-center justify-between"
+              >
+                Forgot password <CircleHelp className="w-4 h-4 ml-1" />
+              </Link>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -115,6 +147,15 @@ const Login = () => {
               "Signin"
             )}
           </button>
+          <div class="flex items-center">
+            <div class="flex-1 border-t border-accent"></div>
+            <div class="px-4 text-base-content text-sm">or</div>
+            <div class="flex-1 border-t border-accent"></div>
+          </div>
+          <div className="flex gap-3 flex-wrap">
+            <GoogleLoginButton />
+            <GithubButton navigate={navigate} />
+          </div>
         </div>
       </form>
       {/* footer */}

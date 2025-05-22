@@ -3,7 +3,7 @@ import { useAuthStore } from "../../store/useAuthStore.js";
 import { Code, User, Settings, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 const Navbar = () => {
-  const { logoutUser, authUser,isCheckingAuth } = useAuthStore();
+  const { logoutUser, authUser, isCheckingAuth } = useAuthStore();
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -11,14 +11,14 @@ const Navbar = () => {
       console.log("Error loggingout: ", error);
     }
   };
-  if(isCheckingAuth) return <div>loading...</div>
+  if (isCheckingAuth) return <div>loading...</div>;
   return (
     <div className="navbar flex bg-base-100 shadow-sm justify-between">
       <div className="flex">
         <a className="btn btn-ghost text-xl">daisyUI</a>
       </div>
       <div className="flex-1">
-        <h1>Home</h1>
+        <Link to="/problems">Problems</Link>
       </div>
       <div className="flex gap-2">
         <button className="btn btn-ghost btn-circle">
@@ -109,7 +109,6 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-    
   );
 };
 
