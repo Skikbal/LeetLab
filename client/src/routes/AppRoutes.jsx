@@ -20,7 +20,6 @@ const AppRoutes = () => {
         <Route path="/problems" element={<Problems />} />
         <Route element={<AdminRoutes />}>
           <Route path="/add-problem" element={<AddProblem />} />
-          {/* <Route path="/problems" element={<Problems />} /> */}
         </Route>
       </Route>
       <Route path="*" element={<Notfound />} />

@@ -3,8 +3,7 @@ import { useAuthStore } from "../../store/useAuthStore.js";
 import { Code, User, Settings, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 const Navbar = () => {
-  const { logoutUser, authUser } = useAuthStore();
-  const role = authUser.role;
+  const { logoutUser, authUser,isCheckingAuth } = useAuthStore();
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -12,6 +11,7 @@ const Navbar = () => {
       console.log("Error loggingout: ", error);
     }
   };
+  if(isCheckingAuth) return <div>loading...</div>
   return (
     <div className="navbar flex bg-base-100 shadow-sm justify-between">
       <div className="flex">
@@ -85,7 +85,7 @@ const Navbar = () => {
                 Profile
               </a>
             </li>
-            {role === "ADMIN" && (
+            {authUser.role === "ADMIN" && (
               <li>
                 <Link to={"/add-problem"}>
                   <Code className="h-5 w-5 text-primary" />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useProblemStore } from "../../store/useProblemStore";
 import {
   BookmarkCheck,
+  CloudCog,
   Funnel,
   ListFilter,
   Pencil,
@@ -20,6 +21,7 @@ const Problems = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debounceQuery = useDebounce(searchQuery, 1000);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [difficulty, setDifficulty] = useState("");
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -38,13 +40,13 @@ const Problems = () => {
         const queryTags = selectedTags
           .map((tag) => `tags=${encodeURIComponent(tag)}`)
           .join("&");
-        await getAllProblems({ search: debounceQuery, tags: queryTags });
+        await getAllProblems({ search: debounceQuery, tags: queryTags,difficulty});
       } catch (error) {
         console.log("Error getting all problems: ", error);
       }
     };
     fecthProblems();
-  }, [debounceQuery, getAllProblems, selectedTags]);
+  }, [debounceQuery, getAllProblems, selectedTags,difficulty]);
   if (isLoading && problems.length === 0) return <div>Loading...</div>;
   return (
     <div className="bg-base-200">
@@ -57,15 +59,21 @@ const Problems = () => {
           <Dropdown
             list={[
               {
-                name: "Tags",
+                name: "Easy",
                 onClick: () => {
-                  "";
+                  setDifficulty("EASY");
                 },
               },
               {
-                name: "Difficulty",
+                name: "Medium",
                 onClick: () => {
-                  "";
+                  setDifficulty("MEDIUM");
+                },
+              },
+              {
+                name: "Hard",
+                onClick: () => {
+                  setDifficulty("HARD");
                 },
               },
             ]}
@@ -129,10 +137,12 @@ const Problems = () => {
                       {problem.title}
                     </p>
                   </td>
-                  <td className="w-2/10 flex gap-2">
+                  <td className="w-2/10 gap-2 items-center">
                     {problem.tags.map((tag) => {
                       return (
-                        <div className=" badge badge-soft badge-warning">{tag.name}</div>
+                        <div className=" badge badge-soft badge-warning">
+                          {tag.name}
+                        </div>
                       );
                     })}
                   </td>

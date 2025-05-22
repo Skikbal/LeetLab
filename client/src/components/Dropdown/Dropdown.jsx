@@ -2,7 +2,7 @@ import React, { Children } from "react";
 
 const Dropdown = ({ list, icon, name }) => {
   return (
-    <div className="dropdown dropdown-hover dropdown-end">
+    <div className="dropdown dropdown-hover dropdown-start md:dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1 ">
         {icon}
         {name}

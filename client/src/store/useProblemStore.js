@@ -20,11 +20,11 @@ export const useProblemStore = create((set) => ({
     }
   },
 
-  getAllProblems: async ({ search, tags }) => {
+  getAllProblems: async ({ search, tags,difficulty }) => {
     set({ isLoading: true });
     try {
       const res = await axiosInstance.get(
-        `/problems/all-problems?search=${search}&${tags}`
+        `/problems/all-problems?search=${search}&${tags}&difficulty=${difficulty}`
       );
       console.log(res.data.data);
       toast.success(res.data.message);

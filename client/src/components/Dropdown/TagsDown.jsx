@@ -2,7 +2,7 @@ import React from "react";
 import { Tags } from "lucide-react";
 const TagsDown = ({tags,selectedTags,setSelectedTags}) => {
   return (
-    <div className="dropdown dropdown-hover dropdown-end">
+    <div className="dropdown dropdown-hover dropdown-center md:dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
         <Tags className="h-5 w-5" /> Tags
       </div>
