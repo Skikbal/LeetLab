@@ -25,7 +25,6 @@ const metaMap = {
 };
 const OnboardLayout = ({ children }) => {
   const location = useLocation();
-  console.log(location.pathname)
   const meta = metaMap[location.pathname] || {
     title: "Welcome",
     description: "Get started",

@@ -1,3 +1,4 @@
+import ApiError from "../utils/ApiError.js";
 const isVerified = async (req, res, next) => {
   const { isVerified } = req.user;
   if (!isVerified) {

@@ -138,10 +138,10 @@ const Signup = () => {
               "Sign Up"
             )}
           </button>
-          <div class="flex items-center py-3">
-            <div class="flex-1 border-t border-accent"></div>
-            <div class="px-4 text-base-content text-sm">Or Sign Up with</div>
-            <div class="flex-1 border-t border-accent"></div>
+          <div className="flex items-center py-3">
+            <div className="flex-1 border-t border-accent"></div>
+            <div className="px-4 text-base-content text-sm">Or Sign Up with</div>
+            <div className="flex-1 border-t border-accent"></div>
           </div>
           <div className="flex gap-3 flex-wrap sm:flex-nowrap">
             <GoogleLoginButton />

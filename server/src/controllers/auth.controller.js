@@ -25,6 +25,7 @@ import {
   genrateRandomToken,
 } from "../services/auth.service.js";
 import { rewardRateLimit } from "../middlewares/rate-limiters/index.js";
+import isVerified from "../middlewares/isUserVerified.middleware.js";
 
 //cookie option
 const cookiesOptions = {
@@ -315,6 +316,7 @@ const getUserProfileHandler = AsyncHandler(async (req, res) => {
       email: true,
       avatar: true,
       role: true,
+      isVerified: true,
     },
   });
 

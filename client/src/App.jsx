@@ -6,7 +6,7 @@ import AppRoutes from "./routes/AppRoutes.jsx";
 import { BounceLoader } from "react-spinners";
 
 const App = () => {
-  const { checkAuthUser, isCheckingAuth } = useAuthStore();
+  const { checkAuthUser, isCheckingAuth} = useAuthStore();
   // const override: CSSProperties = {
   //   display: "block",
   //   margin: "0 auto",
@@ -22,7 +22,8 @@ const App = () => {
     };
     checkAuth();
   }, [checkAuthUser]);
-  console.log(isCheckingAuth);
+
+
   return (
     <BrowserRouter>
       {isCheckingAuth && (
