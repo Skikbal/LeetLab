@@ -24,6 +24,7 @@ import {
   loginRateLimit,
   loginAttemtHandler,
 } from "../middlewares/rate-limiters/index.js";
+import isVerified from "../middlewares/isUserVerified.middleware.js";
 
 const router = Router();
 
@@ -49,15 +50,13 @@ router.route("/github").get(
     scope: ["user:email"],
   }),
 );
-router
-  .route("/github/callback")
-  .get(
-    passport.authenticate("github", {
-      failureRedirect: "/login",
-      session: false,
-    }),
-    loginWithOAuth2UserHandler,
-  );
+router.route("/github/callback").get(
+  passport.authenticate("github", {
+    failureRedirect: "/login",
+    session: false,
+  }),
+  loginWithOAuth2UserHandler,
+);
 
 //public routes
 router
@@ -78,12 +77,19 @@ router.route("/reset-password/:token").post(resetPasswordHandler);
 
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);
-router.route("/update-profile").post(isAuth, updateUserProfileHandler);
+router.route("/user-profile").get(isAuth, getUserProfileHandler);
+
+router
+  .route("/update-profile")
+  .post(isAuth, isVerified, updateUserProfileHandler);
 router
   .route("/update-avatar")
-  .post(isAuth, upload.single("avatar"), updateUserAvatarHandler);
-router.route("/user-profile").get(isAuth, getUserProfileHandler);
-router.route("/change-password").post(isAuth, changePasswordHandler);
-router.route("/delete-account").delete(isAuth, userAccountDeletionHandler);
+  .post(isAuth, isVerified, upload.single("avatar"), updateUserAvatarHandler);
+router
+  .route("/change-password")
+  .post(isAuth, isVerified, changePasswordHandler);
+router
+  .route("/delete-account")
+  .delete(isAuth, isVerified, userAccountDeletionHandler);
 
 export default router;

@@ -25,11 +25,7 @@ const isAuth = async (req, res, next) => {
     if (!user) {
       return next(new ApiError(404, "Unauthorized user or user not found"));
     }
-    if (!user.isVerified) {
-      return next(
-        new ApiError(401, "user not verified. Please verify your email !"),
-      );
-    }
+    
     req.user = user;
     next();
   } catch (error) {

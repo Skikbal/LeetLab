@@ -13,24 +13,35 @@ import isAuth from "../middlewares/isAuth.middlware.js";
 import isAdmin from "../middlewares/isAdmin.middleware.js";
 import { ProblemSchema } from "../validators/Problem.validators.js";
 import validation from "../middlewares/validation.middleware.js";
+import isVerified from "../middlewares/isUserVerified.middleware.js";
 const problemRoutes = Router();
 
 //admin routes
 problemRoutes
   .route("/create-problem")
-  .post(validation(ProblemSchema), isAuth, isAdmin, createProblemHandler);
+  .post(
+    validation(ProblemSchema),
+    isAuth,
+    isVerified,
+    isAdmin,
+    createProblemHandler,
+  );
 problemRoutes
   .route("/update-problem/:id")
-  .put(isAuth, isAdmin, updateProblemHandler);
+  .put(isAuth, isAdmin, isAdmin, updateProblemHandler);
 problemRoutes
   .route("/delete-problem/:id")
-  .delete(isAuth, isAdmin, deleteProblemHandler);
+  .delete(isAuth, isVerified, isAdmin, deleteProblemHandler);
 problemRoutes
   .route("/delete-problems")
-  .delete(isAuth, isAdmin, bulkDeleteProblemHandler);
+  .delete(isAuth, isVerified, isAdmin, bulkDeleteProblemHandler);
 //user routes
-problemRoutes.route("/all-problems").get(isAuth, getAllProblemsHandler);
-problemRoutes.route("/get-problem/:id").get(isAuth, getProblemHandler);
-problemRoutes.route("/tags").get(isAuth, getAllTagsHandler);
+problemRoutes
+  .route("/all-problems")
+  .get(isAuth, isVerified, getAllProblemsHandler);
+problemRoutes
+  .route("/get-problem/:id")
+  .get(isAuth, isVerified, getProblemHandler);
+problemRoutes.route("/tags").get(isAuth, isVerified, getAllTagsHandler);
 
 export default problemRoutes;
