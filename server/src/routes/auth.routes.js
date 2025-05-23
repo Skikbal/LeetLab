@@ -70,11 +70,11 @@ router
 router
   .route("/login")
   .post(loginRateLimit, loginAttemtHandler, loginUserHandler);
-router.route("/verify-email").get(verifyEmailHandler);
+router.route("/verify-email/:token").get(verifyEmailHandler);
 router.route("/resend-email-verification").post(resendEmailVerificationHandler);
 router.route("/refresh-token").get(refreshAccessTokenHandler);
 router.route("/forgot-password").post(forgotPasswordHandler);
-router.route("/reset-password").post(resetPasswordHandler);
+router.route("/reset-password/:token").post(resetPasswordHandler);
 
 // protected routes
 router.route("/logout").post(isAuth, logoutUserHandler);

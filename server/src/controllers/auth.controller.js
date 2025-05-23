@@ -175,10 +175,12 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
       email: true,
       role: true,
       avatar: true,
+      isVerified: true,
     },
   });
 
-  const verification_url = `${BASEURL}/auth/verify-email/?token=${unhashedToken}`;
+  const verification_url = `${BASEURL}/verify-email/?token=${unhashedToken}&email=${email}`;
+
   await sendEmail({
     email,
     subject: "Welcome to LeetLab",
@@ -196,8 +198,7 @@ const registerUserHandler = AsyncHandler(async (req, res) => {
 
 // verify email handler
 const verifyEmailHandler = AsyncHandler(async (req, res) => {
-  const { token } = req.query;
-
+  const { token } = req.params;
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
   const user = await prisma.user.findFirst({
@@ -356,7 +357,7 @@ const resendEmailVerificationHandler = AsyncHandler(async (req, res) => {
     },
   });
 
-  const verification_url = `${BASEURL}/auth/verify-email/?token=${unhashedToken}`;
+  const verification_url = `${BASEURL}/verify-email/?token=${unhashedToken}&email=${user.email}`;
 
   await sendEmail({
     email: user.email,
@@ -401,7 +402,7 @@ const forgotPasswordHandler = AsyncHandler(async (req, res) => {
     },
   });
 
-  const verification_url = `${BASEURL}/auth/reset-password/?token=${unhashedToken}`;
+  const verification_url = `${BASEURL}/reset-password/?token=${unhashedToken}`;
 
   await sendEmail({
     email: user.email,
@@ -424,23 +425,30 @@ const forgotPasswordHandler = AsyncHandler(async (req, res) => {
 
 // reset password handler
 const resetPasswordHandler = AsyncHandler(async (req, res) => {
-  const { token } = req.query;
-  const { password, confirmPassword } = req.body;
-
-  if (password !== confirmPassword) {
+  const { token } = req.params;
+  const { newPassword, confirmPassword } = req.body;
+  
+  if (newPassword !== confirmPassword) {
     throw new ApiError(400, "Passwords do not match");
   }
-
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(newPassword);
 
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  const updatedUser = await prisma.user.update({
+  const user = await prisma.user.findFirst({
     where: {
       forgotPasswordToken: hashedToken,
       forgotPasswordTokenExpiry: {
         gt: new Date(),
       },
+    },
+  });
+  if (!user) {
+    throw new ApiError(404, "User not found or token expired");
+  }
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: user.id,
     },
     data: {
       password: hashedPassword,

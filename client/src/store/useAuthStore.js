@@ -6,6 +6,7 @@ export const useAuthStore = create((set) => ({
   authUser: null,
   isLoading: false,
   isCheckingAuth: true,
+  isResendEmail: false,
 
   //get profile
   checkAuthUser: async () => {
@@ -14,7 +15,6 @@ export const useAuthStore = create((set) => ({
         withCredentials: true,
       });
       set({ authUser: res.data.data });
-
       set({ role: res.data.data.role });
     } catch (error) {
       console.log("Error cheking auth: ", error);
@@ -23,11 +23,12 @@ export const useAuthStore = create((set) => ({
       set({ isCheckingAuth: false });
     }
   },
+  //signup user
   signupUser: async (data) => {
     set({ isLoading: true });
     try {
       const res = await axiosInstance.post("/auth/register", data);
-      console.log(res.data);
+      console.log(res.data.data);
       set({ authUser: res.data.data });
       toast.success(res.data.message);
     } catch (error) {
@@ -39,6 +40,7 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+  //login user
   loginUser: async (data) => {
     set({ isLoading: true });
     try {
@@ -54,6 +56,7 @@ export const useAuthStore = create((set) => ({
       set({ isLoading: false });
     }
   },
+  //logout user
   logoutUser: async () => {
     set({ isLoading: true });
     try {
@@ -70,6 +73,7 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+  //forgot password
   forgotPassword: async (data, navigate) => {
     set({ isLoading: true });
     try {
@@ -78,6 +82,56 @@ export const useAuthStore = create((set) => ({
       navigate("/login");
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  //reset password
+  resetPassword: async (data, token, navigate) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.post(
+        `/auth/reset-password/${token}`,
+        data
+      );
+      toast.success(res.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  //email verification
+  verifyEmail: async (token, navigate) => {
+    set({ isResendEmail: true });
+    try {
+      const res = await axiosInstance.get(`/auth/verify-email/${token}`);
+      toast.success(res.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isResendEmail: false });
+    }
+  },
+  
+  //resend email
+  resendEmail: async (email, navigate) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.post(`/auth/resend-email-verification`, {
+        email,
+      });
+      navigate("/login");
+      toast.success(res.data.message);
+
+    } catch (error) {
+      console.log(error.response.data.message);
       toast.error(error.response.data.message);
     } finally {
       set({ isLoading: false });

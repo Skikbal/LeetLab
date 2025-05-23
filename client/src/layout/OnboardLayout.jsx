@@ -12,9 +12,20 @@ const metaMap = {
     title: "Welcome to our platform!",
     description: "Sign up to access our platform and start using our services.",
   },
+  "/forgot-password": {
+    title: "Forgot Your Password?",
+    description:
+      "Don’t worry — this happens to everyone. Just check your inbox after submitting the form.",
+  },
+  "/reset-password/": {
+    title: "Reset Your Password",
+    description:
+      "For your security, this link will expire shortly. If it doesn’t work, please request a new password reset.",
+  },
 };
 const OnboardLayout = ({ children }) => {
   const location = useLocation();
+  console.log(location.pathname)
   const meta = metaMap[location.pathname] || {
     title: "Welcome",
     description: "Get started",

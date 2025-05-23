@@ -3,7 +3,7 @@ import React from "react";
 const ErrorSpan = ({ error }) => {
   return (
     <label className="label">
-      <span className="label-text-alt text-error text-wrap">{error}</span>
+      <span className="label-text-alt text-wrap text-red-500">{error}</span>
     </label>
   );
 };

@@ -3,7 +3,9 @@ import { useAuthStore } from "../store/useAuthStore.js";
 import { Outlet, Navigate } from "react-router-dom";
 import OnboardLayout from "../layout/OnboardLayout.jsx";
 const GuestGuard = () => {
-  const { authUser } = useAuthStore();
+  const { authUser, isCheckingAuth } = useAuthStore();
+
+  if (isCheckingAuth) return null;
   return authUser === null ? (
     <OnboardLayout>
       <Outlet />

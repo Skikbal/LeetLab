@@ -2,7 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
 import Layout from "../layout/Layout.jsx";
 const ProtectedRoutes = () => {
-  const { authUser } = useAuthStore();
+  const { authUser, isCheckingAuth } = useAuthStore();
+
+  if (isCheckingAuth) return null;
   return authUser !== null ? (
     <Layout>
       <Outlet />

@@ -24,6 +24,17 @@ const LoginSchema = z.object({
 const emailValidation = z.object({
   email: z.string().email("Please enter a valid email"),
 });
+
+const resetPasswordSchema = z
+  .object({
+    newPassword: passwordValidation,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 const ProblemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
   description: z
@@ -73,4 +84,10 @@ const ProblemSchema = z.object({
   }),
 });
 
-export { SignupSchema, LoginSchema, ProblemSchema, emailValidation };
+export {
+  SignupSchema,
+  LoginSchema,
+  ProblemSchema,
+  emailValidation,
+  resetPasswordSchema,
+};

@@ -144,17 +144,17 @@ const Login = () => {
                 Loading...
               </>
             ) : (
-              "Signin"
+              "Sign In"
             )}
           </button>
-          <div class="flex items-center">
+          <div class="flex items-center py-3">
             <div class="flex-1 border-t border-accent"></div>
-            <div class="px-4 text-base-content text-sm">or</div>
+            <div class="px-4 text-base-content text-sm">Or login with</div>
             <div class="flex-1 border-t border-accent"></div>
           </div>
-          <div className="flex gap-3 flex-wrap">
+          <div className="flex gap-3 flex-wrap sm:flex-nowrap">
             <GoogleLoginButton />
-            <GithubButton navigate={navigate} />
+            <GithubButton />
           </div>
         </div>
       </form>
@@ -163,7 +163,7 @@ const Login = () => {
         <p className="text-base-content/60">
           Don’t have an account?{" "}
           <Link to={"/signup"} className="link link-primary">
-            Sign up
+            Register
           </Link>
         </p>
       </div>

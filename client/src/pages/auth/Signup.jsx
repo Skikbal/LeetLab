@@ -6,6 +6,8 @@ import { SignupSchema } from "../../validators/ValidationSchema.js";
 import OnboardLayout from "../../layout/OnboardLayout.jsx";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
+import GithubButton from "../../components/Buttons/GithubButton.jsx";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -136,6 +138,15 @@ const Signup = () => {
               "Sign Up"
             )}
           </button>
+          <div class="flex items-center py-3">
+            <div class="flex-1 border-t border-accent"></div>
+            <div class="px-4 text-base-content text-sm">Or Sign Up with</div>
+            <div class="flex-1 border-t border-accent"></div>
+          </div>
+          <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+            <GoogleLoginButton />
+            <GithubButton />
+          </div>
         </div>
       </form>
       {/* footer */}
@@ -143,7 +154,7 @@ const Signup = () => {
         <p className="text-base-content/60">
           Already have an account?{" "}
           <Link to={"/login"} className="link link-primary">
-            Signin
+            Sign In
           </Link>
         </p>
       </div>
