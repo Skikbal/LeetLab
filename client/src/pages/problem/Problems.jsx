@@ -10,13 +10,18 @@ import {
   Tags,
   Trash,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchBar from "../../components/form/SearchBar";
 import { useDebounce } from "../../hooks/useDebounceHook";
 import TagsDown from "../../components/Dropdown/TagsDown";
 import Modal from "../../components/Modal/Modal";
+import CompanyFilter from "../../components/problem/CompanyFilter";
+import { useNavigate } from "react-router-dom";
 const Problems = () => {
+  const navigate = useNavigate()
   const {
     isLoading,
     getAllProblems,
@@ -24,10 +29,13 @@ const Problems = () => {
     tags,
     getAllTags,
     deleteProblem,
+    getAllCompanies,
+    companies,
   } = useProblemStore();
   const [searchQuery, setSearchQuery] = useState("");
   const debounceQuery = useDebounce(searchQuery, 1000);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState([]);
   const [difficulty, setDifficulty] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -36,7 +44,7 @@ const Problems = () => {
     try {
       await deleteProblem(deleteId);
       setDeleteId(null);
-      fetchProblems()
+      fetchProblems();
     } catch (error) {
       console.log("Error deleting problem: ", error);
     }
@@ -61,12 +69,13 @@ const Problems = () => {
     const fetchTags = async () => {
       try {
         await getAllTags();
+        await getAllCompanies();
       } catch (error) {
         console.log("Error getting all tags: ", error);
       }
     };
     fetchTags();
-  }, [getAllTags]);
+  }, [getAllTags, getAllCompanies]);
 
   useEffect(() => {
     fetchProblems();
@@ -92,6 +101,8 @@ const Problems = () => {
           <SearchBar
             onChange={(e) => setSearchQuery(e.target.value)}
             value={searchQuery}
+            className={"sm:w-1/2"}
+            placeholder={"Search by title"}
           />
           <div className="flex w-full justify-between items-center sm:justify-end sm:gap-2">
             <Dropdown
@@ -143,89 +154,94 @@ const Problems = () => {
             />
           </div>
         </div>
-        <div className="w-full overflow-x-auto mt-2  h-110 rounded-md no-scrollbar">
-          <table className=" w-[1000px] lg:w-full table bg-base-200">
-            {/* head */}
-            <thead className="text-base-content text-base sticky top-0 z-10 bg-base-100 w-full">
-              <tr>
-                <th className="tetx-base-content w-1/16">
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
-                <th className="w-2/10">Title</th>
-                <th className="w-2/10">Tags</th>
-                <th className="w-1/10">Difficulty</th>
-                <th className="w-1/10">Status</th>
-                <th className="w-2/10">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-base-300">
-              {problems.map((problem, index) => {
-                return (
-                  <tr key={index} className="hover:bg-base-200 overflow-hidden">
-                    <th className="w-1/16">
-                      <label>
-                        <input type="checkbox" className="checkbox" />
-                      </label>
-                    </th>
+        <div className="flex flex-wrap-reverse md:flex-nowrap gap-5 w-full">
+          <div className="w-full md:w-3/4 bg-base-300 overflow-x-auto mt-2  h-110 rounded-md no-scrollbar">
+            <table className=" w-[1000px] lg:w-full table bg-base-200">
+              {/* head */}
+              <thead className="text-base-content text-base sticky top-0 z-10 bg-base-100 w-full">
+                <tr>
+                  <th className="tetx-base-content w-1/16">
+                    <label>
+                      <input type="checkbox" className="checkbox" />
+                    </label>
+                  </th>
+                  <th className="w-2/10">Title</th>
+                  <th className="w-2/10">Tags</th>
+                  <th className="w-1/10">Difficulty</th>
+                  <th className="w-1/10">Status</th>
+                  <th className="w-2/10">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-base-300 border border-accent">
+                {problems.map((problem, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className="hover:bg-base-200 overflow-hidden cursor-pointer"
+                      onClick={() => navigate(`/problems/editor/${problem.id}`)}
+                    >
+                      <th className="w-1/16">
+                        <label>
+                          <input type="checkbox" className="checkbox" />
+                        </label>
+                      </th>
 
-                    <td className="w-2/10">
-                      <p className="text-base text-base-content font-medium">
-                        {problem.title}
-                      </p>
-                    </td>
-                    <td className="w-2/10 gap-2 items-center">
-                      {problem.tags.map((tag) => {
-                        return (
-                          <div
-                            className=" badge badge-soft badge-warning"
-                            key={tag.id}
-                          >
-                            {tag.name}
-                          </div>
-                        );
-                      })}
-                    </td>
-                    <td className="w-1/10">
-                      <div
-                        className={`${
-                          problem.difficulty === "HARD"
-                            ? "bg-red-500"
-                            : problem.difficulty === "EASY"
-                            ? "bg-primary"
-                            : "bg-secondary"
-                        } badge badge-md text-base-content font-medium`}
-                      >
-                        {problem.difficulty}
-                      </div>
-                    </td>
-                    <td className="w-1/10">{"solved"}</td>
-                    <td className="w-2/10">
-                      <div className="flex gap-2">
-                        <button
-                          className="btn p-2 bg-red-500"
-                          onClick={() => {
-                            setIsModalOpen(true), setDeleteId(problem.id);
-                          }}
+                      <td className="w-2/10">
+                        <p className="text-base text-base-content font-medium">
+                          {problem.title}
+                        </p>
+                      </td>
+                      <td className="w-2/10 gap-2 items-center">
+                        {problem.tags.map((tag) => {
+                          return (
+                            <div
+                              className=" badge badge-soft badge-warning"
+                              key={tag.id}
+                            >
+                              {tag.name}
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className="w-1/10">
+                        <div
+                          className={`${
+                            problem.difficulty === "HARD"
+                              ? "bg-red-500"
+                              : problem.difficulty === "EASY"
+                              ? "bg-primary"
+                              : "bg-secondary"
+                          } badge badge-md text-base-content font-medium`}
                         >
-                          <Trash className="h-4 w-4" />
-                        </button>
-                        <button className="btn p-2 bg-secondary">
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        <button className="btn p-2 bg-primary border-accent ">
-                          <BookmarkCheck className="h-4 w-4" />{" "}
-                          <span className="text-xs">Save to Playlist</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            {/* foot */}
-            {/* <tfoot>
+                          {problem.difficulty}
+                        </div>
+                      </td>
+                      <td className="w-1/10">{"solved"}</td>
+                      <td className="w-2/10">
+                        <div className="flex gap-2">
+                          <button
+                            className="btn p-2 bg-red-500"
+                            onClick={() => {
+                              setIsModalOpen(true), setDeleteId(problem.id);
+                            }}
+                          >
+                            <Trash className="h-4 w-4" />
+                          </button>
+                          <button className="btn p-2 bg-secondary">
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button className="btn p-2 bg-primary border-accent ">
+                            <BookmarkCheck className="h-4 w-4" />{" "}
+                            <span className="text-xs">Save to Playlist</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              {/* foot */}
+              {/* <tfoot>
             <tr>
               <th></th>
               <th>Name</th>
@@ -234,7 +250,13 @@ const Problems = () => {
               <th></th>
             </tr>
           </tfoot> */}
-          </table>
+            </table>
+          </div>
+          <CompanyFilter
+            selectedCompany={selectedCompany}
+            setSelectedCompany={setSelectedCompany}
+            companies={companies}
+          />
         </div>
       </div>
     </>

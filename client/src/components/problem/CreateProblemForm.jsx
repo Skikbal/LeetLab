@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Download,
   Car,
+  Building2,
 } from "lucide-react";
 import SampleProblem from "../sample/SampleProblem.jsx";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
@@ -61,9 +62,19 @@ const CreateProblemForm = () => {
     control,
     name: "tags",
   });
+  //company tags
+  const {
+    fields: companyTagFields,
+    append: appendCompanyTag,
+    remove: removeCompanyTag,
+    // replace: replaceTag,
+  } = useFieldArray({
+    control,
+    name: "companyTags",
+  });
   const onSubmit = async (data) => {
     try {
-      await createProblem(data,navigate);
+      await createProblem(data, navigate);
     } catch (error) {
       console.log("Error creating problem: ", error);
     }
@@ -155,6 +166,40 @@ const CreateProblemForm = () => {
               ))}
             </div>
             {errors.tags && <ErrorSpan error={errors.tags.message} />}
+          </SampleCardLayout>
+          {/* tag compnies */}
+          <SampleCardLayout
+            title={"Company Tags"}
+            icon={<Building2 className="w-5 h-5" />}
+            button={true}
+            onClick={() => appendCompanyTag("")}
+            buttonTitle={
+              <>
+                <Plus className="w-4 h-4" /> Add Company
+              </>
+            }
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {companyTagFields?.map((field, index) => (
+                <div key={field.id} className="flex gap-2 items-center">
+                  <Input
+                    register={register}
+                    name={`companyTags.${index}`}
+                    placeholder={"Enter Companies"}
+                    type={"text"}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-square btn-sm"
+                    onClick={() => removeCompanyTag(index)}
+                    disabled={companyTagFields.length === 1}
+                  >
+                    <Trash2 className="w-4 h-4 text-error" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            {errors.companyTags && <ErrorSpan error={errors.companyTags.message} />}
           </SampleCardLayout>
 
           {/* Test Cases */}

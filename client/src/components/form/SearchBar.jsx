@@ -1,8 +1,8 @@
 import React from "react";
 
-const SearchBar = ({ onChange, value }) => {
+const SearchBar = ({ onChange, value,className,placeholder }) => {
   return (
-    <label className="w-full sm:w-1/2 input focus:outline-none focus-within:outline-none shadow-none focus:border focus:border-accent">
+    <label className={`w-full  input focus:outline-none focus-within:outline-none shadow-none focus:border focus:border-accent ${className}`}>
       <svg
         className="h-[1em] opacity-50"
         xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +22,7 @@ const SearchBar = ({ onChange, value }) => {
       <input
         type="search"
         required
-        placeholder="Search by Title"
+        placeholder={placeholder}
         onChange={onChange}
         value={value}
       />

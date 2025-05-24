@@ -6,6 +6,7 @@ export const useProblemStore = create((set) => ({
   isLoading: false,
   problems: [],
   tags: [],
+  companies: [],
   createProblem: async (data, navigate) => {
     set({ isLoading: true });
     try {
@@ -36,6 +37,21 @@ export const useProblemStore = create((set) => ({
       set({ isLoading: false });
     }
   },
+
+  //delete problem
+  deleteProblem: async (id) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.delete(`/problems/delete-problem/${id}`);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.success(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
   getAllTags: async () => {
     set({ isLoading: true });
     try {
@@ -49,15 +65,15 @@ export const useProblemStore = create((set) => ({
       set({ isLoading: false });
     }
   },
-  //delete problem
-  deleteProblem: async (id) => {
+
+  getAllCompanies: async () => {
     set({ isLoading: true });
     try {
-      const res = await axiosInstance.delete(`/problems/delete-problem/${id}`);
-      toast.success(res.data.message);
+      const res = await axiosInstance.get("/problems/companies");
+      set({ companies: res.data.data });
     } catch (error) {
       console.log(error.response.data.message);
-      toast.success(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       set({ isLoading: false });
     }
