@@ -29,6 +29,11 @@ export type Problem = $Result.DefaultSelection<Prisma.$ProblemPayload>
  */
 export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
 /**
+ * Model CompanyTag
+ * 
+ */
+export type CompanyTag = $Result.DefaultSelection<Prisma.$CompanyTagPayload>
+/**
  * Model Submission
  * 
  */
@@ -228,6 +233,16 @@ export class PrismaClient<
     * ```
     */
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.companyTag`: Exposes CRUD operations for the **CompanyTag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompanyTags
+    * const companyTags = await prisma.companyTag.findMany()
+    * ```
+    */
+  get companyTag(): Prisma.CompanyTagDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.submission`: Exposes CRUD operations for the **Submission** model.
@@ -701,6 +716,7 @@ export namespace Prisma {
     User: 'User',
     Problem: 'Problem',
     Tag: 'Tag',
+    CompanyTag: 'CompanyTag',
     Submission: 'Submission',
     TestCasesResult: 'TestCasesResult',
     problemSolved: 'problemSolved'
@@ -722,7 +738,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "problem" | "tag" | "submission" | "testCasesResult" | "problemSolved"
+      modelProps: "user" | "problem" | "tag" | "companyTag" | "submission" | "testCasesResult" | "problemSolved"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -945,6 +961,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TagCountArgs<ExtArgs>
             result: $Utils.Optional<TagCountAggregateOutputType> | number
+          }
+        }
+      }
+      CompanyTag: {
+        payload: Prisma.$CompanyTagPayload<ExtArgs>
+        fields: Prisma.CompanyTagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanyTagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanyTagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanyTagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanyTagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          findMany: {
+            args: Prisma.CompanyTagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>[]
+          }
+          create: {
+            args: Prisma.CompanyTagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          createMany: {
+            args: Prisma.CompanyTagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanyTagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanyTagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          update: {
+            args: Prisma.CompanyTagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanyTagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanyTagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanyTagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanyTagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyTagPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanyTagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompanyTag>
+          }
+          groupBy: {
+            args: Prisma.CompanyTagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanyTagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanyTagCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanyTagCountAggregateOutputType> | number
           }
         }
       }
@@ -1257,6 +1347,7 @@ export namespace Prisma {
     user?: UserOmit
     problem?: ProblemOmit
     tag?: TagOmit
+    companyTag?: CompanyTagOmit
     submission?: SubmissionOmit
     testCasesResult?: TestCasesResultOmit
     problemSolved?: problemSolvedOmit
@@ -1404,12 +1495,14 @@ export namespace Prisma {
 
   export type ProblemCountOutputType = {
     tags: number
+    companies: number
     submissions: number
     problemSolvedBy: number
   }
 
   export type ProblemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | ProblemCountOutputTypeCountTagsArgs
+    companies?: boolean | ProblemCountOutputTypeCountCompaniesArgs
     submissions?: boolean | ProblemCountOutputTypeCountSubmissionsArgs
     problemSolvedBy?: boolean | ProblemCountOutputTypeCountProblemSolvedByArgs
   }
@@ -1430,6 +1523,13 @@ export namespace Prisma {
    */
   export type ProblemCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TagWhereInput
+  }
+
+  /**
+   * ProblemCountOutputType without action
+   */
+  export type ProblemCountOutputTypeCountCompaniesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyTagWhereInput
   }
 
   /**
@@ -1474,6 +1574,37 @@ export namespace Prisma {
    * TagCountOutputType without action
    */
   export type TagCountOutputTypeCountProblemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProblemWhereInput
+  }
+
+
+  /**
+   * Count Type CompanyTagCountOutputType
+   */
+
+  export type CompanyTagCountOutputType = {
+    problems: number
+  }
+
+  export type CompanyTagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    problems?: boolean | CompanyTagCountOutputTypeCountProblemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CompanyTagCountOutputType without action
+   */
+  export type CompanyTagCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTagCountOutputType
+     */
+    select?: CompanyTagCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompanyTagCountOutputType without action
+   */
+  export type CompanyTagCountOutputTypeCountProblemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProblemWhereInput
   }
 
@@ -3063,6 +3194,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     tags?: boolean | Problem$tagsArgs<ExtArgs>
+    companies?: boolean | Problem$companiesArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Problem$submissionsArgs<ExtArgs>
     problemSolvedBy?: boolean | Problem$problemSolvedByArgs<ExtArgs>
@@ -3128,6 +3260,7 @@ export namespace Prisma {
   export type ProblemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "difficulty" | "userId" | "examples" | "constraints" | "hints" | "editorial" | "testcases" | "codesnippets" | "referencesolution" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["problem"]>
   export type ProblemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | Problem$tagsArgs<ExtArgs>
+    companies?: boolean | Problem$companiesArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Problem$submissionsArgs<ExtArgs>
     problemSolvedBy?: boolean | Problem$problemSolvedByArgs<ExtArgs>
@@ -3144,6 +3277,7 @@ export namespace Prisma {
     name: "Problem"
     objects: {
       tags: Prisma.$TagPayload<ExtArgs>[]
+      companies: Prisma.$CompanyTagPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       submissions: Prisma.$SubmissionPayload<ExtArgs>[]
       problemSolvedBy: Prisma.$problemSolvedPayload<ExtArgs>[]
@@ -3559,6 +3693,7 @@ export namespace Prisma {
   export interface Prisma__ProblemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tags<T extends Problem$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Problem$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    companies<T extends Problem$companiesArgs<ExtArgs> = {}>(args?: Subset<T, Problem$companiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     submissions<T extends Problem$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Problem$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     problemSolvedBy<T extends Problem$problemSolvedByArgs<ExtArgs> = {}>(args?: Subset<T, Problem$problemSolvedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$problemSolvedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4023,6 +4158,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Problem.companies
+   */
+  export type Problem$companiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    where?: CompanyTagWhereInput
+    orderBy?: CompanyTagOrderByWithRelationInput | CompanyTagOrderByWithRelationInput[]
+    cursor?: CompanyTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyTagScalarFieldEnum | CompanyTagScalarFieldEnum[]
   }
 
   /**
@@ -5146,6 +5305,1110 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TagInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CompanyTag
+   */
+
+  export type AggregateCompanyTag = {
+    _count: CompanyTagCountAggregateOutputType | null
+    _avg: CompanyTagAvgAggregateOutputType | null
+    _sum: CompanyTagSumAggregateOutputType | null
+    _min: CompanyTagMinAggregateOutputType | null
+    _max: CompanyTagMaxAggregateOutputType | null
+  }
+
+  export type CompanyTagAvgAggregateOutputType = {
+    count: number | null
+  }
+
+  export type CompanyTagSumAggregateOutputType = {
+    count: number | null
+  }
+
+  export type CompanyTagMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    count: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyTagMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    count: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyTagCountAggregateOutputType = {
+    id: number
+    name: number
+    count: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompanyTagAvgAggregateInputType = {
+    count?: true
+  }
+
+  export type CompanyTagSumAggregateInputType = {
+    count?: true
+  }
+
+  export type CompanyTagMinAggregateInputType = {
+    id?: true
+    name?: true
+    count?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyTagMaxAggregateInputType = {
+    id?: true
+    name?: true
+    count?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyTagCountAggregateInputType = {
+    id?: true
+    name?: true
+    count?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompanyTagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyTag to aggregate.
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyTags to fetch.
+     */
+    orderBy?: CompanyTagOrderByWithRelationInput | CompanyTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanyTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompanyTags
+    **/
+    _count?: true | CompanyTagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompanyTagAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanyTagSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanyTagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanyTagMaxAggregateInputType
+  }
+
+  export type GetCompanyTagAggregateType<T extends CompanyTagAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompanyTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompanyTag[P]>
+      : GetScalarType<T[P], AggregateCompanyTag[P]>
+  }
+
+
+
+
+  export type CompanyTagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyTagWhereInput
+    orderBy?: CompanyTagOrderByWithAggregationInput | CompanyTagOrderByWithAggregationInput[]
+    by: CompanyTagScalarFieldEnum[] | CompanyTagScalarFieldEnum
+    having?: CompanyTagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanyTagCountAggregateInputType | true
+    _avg?: CompanyTagAvgAggregateInputType
+    _sum?: CompanyTagSumAggregateInputType
+    _min?: CompanyTagMinAggregateInputType
+    _max?: CompanyTagMaxAggregateInputType
+  }
+
+  export type CompanyTagGroupByOutputType = {
+    id: string
+    name: string
+    count: number
+    createdAt: Date
+    updatedAt: Date
+    _count: CompanyTagCountAggregateOutputType | null
+    _avg: CompanyTagAvgAggregateOutputType | null
+    _sum: CompanyTagSumAggregateOutputType | null
+    _min: CompanyTagMinAggregateOutputType | null
+    _max: CompanyTagMaxAggregateOutputType | null
+  }
+
+  type GetCompanyTagGroupByPayload<T extends CompanyTagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanyTagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanyTagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanyTagGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanyTagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanyTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    count?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    problems?: boolean | CompanyTag$problemsArgs<ExtArgs>
+    _count?: boolean | CompanyTagCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["companyTag"]>
+
+  export type CompanyTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    count?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companyTag"]>
+
+  export type CompanyTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    count?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companyTag"]>
+
+  export type CompanyTagSelectScalar = {
+    id?: boolean
+    name?: boolean
+    count?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompanyTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "count" | "createdAt" | "updatedAt", ExtArgs["result"]["companyTag"]>
+  export type CompanyTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    problems?: boolean | CompanyTag$problemsArgs<ExtArgs>
+    _count?: boolean | CompanyTagCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CompanyTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CompanyTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CompanyTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompanyTag"
+    objects: {
+      problems: Prisma.$ProblemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      count: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["companyTag"]>
+    composites: {}
+  }
+
+  type CompanyTagGetPayload<S extends boolean | null | undefined | CompanyTagDefaultArgs> = $Result.GetResult<Prisma.$CompanyTagPayload, S>
+
+  type CompanyTagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanyTagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanyTagCountAggregateInputType | true
+    }
+
+  export interface CompanyTagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompanyTag'], meta: { name: 'CompanyTag' } }
+    /**
+     * Find zero or one CompanyTag that matches the filter.
+     * @param {CompanyTagFindUniqueArgs} args - Arguments to find a CompanyTag
+     * @example
+     * // Get one CompanyTag
+     * const companyTag = await prisma.companyTag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanyTagFindUniqueArgs>(args: SelectSubset<T, CompanyTagFindUniqueArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompanyTag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanyTagFindUniqueOrThrowArgs} args - Arguments to find a CompanyTag
+     * @example
+     * // Get one CompanyTag
+     * const companyTag = await prisma.companyTag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanyTagFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanyTagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyTag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagFindFirstArgs} args - Arguments to find a CompanyTag
+     * @example
+     * // Get one CompanyTag
+     * const companyTag = await prisma.companyTag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanyTagFindFirstArgs>(args?: SelectSubset<T, CompanyTagFindFirstArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyTag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagFindFirstOrThrowArgs} args - Arguments to find a CompanyTag
+     * @example
+     * // Get one CompanyTag
+     * const companyTag = await prisma.companyTag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanyTagFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanyTagFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompanyTags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompanyTags
+     * const companyTags = await prisma.companyTag.findMany()
+     * 
+     * // Get first 10 CompanyTags
+     * const companyTags = await prisma.companyTag.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const companyTagWithIdOnly = await prisma.companyTag.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompanyTagFindManyArgs>(args?: SelectSubset<T, CompanyTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompanyTag.
+     * @param {CompanyTagCreateArgs} args - Arguments to create a CompanyTag.
+     * @example
+     * // Create one CompanyTag
+     * const CompanyTag = await prisma.companyTag.create({
+     *   data: {
+     *     // ... data to create a CompanyTag
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanyTagCreateArgs>(args: SelectSubset<T, CompanyTagCreateArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompanyTags.
+     * @param {CompanyTagCreateManyArgs} args - Arguments to create many CompanyTags.
+     * @example
+     * // Create many CompanyTags
+     * const companyTag = await prisma.companyTag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanyTagCreateManyArgs>(args?: SelectSubset<T, CompanyTagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompanyTags and returns the data saved in the database.
+     * @param {CompanyTagCreateManyAndReturnArgs} args - Arguments to create many CompanyTags.
+     * @example
+     * // Create many CompanyTags
+     * const companyTag = await prisma.companyTag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompanyTags and only return the `id`
+     * const companyTagWithIdOnly = await prisma.companyTag.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanyTagCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanyTagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompanyTag.
+     * @param {CompanyTagDeleteArgs} args - Arguments to delete one CompanyTag.
+     * @example
+     * // Delete one CompanyTag
+     * const CompanyTag = await prisma.companyTag.delete({
+     *   where: {
+     *     // ... filter to delete one CompanyTag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanyTagDeleteArgs>(args: SelectSubset<T, CompanyTagDeleteArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompanyTag.
+     * @param {CompanyTagUpdateArgs} args - Arguments to update one CompanyTag.
+     * @example
+     * // Update one CompanyTag
+     * const companyTag = await prisma.companyTag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanyTagUpdateArgs>(args: SelectSubset<T, CompanyTagUpdateArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompanyTags.
+     * @param {CompanyTagDeleteManyArgs} args - Arguments to filter CompanyTags to delete.
+     * @example
+     * // Delete a few CompanyTags
+     * const { count } = await prisma.companyTag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanyTagDeleteManyArgs>(args?: SelectSubset<T, CompanyTagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompanyTags
+     * const companyTag = await prisma.companyTag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanyTagUpdateManyArgs>(args: SelectSubset<T, CompanyTagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyTags and returns the data updated in the database.
+     * @param {CompanyTagUpdateManyAndReturnArgs} args - Arguments to update many CompanyTags.
+     * @example
+     * // Update many CompanyTags
+     * const companyTag = await prisma.companyTag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompanyTags and only return the `id`
+     * const companyTagWithIdOnly = await prisma.companyTag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanyTagUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanyTagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompanyTag.
+     * @param {CompanyTagUpsertArgs} args - Arguments to update or create a CompanyTag.
+     * @example
+     * // Update or create a CompanyTag
+     * const companyTag = await prisma.companyTag.upsert({
+     *   create: {
+     *     // ... data to create a CompanyTag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompanyTag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanyTagUpsertArgs>(args: SelectSubset<T, CompanyTagUpsertArgs<ExtArgs>>): Prisma__CompanyTagClient<$Result.GetResult<Prisma.$CompanyTagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompanyTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagCountArgs} args - Arguments to filter CompanyTags to count.
+     * @example
+     * // Count the number of CompanyTags
+     * const count = await prisma.companyTag.count({
+     *   where: {
+     *     // ... the filter for the CompanyTags we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanyTagCountArgs>(
+      args?: Subset<T, CompanyTagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanyTagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompanyTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanyTagAggregateArgs>(args: Subset<T, CompanyTagAggregateArgs>): Prisma.PrismaPromise<GetCompanyTagAggregateType<T>>
+
+    /**
+     * Group by CompanyTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyTagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanyTagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanyTagGroupByArgs['orderBy'] }
+        : { orderBy?: CompanyTagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanyTagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanyTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompanyTag model
+   */
+  readonly fields: CompanyTagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompanyTag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanyTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    problems<T extends CompanyTag$problemsArgs<ExtArgs> = {}>(args?: Subset<T, CompanyTag$problemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompanyTag model
+   */
+  interface CompanyTagFieldRefs {
+    readonly id: FieldRef<"CompanyTag", 'String'>
+    readonly name: FieldRef<"CompanyTag", 'String'>
+    readonly count: FieldRef<"CompanyTag", 'Int'>
+    readonly createdAt: FieldRef<"CompanyTag", 'DateTime'>
+    readonly updatedAt: FieldRef<"CompanyTag", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompanyTag findUnique
+   */
+  export type CompanyTagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyTag to fetch.
+     */
+    where: CompanyTagWhereUniqueInput
+  }
+
+  /**
+   * CompanyTag findUniqueOrThrow
+   */
+  export type CompanyTagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyTag to fetch.
+     */
+    where: CompanyTagWhereUniqueInput
+  }
+
+  /**
+   * CompanyTag findFirst
+   */
+  export type CompanyTagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyTag to fetch.
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyTags to fetch.
+     */
+    orderBy?: CompanyTagOrderByWithRelationInput | CompanyTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyTags.
+     */
+    cursor?: CompanyTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyTags.
+     */
+    distinct?: CompanyTagScalarFieldEnum | CompanyTagScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyTag findFirstOrThrow
+   */
+  export type CompanyTagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyTag to fetch.
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyTags to fetch.
+     */
+    orderBy?: CompanyTagOrderByWithRelationInput | CompanyTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyTags.
+     */
+    cursor?: CompanyTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyTags.
+     */
+    distinct?: CompanyTagScalarFieldEnum | CompanyTagScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyTag findMany
+   */
+  export type CompanyTagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyTags to fetch.
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyTags to fetch.
+     */
+    orderBy?: CompanyTagOrderByWithRelationInput | CompanyTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompanyTags.
+     */
+    cursor?: CompanyTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyTags.
+     */
+    skip?: number
+    distinct?: CompanyTagScalarFieldEnum | CompanyTagScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyTag create
+   */
+  export type CompanyTagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CompanyTag.
+     */
+    data: XOR<CompanyTagCreateInput, CompanyTagUncheckedCreateInput>
+  }
+
+  /**
+   * CompanyTag createMany
+   */
+  export type CompanyTagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompanyTags.
+     */
+    data: CompanyTagCreateManyInput | CompanyTagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanyTag createManyAndReturn
+   */
+  export type CompanyTagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompanyTags.
+     */
+    data: CompanyTagCreateManyInput | CompanyTagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanyTag update
+   */
+  export type CompanyTagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CompanyTag.
+     */
+    data: XOR<CompanyTagUpdateInput, CompanyTagUncheckedUpdateInput>
+    /**
+     * Choose, which CompanyTag to update.
+     */
+    where: CompanyTagWhereUniqueInput
+  }
+
+  /**
+   * CompanyTag updateMany
+   */
+  export type CompanyTagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompanyTags.
+     */
+    data: XOR<CompanyTagUpdateManyMutationInput, CompanyTagUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyTags to update
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * Limit how many CompanyTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyTag updateManyAndReturn
+   */
+  export type CompanyTagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * The data used to update CompanyTags.
+     */
+    data: XOR<CompanyTagUpdateManyMutationInput, CompanyTagUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyTags to update
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * Limit how many CompanyTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyTag upsert
+   */
+  export type CompanyTagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CompanyTag to update in case it exists.
+     */
+    where: CompanyTagWhereUniqueInput
+    /**
+     * In case the CompanyTag found by the `where` argument doesn't exist, create a new CompanyTag with this data.
+     */
+    create: XOR<CompanyTagCreateInput, CompanyTagUncheckedCreateInput>
+    /**
+     * In case the CompanyTag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanyTagUpdateInput, CompanyTagUncheckedUpdateInput>
+  }
+
+  /**
+   * CompanyTag delete
+   */
+  export type CompanyTagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
+    /**
+     * Filter which CompanyTag to delete.
+     */
+    where: CompanyTagWhereUniqueInput
+  }
+
+  /**
+   * CompanyTag deleteMany
+   */
+  export type CompanyTagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyTags to delete
+     */
+    where?: CompanyTagWhereInput
+    /**
+     * Limit how many CompanyTags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyTag.problems
+   */
+  export type CompanyTag$problemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Problem
+     */
+    select?: ProblemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Problem
+     */
+    omit?: ProblemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemInclude<ExtArgs> | null
+    where?: ProblemWhereInput
+    orderBy?: ProblemOrderByWithRelationInput | ProblemOrderByWithRelationInput[]
+    cursor?: ProblemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProblemScalarFieldEnum | ProblemScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyTag without action
+   */
+  export type CompanyTagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyTag
+     */
+    select?: CompanyTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyTag
+     */
+    omit?: CompanyTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyTagInclude<ExtArgs> | null
   }
 
 
@@ -8691,6 +9954,17 @@ export namespace Prisma {
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
+  export const CompanyTagScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    count: 'count',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompanyTagScalarFieldEnum = (typeof CompanyTagScalarFieldEnum)[keyof typeof CompanyTagScalarFieldEnum]
+
+
   export const SubmissionScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -9050,6 +10324,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Problem"> | Date | string
     updatedAt?: DateTimeFilter<"Problem"> | Date | string
     tags?: TagListRelationFilter
+    companies?: CompanyTagListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: SubmissionListRelationFilter
     problemSolvedBy?: ProblemSolvedListRelationFilter
@@ -9072,6 +10347,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tags?: TagOrderByRelationAggregateInput
+    companies?: CompanyTagOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     submissions?: SubmissionOrderByRelationAggregateInput
     problemSolvedBy?: problemSolvedOrderByRelationAggregateInput
@@ -9097,6 +10373,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Problem"> | Date | string
     updatedAt?: DateTimeFilter<"Problem"> | Date | string
     tags?: TagListRelationFilter
+    companies?: CompanyTagListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: SubmissionListRelationFilter
     problemSolvedBy?: ProblemSolvedListRelationFilter
@@ -9192,6 +10469,63 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Tag"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
+  }
+
+  export type CompanyTagWhereInput = {
+    AND?: CompanyTagWhereInput | CompanyTagWhereInput[]
+    OR?: CompanyTagWhereInput[]
+    NOT?: CompanyTagWhereInput | CompanyTagWhereInput[]
+    id?: StringFilter<"CompanyTag"> | string
+    name?: StringFilter<"CompanyTag"> | string
+    count?: IntFilter<"CompanyTag"> | number
+    createdAt?: DateTimeFilter<"CompanyTag"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyTag"> | Date | string
+    problems?: ProblemListRelationFilter
+  }
+
+  export type CompanyTagOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    count?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    problems?: ProblemOrderByRelationAggregateInput
+  }
+
+  export type CompanyTagWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: CompanyTagWhereInput | CompanyTagWhereInput[]
+    OR?: CompanyTagWhereInput[]
+    NOT?: CompanyTagWhereInput | CompanyTagWhereInput[]
+    count?: IntFilter<"CompanyTag"> | number
+    createdAt?: DateTimeFilter<"CompanyTag"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyTag"> | Date | string
+    problems?: ProblemListRelationFilter
+  }, "id" | "name">
+
+  export type CompanyTagOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    count?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompanyTagCountOrderByAggregateInput
+    _avg?: CompanyTagAvgOrderByAggregateInput
+    _max?: CompanyTagMaxOrderByAggregateInput
+    _min?: CompanyTagMinOrderByAggregateInput
+    _sum?: CompanyTagSumOrderByAggregateInput
+  }
+
+  export type CompanyTagScalarWhereWithAggregatesInput = {
+    AND?: CompanyTagScalarWhereWithAggregatesInput | CompanyTagScalarWhereWithAggregatesInput[]
+    OR?: CompanyTagScalarWhereWithAggregatesInput[]
+    NOT?: CompanyTagScalarWhereWithAggregatesInput | CompanyTagScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompanyTag"> | string
+    name?: StringWithAggregatesFilter<"CompanyTag"> | string
+    count?: IntWithAggregatesFilter<"CompanyTag"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CompanyTag"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CompanyTag"> | Date | string
   }
 
   export type SubmissionWhereInput = {
@@ -9645,6 +10979,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
@@ -9667,6 +11002,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
   }
@@ -9687,6 +11023,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
@@ -9709,6 +11046,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
   }
@@ -9815,6 +11153,66 @@ export namespace Prisma {
   export type TagUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyTagCreateInput = {
+    id?: string
+    name: string
+    count?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    problems?: ProblemCreateNestedManyWithoutCompaniesInput
+  }
+
+  export type CompanyTagUncheckedCreateInput = {
+    id?: string
+    name: string
+    count?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    problems?: ProblemUncheckedCreateNestedManyWithoutCompaniesInput
+  }
+
+  export type CompanyTagUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    problems?: ProblemUpdateManyWithoutCompaniesNestedInput
+  }
+
+  export type CompanyTagUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    problems?: ProblemUncheckedUpdateManyWithoutCompaniesNestedInput
+  }
+
+  export type CompanyTagCreateManyInput = {
+    id?: string
+    name: string
+    count?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyTagUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyTagUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10396,12 +11794,22 @@ export namespace Prisma {
     none?: TagWhereInput
   }
 
+  export type CompanyTagListRelationFilter = {
+    every?: CompanyTagWhereInput
+    some?: CompanyTagWhereInput
+    none?: CompanyTagWhereInput
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
 
   export type TagOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompanyTagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10516,6 +11924,65 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type CompanyTagCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    count?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyTagAvgOrderByAggregateInput = {
+    count?: SortOrder
+  }
+
+  export type CompanyTagMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    count?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyTagMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    count?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyTagSumOrderByAggregateInput = {
+    count?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type ProblemScalarRelationFilter = {
     is?: ProblemWhereInput
     isNot?: ProblemWhereInput
@@ -10580,17 +12047,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type SubmissionScalarRelationFilter = {
     is?: SubmissionWhereInput
     isNot?: SubmissionWhereInput
@@ -10650,22 +12106,6 @@ export namespace Prisma {
 
   export type TestCasesResultSumOrderByAggregateInput = {
     testCase?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type problemSolvedUserIdProblemIdCompoundUniqueInput = {
@@ -10853,6 +12293,12 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
+  export type CompanyTagCreateNestedManyWithoutProblemsInput = {
+    create?: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput> | CompanyTagCreateWithoutProblemsInput[] | CompanyTagUncheckedCreateWithoutProblemsInput[]
+    connectOrCreate?: CompanyTagCreateOrConnectWithoutProblemsInput | CompanyTagCreateOrConnectWithoutProblemsInput[]
+    connect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutProblemsInput = {
     create?: XOR<UserCreateWithoutProblemsInput, UserUncheckedCreateWithoutProblemsInput>
     connectOrCreate?: UserCreateOrConnectWithoutProblemsInput
@@ -10877,6 +12323,12 @@ export namespace Prisma {
     create?: XOR<TagCreateWithoutProblemsInput, TagUncheckedCreateWithoutProblemsInput> | TagCreateWithoutProblemsInput[] | TagUncheckedCreateWithoutProblemsInput[]
     connectOrCreate?: TagCreateOrConnectWithoutProblemsInput | TagCreateOrConnectWithoutProblemsInput[]
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+  }
+
+  export type CompanyTagUncheckedCreateNestedManyWithoutProblemsInput = {
+    create?: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput> | CompanyTagCreateWithoutProblemsInput[] | CompanyTagUncheckedCreateWithoutProblemsInput[]
+    connectOrCreate?: CompanyTagCreateOrConnectWithoutProblemsInput | CompanyTagCreateOrConnectWithoutProblemsInput[]
+    connect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
   }
 
   export type SubmissionUncheckedCreateNestedManyWithoutProblemInput = {
@@ -10912,6 +12364,19 @@ export namespace Prisma {
     update?: TagUpdateWithWhereUniqueWithoutProblemsInput | TagUpdateWithWhereUniqueWithoutProblemsInput[]
     updateMany?: TagUpdateManyWithWhereWithoutProblemsInput | TagUpdateManyWithWhereWithoutProblemsInput[]
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type CompanyTagUpdateManyWithoutProblemsNestedInput = {
+    create?: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput> | CompanyTagCreateWithoutProblemsInput[] | CompanyTagUncheckedCreateWithoutProblemsInput[]
+    connectOrCreate?: CompanyTagCreateOrConnectWithoutProblemsInput | CompanyTagCreateOrConnectWithoutProblemsInput[]
+    upsert?: CompanyTagUpsertWithWhereUniqueWithoutProblemsInput | CompanyTagUpsertWithWhereUniqueWithoutProblemsInput[]
+    set?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    disconnect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    delete?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    connect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    update?: CompanyTagUpdateWithWhereUniqueWithoutProblemsInput | CompanyTagUpdateWithWhereUniqueWithoutProblemsInput[]
+    updateMany?: CompanyTagUpdateManyWithWhereWithoutProblemsInput | CompanyTagUpdateManyWithWhereWithoutProblemsInput[]
+    deleteMany?: CompanyTagScalarWhereInput | CompanyTagScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutProblemsNestedInput = {
@@ -10961,6 +12426,19 @@ export namespace Prisma {
     update?: TagUpdateWithWhereUniqueWithoutProblemsInput | TagUpdateWithWhereUniqueWithoutProblemsInput[]
     updateMany?: TagUpdateManyWithWhereWithoutProblemsInput | TagUpdateManyWithWhereWithoutProblemsInput[]
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
+  export type CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput = {
+    create?: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput> | CompanyTagCreateWithoutProblemsInput[] | CompanyTagUncheckedCreateWithoutProblemsInput[]
+    connectOrCreate?: CompanyTagCreateOrConnectWithoutProblemsInput | CompanyTagCreateOrConnectWithoutProblemsInput[]
+    upsert?: CompanyTagUpsertWithWhereUniqueWithoutProblemsInput | CompanyTagUpsertWithWhereUniqueWithoutProblemsInput[]
+    set?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    disconnect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    delete?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    connect?: CompanyTagWhereUniqueInput | CompanyTagWhereUniqueInput[]
+    update?: CompanyTagUpdateWithWhereUniqueWithoutProblemsInput | CompanyTagUpdateWithWhereUniqueWithoutProblemsInput[]
+    updateMany?: CompanyTagUpdateManyWithWhereWithoutProblemsInput | CompanyTagUpdateManyWithWhereWithoutProblemsInput[]
+    deleteMany?: CompanyTagScalarWhereInput | CompanyTagScalarWhereInput[]
   }
 
   export type SubmissionUncheckedUpdateManyWithoutProblemNestedInput = {
@@ -11026,6 +12504,52 @@ export namespace Prisma {
     connect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
     update?: ProblemUpdateWithWhereUniqueWithoutTagsInput | ProblemUpdateWithWhereUniqueWithoutTagsInput[]
     updateMany?: ProblemUpdateManyWithWhereWithoutTagsInput | ProblemUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: ProblemScalarWhereInput | ProblemScalarWhereInput[]
+  }
+
+  export type ProblemCreateNestedManyWithoutCompaniesInput = {
+    create?: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput> | ProblemCreateWithoutCompaniesInput[] | ProblemUncheckedCreateWithoutCompaniesInput[]
+    connectOrCreate?: ProblemCreateOrConnectWithoutCompaniesInput | ProblemCreateOrConnectWithoutCompaniesInput[]
+    connect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+  }
+
+  export type ProblemUncheckedCreateNestedManyWithoutCompaniesInput = {
+    create?: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput> | ProblemCreateWithoutCompaniesInput[] | ProblemUncheckedCreateWithoutCompaniesInput[]
+    connectOrCreate?: ProblemCreateOrConnectWithoutCompaniesInput | ProblemCreateOrConnectWithoutCompaniesInput[]
+    connect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ProblemUpdateManyWithoutCompaniesNestedInput = {
+    create?: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput> | ProblemCreateWithoutCompaniesInput[] | ProblemUncheckedCreateWithoutCompaniesInput[]
+    connectOrCreate?: ProblemCreateOrConnectWithoutCompaniesInput | ProblemCreateOrConnectWithoutCompaniesInput[]
+    upsert?: ProblemUpsertWithWhereUniqueWithoutCompaniesInput | ProblemUpsertWithWhereUniqueWithoutCompaniesInput[]
+    set?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    disconnect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    delete?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    connect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    update?: ProblemUpdateWithWhereUniqueWithoutCompaniesInput | ProblemUpdateWithWhereUniqueWithoutCompaniesInput[]
+    updateMany?: ProblemUpdateManyWithWhereWithoutCompaniesInput | ProblemUpdateManyWithWhereWithoutCompaniesInput[]
+    deleteMany?: ProblemScalarWhereInput | ProblemScalarWhereInput[]
+  }
+
+  export type ProblemUncheckedUpdateManyWithoutCompaniesNestedInput = {
+    create?: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput> | ProblemCreateWithoutCompaniesInput[] | ProblemUncheckedCreateWithoutCompaniesInput[]
+    connectOrCreate?: ProblemCreateOrConnectWithoutCompaniesInput | ProblemCreateOrConnectWithoutCompaniesInput[]
+    upsert?: ProblemUpsertWithWhereUniqueWithoutCompaniesInput | ProblemUpsertWithWhereUniqueWithoutCompaniesInput[]
+    set?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    disconnect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    delete?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    connect?: ProblemWhereUniqueInput | ProblemWhereUniqueInput[]
+    update?: ProblemUpdateWithWhereUniqueWithoutCompaniesInput | ProblemUpdateWithWhereUniqueWithoutCompaniesInput[]
+    updateMany?: ProblemUpdateManyWithWhereWithoutCompaniesInput | ProblemUpdateManyWithWhereWithoutCompaniesInput[]
     deleteMany?: ProblemScalarWhereInput | ProblemScalarWhereInput[]
   }
 
@@ -11103,14 +12627,6 @@ export namespace Prisma {
     create?: XOR<SubmissionCreateWithoutTestCasesInput, SubmissionUncheckedCreateWithoutTestCasesInput>
     connectOrCreate?: SubmissionCreateOrConnectWithoutTestCasesInput
     connect?: SubmissionWhereUniqueInput
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type SubmissionUpdateOneRequiredWithoutTestCasesNestedInput = {
@@ -11409,6 +12925,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
   }
@@ -11429,6 +12946,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
   }
@@ -11630,6 +13148,27 @@ export namespace Prisma {
     create: XOR<TagCreateWithoutProblemsInput, TagUncheckedCreateWithoutProblemsInput>
   }
 
+  export type CompanyTagCreateWithoutProblemsInput = {
+    id?: string
+    name: string
+    count?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyTagUncheckedCreateWithoutProblemsInput = {
+    id?: string
+    name: string
+    count?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyTagCreateOrConnectWithoutProblemsInput = {
+    where: CompanyTagWhereUniqueInput
+    create: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput>
+  }
+
   export type UserCreateWithoutProblemsInput = {
     id?: string
     name?: string | null
@@ -11779,6 +13318,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
   }
 
+  export type CompanyTagUpsertWithWhereUniqueWithoutProblemsInput = {
+    where: CompanyTagWhereUniqueInput
+    update: XOR<CompanyTagUpdateWithoutProblemsInput, CompanyTagUncheckedUpdateWithoutProblemsInput>
+    create: XOR<CompanyTagCreateWithoutProblemsInput, CompanyTagUncheckedCreateWithoutProblemsInput>
+  }
+
+  export type CompanyTagUpdateWithWhereUniqueWithoutProblemsInput = {
+    where: CompanyTagWhereUniqueInput
+    data: XOR<CompanyTagUpdateWithoutProblemsInput, CompanyTagUncheckedUpdateWithoutProblemsInput>
+  }
+
+  export type CompanyTagUpdateManyWithWhereWithoutProblemsInput = {
+    where: CompanyTagScalarWhereInput
+    data: XOR<CompanyTagUpdateManyMutationInput, CompanyTagUncheckedUpdateManyWithoutProblemsInput>
+  }
+
+  export type CompanyTagScalarWhereInput = {
+    AND?: CompanyTagScalarWhereInput | CompanyTagScalarWhereInput[]
+    OR?: CompanyTagScalarWhereInput[]
+    NOT?: CompanyTagScalarWhereInput | CompanyTagScalarWhereInput[]
+    id?: StringFilter<"CompanyTag"> | string
+    name?: StringFilter<"CompanyTag"> | string
+    count?: IntFilter<"CompanyTag"> | number
+    createdAt?: DateTimeFilter<"CompanyTag"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyTag"> | Date | string
+  }
+
   export type UserUpsertWithoutProblemsInput = {
     update: XOR<UserUpdateWithoutProblemsInput, UserUncheckedUpdateWithoutProblemsInput>
     create: XOR<UserCreateWithoutProblemsInput, UserUncheckedCreateWithoutProblemsInput>
@@ -11887,6 +13453,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
@@ -11908,6 +13475,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
   }
@@ -11931,6 +13499,69 @@ export namespace Prisma {
   export type ProblemUpdateManyWithWhereWithoutTagsInput = {
     where: ProblemScalarWhereInput
     data: XOR<ProblemUpdateManyMutationInput, ProblemUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type ProblemCreateWithoutCompaniesInput = {
+    id?: string
+    title: string
+    description: string
+    difficulty?: $Enums.Difficulty
+    examples: JsonNullValueInput | InputJsonValue
+    constraints: string
+    hints?: string | null
+    editorial?: string | null
+    testcases: JsonNullValueInput | InputJsonValue
+    codesnippets: JsonNullValueInput | InputJsonValue
+    referencesolution: JsonNullValueInput | InputJsonValue
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tags?: TagCreateNestedManyWithoutProblemsInput
+    user: UserCreateNestedOneWithoutProblemsInput
+    submissions?: SubmissionCreateNestedManyWithoutProblemInput
+    problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
+  }
+
+  export type ProblemUncheckedCreateWithoutCompaniesInput = {
+    id?: string
+    title: string
+    description: string
+    difficulty?: $Enums.Difficulty
+    userId: string
+    examples: JsonNullValueInput | InputJsonValue
+    constraints: string
+    hints?: string | null
+    editorial?: string | null
+    testcases: JsonNullValueInput | InputJsonValue
+    codesnippets: JsonNullValueInput | InputJsonValue
+    referencesolution: JsonNullValueInput | InputJsonValue
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
+    problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
+  }
+
+  export type ProblemCreateOrConnectWithoutCompaniesInput = {
+    where: ProblemWhereUniqueInput
+    create: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput>
+  }
+
+  export type ProblemUpsertWithWhereUniqueWithoutCompaniesInput = {
+    where: ProblemWhereUniqueInput
+    update: XOR<ProblemUpdateWithoutCompaniesInput, ProblemUncheckedUpdateWithoutCompaniesInput>
+    create: XOR<ProblemCreateWithoutCompaniesInput, ProblemUncheckedCreateWithoutCompaniesInput>
+  }
+
+  export type ProblemUpdateWithWhereUniqueWithoutCompaniesInput = {
+    where: ProblemWhereUniqueInput
+    data: XOR<ProblemUpdateWithoutCompaniesInput, ProblemUncheckedUpdateWithoutCompaniesInput>
+  }
+
+  export type ProblemUpdateManyWithWhereWithoutCompaniesInput = {
+    where: ProblemScalarWhereInput
+    data: XOR<ProblemUpdateManyMutationInput, ProblemUncheckedUpdateManyWithoutCompaniesInput>
   }
 
   export type UserCreateWithoutSubmissionsInput = {
@@ -12004,6 +13635,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
   }
@@ -12025,6 +13657,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
   }
 
@@ -12161,6 +13794,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
   }
@@ -12182,6 +13816,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
   }
 
@@ -12375,6 +14010,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
   }
@@ -12396,6 +14032,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
+    companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
   }
 
@@ -12492,6 +14129,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
   }
@@ -12513,6 +14151,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
   }
 
@@ -12572,6 +14211,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
   }
@@ -12592,6 +14232,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
+    companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
   }
@@ -12728,6 +14369,30 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompanyTagUpdateWithoutProblemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyTagUncheckedUpdateWithoutProblemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyTagUncheckedUpdateManyWithoutProblemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SubmissionUpdateWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     sourceCode?: JsonNullValueInput | InputJsonValue
@@ -12814,6 +14479,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
@@ -12835,11 +14501,72 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    userId?: StringFieldUpdateOperationsInput | string
+    examples?: JsonNullValueInput | InputJsonValue
+    constraints?: StringFieldUpdateOperationsInput | string
+    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    editorial?: NullableStringFieldUpdateOperationsInput | string | null
+    testcases?: JsonNullValueInput | InputJsonValue
+    codesnippets?: JsonNullValueInput | InputJsonValue
+    referencesolution?: JsonNullValueInput | InputJsonValue
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProblemUpdateWithoutCompaniesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    examples?: JsonNullValueInput | InputJsonValue
+    constraints?: StringFieldUpdateOperationsInput | string
+    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    editorial?: NullableStringFieldUpdateOperationsInput | string | null
+    testcases?: JsonNullValueInput | InputJsonValue
+    codesnippets?: JsonNullValueInput | InputJsonValue
+    referencesolution?: JsonNullValueInput | InputJsonValue
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: TagUpdateManyWithoutProblemsNestedInput
+    user?: UserUpdateOneRequiredWithoutProblemsNestedInput
+    submissions?: SubmissionUpdateManyWithoutProblemNestedInput
+    problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
+  }
+
+  export type ProblemUncheckedUpdateWithoutCompaniesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    userId?: StringFieldUpdateOperationsInput | string
+    examples?: JsonNullValueInput | InputJsonValue
+    constraints?: StringFieldUpdateOperationsInput | string
+    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    editorial?: NullableStringFieldUpdateOperationsInput | string | null
+    testcases?: JsonNullValueInput | InputJsonValue
+    codesnippets?: JsonNullValueInput | InputJsonValue
+    referencesolution?: JsonNullValueInput | InputJsonValue
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
+    problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
+  }
+
+  export type ProblemUncheckedUpdateManyWithoutCompaniesInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string

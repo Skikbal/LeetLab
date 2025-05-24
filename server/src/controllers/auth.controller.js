@@ -248,9 +248,6 @@ const loginUserHandler = AsyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(401, "Invalid credentials");
   }
-  if (!user.isVerified) {
-    throw new ApiError(401, "Email not verified");
-  }
 
   const { accessToken, refreshToken } = await generateToken(user);
   const shouldReactive =

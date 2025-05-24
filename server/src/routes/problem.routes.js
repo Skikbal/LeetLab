@@ -8,6 +8,7 @@ import {
   getSolvedProblemsHandler,
   bulkDeleteProblemHandler,
   getAllTagsHandler,
+  getAllCompaniesHandler,
 } from "../controllers/problem.controller.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
 import isAdmin from "../middlewares/isAdmin.middleware.js";
@@ -42,6 +43,11 @@ problemRoutes
 problemRoutes
   .route("/get-problem/:id")
   .get(isAuth, isVerified, getProblemHandler);
+
 problemRoutes.route("/tags").get(isAuth, isVerified, getAllTagsHandler);
+
+problemRoutes
+  .route("/companies")
+  .get(isAuth, isVerified, getAllCompaniesHandler);
 
 export default problemRoutes;

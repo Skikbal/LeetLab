@@ -12,6 +12,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     description,
     difficulty,
     tags,
+    companyTags,
     examples,
     constraints,
     hints,
@@ -47,6 +48,25 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
       });
     }),
   );
+  //create or update company tags and get their records
+  const companyTagRecords = await Promise.all(
+    companyTags.map(async (company) => {
+      return await prisma.CompanyTag.upsert({
+        where: {
+          name: company.toLowerCase(),
+        },
+        update: {
+          count: {
+            increment: 1,
+          },
+        },
+        create: {
+          name: company.toLowerCase(),
+          count: 1,
+        },
+      });
+    }),
+  );
   // Here we will create the problem in our database
   const problem = await prisma.problem.create({
     data: {
@@ -66,9 +86,20 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
           id: tag.id,
         })),
       },
+      companies: {
+        connect: companyTagRecords.map((company) => ({
+          id: company.id,
+        })),
+      },
     },
     include: {
       tags: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      companies: {
         select: {
           id: true,
           name: true,
@@ -346,6 +377,18 @@ const getAllTagsHandler = AsyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, "Tags fetched successfully", tags));
 });
 
+//find All companies
+const getAllCompaniesHandler = AsyncHandler(async (req, res) => {
+  const companies = await prisma.CompanyTag.findMany();
+
+  if (!companies) {
+    throw new ApiError(404, "Companies not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Companies fetched successfully", companies));
+});
+
 export {
   createProblemHandler,
   getAllProblemsHandler,
@@ -355,4 +398,5 @@ export {
   bulkDeleteProblemHandler,
   getSolvedProblemsHandler,
   getAllTagsHandler,
+  getAllCompaniesHandler,
 };

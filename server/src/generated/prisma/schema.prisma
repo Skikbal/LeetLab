@@ -63,6 +63,7 @@ model Problem {
   hints             String?
   editorial         String?
   tags              Tag[]           @relation("ProblemToTag")
+  companies         CompanyTag[]    @relation("ProblemToCompanyTag")
   testcases         Json
   codesnippets      Json
   referencesolution Json
@@ -83,6 +84,16 @@ model Tag {
   updatedAt DateTime  @updatedAt
   // relation for many-to-many with Problem
   problems  Problem[] @relation("ProblemToTag")
+}
+
+//company tags
+model CompanyTag {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  count     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  problems  Problem[] @relation("ProblemToCompanyTag")
 }
 
 //submission
