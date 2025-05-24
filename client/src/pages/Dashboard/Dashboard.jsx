@@ -3,6 +3,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { MailCheck } from "lucide-react";
 const Dashboard = () => {
   const { authUser, isVerified } = useAuthStore();
+  console.log(isVerified,">>>>>>>>")
   return (
     <>
       {authUser && !isVerified && (

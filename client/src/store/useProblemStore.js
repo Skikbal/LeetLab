@@ -20,7 +20,7 @@ export const useProblemStore = create((set) => ({
     }
   },
 
-  getAllProblems: async ({ search, tags,difficulty }) => {
+  getAllProblems: async ({ search, tags, difficulty }) => {
     set({ isLoading: true });
     try {
       const res = await axiosInstance.get(
@@ -45,6 +45,19 @@ export const useProblemStore = create((set) => ({
     } catch (error) {
       console.log(error.response.data.message);
       toast.error(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  //delete problem
+  deleteProblem: async (id) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.delete(`/problems/delete-problem/${id}`);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.success(error.response.data.message);
     } finally {
       set({ isLoading: false });
     }
