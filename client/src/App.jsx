@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore.js";
 import AppRoutes from "./routes/AppRoutes.jsx";
 import { BounceLoader } from "react-spinners";
-
+import "./App.css"
 const App = () => {
   const { checkAuthUser, isCheckingAuth} = useAuthStore();
   // const override: CSSProperties = {

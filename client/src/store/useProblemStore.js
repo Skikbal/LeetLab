@@ -7,6 +7,7 @@ export const useProblemStore = create((set) => ({
   problems: [],
   tags: [],
   companies: [],
+  problem:{},
   createProblem: async (data, navigate) => {
     set({ isLoading: true });
     try {
@@ -78,4 +79,19 @@ export const useProblemStore = create((set) => ({
       set({ isLoading: false });
     }
   },
+
+  //get problem by Id
+  getProblemById: async (id) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.get(`/problems/get-problem/${id}`);
+      toast.success(res.data.message);
+      set({ problem: res.data.data });
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  }
 }));

@@ -1,8 +1,12 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { Code, User, Settings, LogOut } from "lucide-react";
+import { Code, User, Settings, LogOut, } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const Navbar = () => {
+  const location = useLocation();
+  const regex = /^\/problems\/editor\/[a-f0-9\-]{36}$/i; // UUID v4 pattern (simple)
+  const pathMatches = regex.test(location.pathname);
   const { logoutUser, authUser, isCheckingAuth } = useAuthStore();
   const handleLogout = async () => {
     try {
@@ -12,16 +16,18 @@ const Navbar = () => {
     }
   };
   if (isCheckingAuth) return <div>loading...</div>;
+  if(pathMatches) return null
   return (
-    <div className="navbar flex bg-base-100 shadow-sm justify-between">
-      <div className="flex">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
-      </div>
-      <div className="flex-1">
-        <Link to="/problems">Problems</Link>
-      </div>
-      <div className="flex gap-2">
-        <button className="btn btn-ghost btn-circle">
+    <>
+      <div className="navbar flex bg-base-100 shadow-sm justify-between">
+        <div className="flex">
+          <a className="btn btn-ghost text-xl">daisyUI</a>
+        </div>
+        <div className="flex-1">
+          <Link to="/problems">Problems</Link>
+        </div>
+        <div className="flex gap-2">
+          {/* <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,8 +46,8 @@ const Navbar = () => {
             </svg>
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
-        </button>
-        <label className="input">
+        </button> */}
+          {/* <label className="input">
           <svg
             className="h-[1em] opacity-50"
             xmlns="http://www.w3.org/2000/svg"
@@ -61,54 +67,55 @@ const Navbar = () => {
           <input type="search" className="grow" placeholder="Search" />
           <kbd className="kbd kbd-sm">⌘</kbd>
           <kbd className="kbd kbd-sm">K</kbd>
-        </label>
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+        </label> */}
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                />
+              </div>
             </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a className="">
-                <User className="h-5 w-5 text-primary" />
-                Profile
-              </a>
-            </li>
-            {authUser.role === "ADMIN" && (
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            >
               <li>
-                <Link to={"/add-problem"}>
-                  <Code className="h-5 w-5 text-primary" />
-                  Add Problem
-                </Link>
+                <a className="">
+                  <User className="h-5 w-5 text-primary" />
+                  Profile
+                </a>
               </li>
-            )}
-            <li>
-              <a>
-                <Settings className="h-5 w-5 text-primary" />
-                Settings
-              </a>
-            </li>
-            <li className="bg-primary rounded-sm mt-3" onClick={handleLogout}>
-              <a>
-                <LogOut className="h-5 w-5 text-white" />
-                Logout
-              </a>
-            </li>
-          </ul>
+              {authUser.role === "ADMIN" && (
+                <li>
+                  <Link to={"/add-problem"}>
+                    <Code className="h-5 w-5 text-primary" />
+                    Add Problem
+                  </Link>
+                </li>
+              )}
+              <li>
+                <a>
+                  <Settings className="h-5 w-5 text-primary" />
+                  Settings
+                </a>
+              </li>
+              <li className="bg-primary rounded-sm mt-3" onClick={handleLogout}>
+                <a>
+                  <LogOut className="h-5 w-5 text-white" />
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

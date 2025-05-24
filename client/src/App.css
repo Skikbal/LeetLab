@@ -1,0 +1,35 @@
+.gutter {
+    background: none;
+    margin-inline:5px;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* flex-shrink: 0; */
+  }
+  .gutter:hover {
+    background: oklch(64% 0.2 131.684)
+    /* flex-shrink: 0; */
+  }
+  
+  .gutter-horizontal {
+    cursor: ew-resize;
+  }
+  
+  .gutter-vertical {
+    cursor: ns-resize;
+  }
+  .comp {
+    background: red;
+    color: white;
+    height: 400px;
+    /* display: inline-block; */
+  }
+  .comp2 {
+    background: green;
+    color: white;
+    height: 400px;
+    /* display: inline-block; */
+  }
+  .wrap {
+    display: flex;
+  }
