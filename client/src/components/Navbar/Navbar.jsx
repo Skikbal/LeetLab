@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 const Navbar = () => {
   const location = useLocation();
-  const regex = /^\/problems\/editor\/[a-f0-9\-]{36}$/i; // UUID v4 pattern (simple)
+  const regex = /^\/editor\/[a-f0-9\-]{36}$/i; // UUID v4 pattern (simple)
   const pathMatches = regex.test(location.pathname);
   const { logoutUser, authUser, isCheckingAuth } = useAuthStore();
   const handleLogout = async () => {

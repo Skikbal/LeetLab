@@ -31,7 +31,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/problems/editor/:id"
+          path="/editor/:id"
           element={
             <RequireVerified>
               <ProblemEditor />
@@ -46,6 +46,14 @@ const AppRoutes = () => {
           element={
             <RequireVerified>
               <Problems />
+            </RequireVerified>
+          }
+        />
+        <Route
+          path="/editor/:id"
+          element={
+            <RequireVerified>
+              <ProblemEditor />
             </RequireVerified>
           }
         />

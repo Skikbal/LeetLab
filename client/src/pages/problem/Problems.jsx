@@ -178,7 +178,7 @@ const Problems = () => {
                     <tr
                       key={index}
                       className="hover:bg-base-200 overflow-hidden cursor-pointer"
-                      onClick={() => navigate(`/problems/editor/${problem.id}`)}
+                      onClick={() => navigate(`/editor/${problem.id}`)}
                     >
                       <th className="w-1/16">
                         <label>

@@ -82,9 +82,11 @@ export const useProblemStore = create((set) => ({
 
   //get problem by Id
   getProblemById: async (id) => {
+    console.log(id);
     set({ isLoading: true });
     try {
       const res = await axiosInstance.get(`/problems/get-problem/${id}`);
+      console.log(res.data.data)
       toast.success(res.data.message);
       set({ problem: res.data.data });
     } catch (error) {

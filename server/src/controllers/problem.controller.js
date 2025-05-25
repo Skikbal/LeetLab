@@ -183,6 +183,23 @@ const getProblemHandler = AsyncHandler(async (req, res) => {
       id,
       isDeleted: false,
     },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      difficulty: true,
+      tags: true,
+      examples: true,
+      constraints: true,
+      hints: true,
+      editorial: true,
+      testcases: true,
+      codesnippets: true,
+      referencesolution: true,
+      createdAt: true,
+      updatedAt: true,
+      companies:true
+    }
   });
 
   if (!problem) {
