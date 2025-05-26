@@ -42,10 +42,12 @@ const ProblemSchema = z.object({
     .min(10, "Description must be at least 10 characters long"),
   difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
   tags: z.array(z.string()).min(1, "Please enter at least one tag"),
-  companyTags: z.array(z.string()).min(1, "Please enter at least one company tag"),
+  companyTags: z
+    .array(z.string())
+    .min(1, "Please enter at least one company tag"),
   constraints: z
-    .string()
-    .min(1, "Constraints must be at least 10 characters long"),
+    .array(z.string())
+    .min(1, "Please enter at least one constraint"),
   hints: z.string().optional(),
   editorial: z.string().optional(),
   testcases: z

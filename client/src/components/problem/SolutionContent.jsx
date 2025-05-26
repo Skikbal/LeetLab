@@ -3,7 +3,7 @@ const SolutionContent = ({ problem }) => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-semibold text-nowrap">{problem?.title}</h1>
-      {Object.entries(problem?.referencesolution).map(
+      {Object.entries(problem?.referencesolutions).map(
         ([language, code], index) => {
           return (
             <div key={index}>

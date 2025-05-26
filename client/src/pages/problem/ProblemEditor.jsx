@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useProblemStore } from "../../store/useProblemStore";
 import { useExecuteStore } from "../../store/useExecutionStore.js";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Split from "react-split";
 import MonacoEditor from "../../components/Monaco/MonacoEditor.jsx";
 import {
@@ -21,6 +21,9 @@ import {
   Expand,
   SquareCheck,
   ListChecks,
+  Clock,
+  Users,
+  ThumbsUp,
 } from "lucide-react";
 import { Editor } from "@monaco-editor/react";
 import "../../App.css";
@@ -68,21 +71,34 @@ const ProblemEditor = () => {
       console.log("Error executing problem: ", error);
     }
   };
-
+  console.log(TestResult);
   if (isExecuting) return <div>Loading...</div>;
 
   return (
     <div className="bg-base-200 h-screen">
-      <div className="navbar flex bg-base-200 shadow-sm justify-between items-center">
+      <div className="navbar flex flex-wrap md:flex-nowrapbg-base-200 shadow-sm justify-between items-center">
         <div className="flex flex-col gap-2 ">
           <div className="flex gap-2 font-medium ">
-            <House className="h-6 w-6 cursor-pointer" />{" "}
+            <Link to={`/`}>
+              <House className="h-6 w-6 cursor-pointer" />
+            </Link>{" "}
             <span>{problem?.title}</span>
           </div>
-          <div>hello</div>
+          <div className="flex gap-2 text-sm mt-1">
+            <p className="flex gap-1">
+              <Clock className="h-5 w-5" />{" "}
+              <span>Updated {new Date(problem?.updatedAt).toDateString()}</span>
+            </p>
+            <p className="flex gap-1">
+              <Users className="h-5 w-5" /> 3 Submissions
+            </p>
+            <p className="flex gap-1">
+              <ThumbsUp className="h-5 w-5" /> 95% Success Rate
+            </p>
+          </div>
         </div>
 
-        <div className="join join-vertical lg:join-horizontal">
+        <div className="join join-horizontal ">
           <button
             className="btn join-item cursor-pointer hover:text-primary"
             onClick={() => {
@@ -134,7 +150,7 @@ const ProblemEditor = () => {
         <div className="h-[calc(100vh-80px)] bg-base-300 rounded-md overflow-auto no-scrollbar">
           <div className="flex w-full bg-accent/100 h-10 items-center justify-around rounded-t-md sticky top-0">
             <div
-              className="flex items-center gap-1 hover:bg-base-300/40 px-2 py-1 rounded cursor-pointer"
+              className="flex items-center gap-1 hover:bg-base-300/40 px-2 py-1 rounded cursor-pointer "
               onClick={() => setTabs("description")}
             >
               <NotepadText className="h-4 w-4 text-primary" /> Description

@@ -9,7 +9,7 @@ const TestResultContent = ({ TestResult, testIndex, setTestIndex }) => {
     <div className="testCase p-4 overflow-auto no-scrollbar h-auto">
       <div className="flex gap-5 item-center">
         <p className="">
-          {TestResult.data.every((e) => e.passed === true) ? (
+          {TestResult.data.testCases.every((e) => e.passed === true) ? (
             <span className="text-success text-base font-semibold">
               Correct Answer
             </span>
@@ -20,13 +20,13 @@ const TestResultContent = ({ TestResult, testIndex, setTestIndex }) => {
           )}
         </p>
         <p className="text-base font-semibold">
-          Runtime: {TestResult?.data[testIndex].time}
+          Runtime: {TestResult?.data?.testCases[testIndex].time}
         </p>
       </div>
 
       <div className="flex gap-3 mt-3">
-        {Object.keys(TestResult.data).length > 0 &&
-          TestResult?.data?.map((testcase, index) => {
+        {Object.keys(TestResult.data.testCases).length > 0 &&
+          TestResult?.data?.testCases?.map((testcase, index) => {
             return (
               <p
                 className="font-semibold bg-accent/100 px-2 py-1 rounded-md cursor-pointer hover:bg-accent/40"
@@ -43,17 +43,17 @@ const TestResultContent = ({ TestResult, testIndex, setTestIndex }) => {
           Input :{" "}
           <span className="">
             {" "}
-            {Object.keys(TestResult.data).length > 0 &&
-              TestResult.data[testIndex].stdin[testIndex]}
+            {Object.keys(TestResult.data.testCases).length > 0 &&
+              TestResult?.data?.testCases[testIndex].stdin[testIndex]}
           </span>
         </p>
         <p className="font-semibold bg-base-200 px-2 py-2 rounded-md">
           Output:{" "}
           <span className="">
             {" "}
-            {Object.keys(TestResult.data).length > 0 &&
-            TestResult.data[testIndex].stdout ? (
-              TestResult.data[testIndex].stdout[testIndex]
+            {Object.keys(TestResult.data.testCases).length > 0 &&
+            TestResult.data.testCases[testIndex].stdout ? (
+              TestResult.data.testCases[testIndex].stdout[testIndex]
             ) : (
               <span className="text-red-500">Undefined</span>
             )}
@@ -61,7 +61,7 @@ const TestResultContent = ({ TestResult, testIndex, setTestIndex }) => {
         </p>
         <p
           className={`font-semibold bg-base-200 px-2 py-2 rounded-md ${
-            TestResult.data[testIndex].passed === true
+            TestResult.data.testCases[testIndex].passed === true
               ? "text-success"
               : "text-red-500"
           }`}
@@ -69,8 +69,8 @@ const TestResultContent = ({ TestResult, testIndex, setTestIndex }) => {
           Expected Output:{" "}
           <span className="">
             {" "}
-            {Object.keys(TestResult.data).length > 0 &&
-              TestResult.data[testIndex].expected}
+            {Object.keys(TestResult.data.testCases).length > 0 &&
+              TestResult.data.testCases[testIndex].expected}
           </span>
         </p>
       </div>

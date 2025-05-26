@@ -6,8 +6,8 @@ const sampleStringProblem = {
   difficulty: "EASY",
   tags: ["String", "Two Pointers"],
   companyTags: ["Amazon", "Microsoft", "Google", "Facebook", "Apple"],
-  constraints:
-    "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters.",
+  constraints:[
+    "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters."],
   hints:
     "Consider using two pointers, one from the start and one from the end, moving towards the center.",
   editorial:
@@ -220,7 +220,7 @@ const sampleDPProblem = {
     "Intel",
     "Salesforce",
   ],
-  constraints: "1 <= n <= 45",
+  constraints: ["1 <= n <= 45"],
   hints:
     "To reach the nth step, you can either come from the (n-1)th step or the (n-2)th step.",
   editorial:

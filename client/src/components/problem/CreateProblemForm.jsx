@@ -18,6 +18,7 @@ import {
   Car,
   Building2,
   Loader2,
+  ChevronsLeftRight,
 } from "lucide-react";
 import SampleProblem from "../sample/SampleProblem.jsx";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
@@ -44,8 +45,9 @@ const CreateProblemForm = () => {
     resolver: zodResolver(ProblemSchema),
     defaultValues: {
       testcases: [{ input: "", output: "" }],
-      tags: [""],
-      companyTags: [""],
+      tags: [],
+      companyTags: [],
+      constraints: [],
       examples: {
         JAVASCRIPT: { input: "", output: "", explanation: "" },
         PYTHON: { input: "", output: "", explanation: "" },
@@ -76,6 +78,17 @@ const CreateProblemForm = () => {
   } = useFieldArray({
     control,
     name: "testcases",
+  });
+
+  //contraints
+  const {
+    fields: constraintFields,
+    append: appendConstraint,
+    remove: removeConstraint,
+    replace: replaceConstraint,
+  } = useFieldArray({
+    control,
+    name: "constraints",
   });
 
   //tags
@@ -110,6 +123,7 @@ const CreateProblemForm = () => {
     replaceTag(sampleData.tags.map((tag) => tag));
     replacetestcases(sampleData.testcases.map((tc) => tc));
     replaceCompanyTag(sampleData.companyTags.map((ct) => ct));
+    replaceConstraint(sampleData.constraints.map((c) => c));
 
     //reset form with sample data
     reset(sampleData);
@@ -424,22 +438,43 @@ const CreateProblemForm = () => {
               Additional Information
             </h3>
             <div className="space-y-6">
-              <div className="form-control">
-                <Label children={"Constraints"} name={"constraints"} />
-                <TextArea
-                  className="bg-base-100 min-h-24 w-full p-3"
-                  register={register}
-                  name={"constraints"}
-                  placeholder="Enter problem constraints"
-                />
+              <SampleCardLayout
+                title={"Constraints"}
+                icon={<ChevronsLeftRight className="w-5 h-5" />}
+                button={true}
+                onClick={() => appendConstraint("")}
+                className={"bg-base-100"}
+                buttonTitle={
+                  <>
+                    <Plus className="w-4 h-4" /> Add Constraints
+                  </>
+                }
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {constraintFields?.map((field, index) => (
+                    <div key={field.id} className="flex gap-2 items-center">
+                      <Input
+                        register={register}
+                        name={`constraints.${index}`}
+                        placeholder={"Enter Constraint"}
+                        type={"text"}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-square btn-sm"
+                        onClick={() => removeConstraint(index)}
+                        disabled={constraintFields.length === 1}
+                      >
+                        <Trash2 className="w-4 h-4 text-error" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
                 {errors.constraints && (
-                  <div className="mt-2">
-                    <span className="text-red-500 text-sm">
-                      {errors.constraints.message}
-                    </span>
-                  </div>
+                  <ErrorSpan error={errors.constraints.message} />
                 )}
-              </div>
+              </SampleCardLayout>
+              
               <div className="form-control">
                 <Label children={"Hints (Optional)"} name={"hints"} />
                 <TextArea
