@@ -4,9 +4,9 @@ import {
   poolBatchResult,
 } from "./judge0.service.js";
 import ApiError from "../utils/ApiError.js";
-const judge0Validator = async ({ testcases, referencesolution }) => {
+const judge0Validator = async ({ testcases, referencesolutions }) => {
   try {
-    for (const [language, solutionCode] of Object.entries(referencesolution)) {
+    for (const [language, solutionCode] of Object.entries(referencesolutions)) {
       const languageId = await getJudge0LanguageId(language);
       if (!languageId) {
         throw new ApiError(400, `${language} is not supported`);

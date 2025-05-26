@@ -3,6 +3,7 @@ import {
   submitBatch,
   poolBatchResult,
   getLanguageName,
+  getJudge0LanguageId,
 } from "../services/judge0.service.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
@@ -12,14 +13,13 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
   //user input & user id
   const { id: userId } = req.user;
   const { source_code, problemId, language_id, mode } = req.body;
-
+  const id = getJudge0LanguageId(language_id);
   // Problem retrieval
   const problem = await prisma.problem.findUnique({
     where: {
       id: problemId,
     },
   });
-
   if (!problem) {
     throw new ApiError(404, "Problem not found");
   }
@@ -41,7 +41,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
   //prepare our submission
   const submission = testCases.map(({ input, output }) => ({
     source_code,
-    language_id,
+    language_id: id,  
     stdin: input,
     expected_output: output,
   }));
@@ -65,6 +65,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       testCase: index + 1,
       passed: passed,
       stdout: stdOut,
+      stdin:stdIn,
       expected: expectedOutput,
       stderr: result.stderr || null,
       compiledOutput: result.compile_output || null,
@@ -81,6 +82,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       return {
         testCase: r.testCase,
         passed: r.passed,
+        stdin: stdIn,
         stdout: r.stdout,
         expected: r.expected,
         stderr: r.stderr,
@@ -128,6 +130,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       submissionId: submissionToDB.id,
       testCase: r.testCase,
       passed: r.passed,
+      stdin:stdIn,
       stdout: r.stdout,
       expected: r.expected,
       stderr: r.stderr,

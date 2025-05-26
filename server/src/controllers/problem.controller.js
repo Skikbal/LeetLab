@@ -19,7 +19,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     editorial,
     testcases,
     codesnippets,
-    referencesolution,
+    referencesolutions,
   } = req.body;
   const { id: userId, role: userRole } = req.user;
 
@@ -29,7 +29,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
   }
 
   // Here we're extracting language and code from referencesolution
-  const result = await judge0Validator({ referencesolution, testcases });
+  const result = await judge0Validator({ referencesolutions, testcases });
   if (!result.success) {
     throw new ApiError(400, result.message);
   }
@@ -79,7 +79,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
       editorial,
       testcases,
       codesnippets,
-      referencesolution,
+      referencesolutions,
       userId,
       tags: {
         connect: tagRecords.map((tag) => ({
