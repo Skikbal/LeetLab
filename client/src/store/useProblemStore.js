@@ -15,7 +15,6 @@ export const useProblemStore = create((set) => ({
       toast.success(res.data.message);
       navigate("/");
     } catch (error) {
-      console.log(error.response.data.message);
       toast.error(error.response.data.message);
     } finally {
       set({ isLoading: false });
@@ -28,7 +27,6 @@ export const useProblemStore = create((set) => ({
       const res = await axiosInstance.get(
         `/problems/all-problems?search=${search}&${tags}&difficulty=${difficulty}`
       );
-      console.log(res.data.data);
       toast.success(res.data.message);
       set({ problems: res.data.data });
     } catch (error) {

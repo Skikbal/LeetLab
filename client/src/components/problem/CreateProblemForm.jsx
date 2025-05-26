@@ -41,16 +41,37 @@ const CreateProblemForm = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(ProblemSchema),
+    defaultValues: {
+      testcases: [{ input: "", output: "" }],
+      tags: [""],
+      companyTags: [""],
+      examples: {
+        JAVASCRIPT: { input: "", output: "", explanation: "" },
+        PYTHON: { input: "", output: "", explanation: "" },
+        JAVA: { input: "", output: "", explanation: "" },
+      },
+      codesnippets: {
+        JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
+        PYTHON: "def solution():\n    # Write your code here\n    pass",
+        JAVA: "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}",
+      },
+      referencesolutions: {
+        JAVASCRIPT: "// Add your reference solution here",
+        PYTHON: "# Add your reference solution here",
+        JAVA: "// Add your reference solution here",
+      },
+    },
   });
   const [sampleType, setSampleType] = useState("DP");
   const { isSampleLoading, sampleData } = useSampleData({ sampleType });
+  // console.log(sampleData)
   const { createProblem, isLoading } = useProblemStore();
   //testcases
   const {
     fields: testCaseFields,
     append: appendTestCase,
     remove: removeTestCase,
-    // replace: replacetestcases,
+    replace: replacetestcases,
   } = useFieldArray({
     control,
     name: "testcases",
@@ -61,7 +82,7 @@ const CreateProblemForm = () => {
     fields: tagFields,
     append: appendTag,
     remove: removeTag,
-    // replace: replaceTag,
+    replace: replaceTag,
   } = useFieldArray({
     control,
     name: "tags",
@@ -71,27 +92,33 @@ const CreateProblemForm = () => {
     fields: companyTagFields,
     append: appendCompanyTag,
     remove: removeCompanyTag,
-    // replace: replaceTag,
+    replace: replaceCompanyTag,
   } = useFieldArray({
     control,
     name: "companyTags",
   });
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      // await createProblem(data, navigate);
+      await createProblem(data, navigate);
     } catch (error) {
       console.log("Error creating problem: ", error);
     }
   };
 
   const handleLoadSample = () => {
+    replaceTag(sampleData.tags.map((tag) => tag));
+    replacetestcases(sampleData.testcases.map((tc) => tc));
+    replaceCompanyTag(sampleData.companyTags.map((ct) => ct));
+
+    //reset form with sample data
     reset(sampleData);
   };
+
+  console.log(errors)
   return (
     <div className="flex flex-wrap">
       <Cards className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-3/5 2xl:w-1/2">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
+        <div className="flex flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
           <h2 className="card-title text-2xl md:text-base flex items-center gap-3">
             <SquarePen className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
             Create Problem
@@ -99,7 +126,7 @@ const CreateProblemForm = () => {
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => handleLoadSample()}
+            onClick={handleLoadSample}
           >
             Load Sample
           </button>
@@ -109,7 +136,7 @@ const CreateProblemForm = () => {
           {/* Basic Information */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="form-control sm:col-span-2">
-              <Label children={"Title"} />
+              <Label children={"Title"} name={"title"} />
               <Input
                 register={register}
                 name={"title"}
@@ -120,12 +147,12 @@ const CreateProblemForm = () => {
             </div>
 
             <div className="form-control sm:col-span-2">
-              <Label children={"Description"} />
+              <Label children={"Description"} name={"description"} />
               <TextArea
                 register={register}
                 name={"description"}
                 placeholder={"Enter problem description"}
-                className={"min-h-32"}
+                className={"min-h-32 bg-base-200"}
               />
               {errors.description && (
                 <ErrorSpan error={errors.description.message} />
@@ -133,8 +160,9 @@ const CreateProblemForm = () => {
             </div>
 
             <div className="form-control flex flex-col sm:flex-row sm:justify-between  sm:col-span-2 flex-wrap">
-              <Label children={"Difficulty"} />
+              <Label children={"Difficulty"} name={"difficulty"} />
               <select
+                id="difficulty"
                 className="w-full sm:w-[40%]  select select-ghost border border-accent text-base rounded bg-base-200 mb-2"
                 {...register("difficulty")}
               >
@@ -242,9 +270,17 @@ const CreateProblemForm = () => {
                       </h4>
                       <div className="flex items-center">
                         {/* <label className="flex cursor-pointer gap-2 items-center">
-                          <span className="label-text font-semibold text-xs">Public</span>
-                          <input type="checkbox" defaultChecked className="toggle toggle-xs" />
-                          <span className="label-text font-semibold text-xs">Private</span>
+                          <span className="label-text font-semibold text-xs">
+                            Public
+                          </span>
+                          <input
+                            type="checkbox"
+                            defaultChecked
+                            className="toggle toggle-xs"
+                          />
+                          <span className="label-text font-semibold text-xs">
+                            Private
+                          </span>
                         </label> */}
                         <button
                           type="button"
@@ -258,12 +294,15 @@ const CreateProblemForm = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <div className="form-control">
-                        <Label children={"Input"} />
+                        <Label
+                          children={"Input"}
+                          name={`testcases.${index}.input`}
+                        />
                         <TextArea
                           register={register}
                           name={`testcases.${index}.input`}
                           placeholder={"Enter test case input"}
-                          className={"min-h-24"}
+                          className={"min-h-24 bg-base-200"}
                         />
 
                         {errors.testcases?.[index]?.input && (
@@ -273,12 +312,15 @@ const CreateProblemForm = () => {
                         )}
                       </div>
                       <div className="form-control">
-                        <Label children={" Expected Output"} />
+                        <Label
+                          children={" Expected Output"}
+                          name={`testcases.${index}.output`}
+                        />
                         <TextArea
                           register={register}
                           name={`testcases.${index}.output`}
                           placeholder={"Enter expected output"}
-                          className={"min-h-24"}
+                          className={"min-h-24 bg-base-200"}
                         />
                         {errors.testcases?.[index]?.output && (
                           <ErrorSpan
@@ -293,7 +335,7 @@ const CreateProblemForm = () => {
             </div>
             {errors.testcases && !Array.isArray(errors.testcases) && (
               <div className="mt-2">
-                <span className="text-error text-sm">
+                <span className="text-red-500 text-sm">
                   {errors.testcases.message}
                 </span>
               </div>
@@ -362,46 +404,37 @@ const CreateProblemForm = () => {
             </h3>
             <div className="space-y-6">
               <div className="form-control">
-                <label className="label mb-1">
-                  <span className="label-text font-medium text-base-content">
-                    Constraints
-                  </span>
-                </label>
-                <textarea
-                  className="border border-accent bg-base-100 rounded min-h-24 w-full p-3 resize-y"
-                  {...register("constraints")}
+                <Label children={"Constraints"} name={"constraints"} />
+                <TextArea
+                  className="bg-base-100 min-h-24 w-full p-3"
+                  register={register}
+                  name={"constraints"}
                   placeholder="Enter problem constraints"
                 />
                 {errors.constraints && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
+                  <div className="mt-2">
+                    <span className="text-red-500 text-sm">
                       {errors.constraints.message}
                     </span>
-                  </label>
+                  </div>
                 )}
               </div>
               <div className="form-control">
-                <label className="label mb-1">
-                  <span className="label-text font-medium text-base-content">
-                    Hints (Optional)
-                  </span>
-                </label>
-                <textarea
-                  className="border border-accent bg-base-100 rounded min-h-24 w-full p-3 resize-y"
-                  {...register("hints")}
+                <Label children={"Hints (Optional)"} name={"hints"} />
+                <TextArea
+                  className="bg-base-100 min-h-24 w-full p-3"
+                  register={register}
+                  name={"hints"}
                   placeholder="Enter hints for solving the problem"
                 />
               </div>
               <div className="form-control">
-                <label className="label mb-1">
-                  <span className="label-text font-medium text-base-content">
-                    Editorial (Optional)
-                  </span>
-                </label>
-                <textarea
-                  className="border border-accent rounded bg-base-100 min-h-32 w-full p-3 resize-y"
-                  {...register("editorial")}
-                  placeholder="Enter problem editorial/solution explanation"
+                <Label children={"Editorial (Optional)"} name={"editorial"} />
+                <TextArea
+                  className="bg-base-100 min-h-24 w-full p-3"
+                  register={register}
+                  name={"editorial"}
+                  placeholder="Enter hints for solving the problem"
                 />
               </div>
             </div>
