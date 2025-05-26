@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag,Lightbulb,Lock } from "lucide-react";
+import { Tag,Lightbulb,Lock, Building2 } from "lucide-react";
 const DescriptionContent = ({problem}) => {
   return (
     <div className="p-4">
@@ -61,7 +61,7 @@ const DescriptionContent = ({problem}) => {
       <div className="join join-vertical bg-base-200 rounded-md mt-7 w-full min-w-120">
         <div className="collapse collapse-arrow join-item border-base-300 border rounded-md w-full">
           <input type="radio" name="my-accordion-4" />
-          <div className="collapse-title font-semibold">Topics</div>
+          <div className="flex items-center gap-1 collapse-title font-semibold"><Tag className="h-4 w-4" /> Topics</div>
           <div className="collapse-content text-sm">
             {problem?.tags?.map((tag) => {
               return (
@@ -77,7 +77,7 @@ const DescriptionContent = ({problem}) => {
         </div>
         <div className="collapse collapse-arrow join-item border-base-300 border">
           <input type="radio" name="my-accordion-4" />
-          <div className="collapse-title font-semibold">Companies</div>
+          <div className="flex items-center gap-1 collapse-title font-semibold"><Building2 className="h-4 w-4" /> Companies</div>
           <div className="collapse-content text-sm">
             {problem?.companies?.map((company) => {
               return (
@@ -89,6 +89,13 @@ const DescriptionContent = ({problem}) => {
                 </div>
               );
             })}
+          </div>
+        </div>
+        <div className="collapse collapse-arrow join-item border-base-300 border">
+          <input type="radio" name="my-accordion-4" />
+          <div className="flex items-center gap-1 collapse-title font-semibold"><Lightbulb className="h-4 w-4" /> Hints</div>
+          <div className="collapse-content text-sm">
+            {problem?.hints}
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useProblemStore } from "../../store/useProblemStore";
+import { useExecuteStore } from "../../store/useExecutionStore.js";
 import { useParams } from "react-router-dom";
 import Split from "react-split";
 import MonacoEditor from "../../components/Monaco/MonacoEditor.jsx";
@@ -18,7 +19,10 @@ import {
   Lightbulb,
   Edit,
   Expand,
+  SquareCheck,
+  ListChecks,
 } from "lucide-react";
+import { Editor } from "@monaco-editor/react";
 import "../../App.css";
 import DescriptionContent from "../../components/problem/DescriptionContent.jsx";
 import EditorialContent from "../../components/problem/EditorialContent.jsx";
@@ -27,11 +31,19 @@ import SubmissionContent from "../../components/problem/SubmissionContent.jsx";
 import javas from "../../assets/language/javas.png";
 import javascripts from "../../assets/language/javascripts.png";
 import pythons from "../../assets/language/pythons.png";
+import TestContent from "../../components/problem/TestContent.jsx";
+import TestResultContent from "../../components/problem/TestResultContent.jsx";
 const ProblemEditor = () => {
   const { id } = useParams();
   const { isLoading, problem, getProblemById } = useProblemStore();
+  const { executeProblem, isExecuting, TestResult } = useExecuteStore();
   const [tabs, setTabs] = useState("description");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+  const [theme, setTheme] = useState(true);
+  const [active, setActive] = useState("testcases");
+  const [testIndex, setTestIndex] = useState(0);
+  const [mode, setMode] = useState("run");
+  const [sorceCode, setSorceCode] = useState("");
   const fetchProblem = async () => {
     try {
       await getProblemById(id);
@@ -42,6 +54,22 @@ const ProblemEditor = () => {
   useEffect(() => {
     fetchProblem();
   }, [id]);
+  console.log(TestResult);
+  const HandleExecution = async () => {
+    try {
+      const data = {
+        source_code: sorceCode,
+        problemId: id,
+        language_id: selectedLanguage.toLowerCase(),
+        mode: mode,
+      };
+      await executeProblem(data);
+    } catch (error) {
+      console.log("Error executing problem: ", error);
+    }
+  };
+
+  if (isExecuting) return <div>Loading...</div>;
 
   return (
     <div className="bg-base-200 h-screen">
@@ -55,11 +83,23 @@ const ProblemEditor = () => {
         </div>
 
         <div className="join join-vertical lg:join-horizontal">
-          <button className="btn join-item cursor-pointer hover:text-primary">
+          <button
+            className="btn join-item cursor-pointer hover:text-primary"
+            onClick={() => {
+              setMode("run");
+              HandleExecution();
+            }}
+          >
             <Play className="h-6 w-6 " />
             Run
           </button>
-          <button className="btn join-item cursor-pointer hover:text-primary">
+          <button
+            className="btn join-item cursor-pointer hover:text-primary"
+            onClick={() => {
+              setMode("submit");
+              HandleExecution();
+            }}
+          >
             <CloudUpload className="h-6 w-6 " />
             Submit
           </button>
@@ -82,7 +122,7 @@ const ProblemEditor = () => {
       <Split
         className="wrap"
         sizes={[50, 50]}
-        minSize={50}
+        minSize={300}
         expandToMin={false}
         gutterSize={2}
         gutterAlign="center"
@@ -130,8 +170,8 @@ const ProblemEditor = () => {
             ))}
         </div>
         <Split
-          className="intterWrap"
-          sizes={[60, 39]}
+          className="intterWrap h-[calc(100vh-80px)]"
+          sizes={[50, 49]}
           minSize={50}
           expandToMin={false}
           gutterSize={2}
@@ -141,7 +181,7 @@ const ProblemEditor = () => {
           direction="vertical"
           cursor="col-resize"
         >
-          <div className="bg-base-300 rounded-md">
+          <div className="bg-base-300 rounded-md overflow-auto no-scrollbar">
             <div className="flex w-full bg-accent/100 h-10 items-center justify-between rounded-t-md sticky top-0 px-5">
               <div className="flex gap-1 items-center">
                 <img
@@ -165,8 +205,23 @@ const ProblemEditor = () => {
                     type="checkbox"
                     value="synthwave"
                     className="theme-controller"
+                    onClick={() => setTheme(!theme)}
                   />
-
+                  <svg
+                    aria-label="moon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </g>
+                  </svg>
                   <svg
                     aria-label="sun"
                     xmlns="http://www.w3.org/2000/svg"
@@ -190,29 +245,72 @@ const ProblemEditor = () => {
                       <path d="m19.07 4.93-1.41 1.41"></path>
                     </g>
                   </svg>
-
-                  <svg
-                    aria-label="moon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                    </g>
-                  </svg>
                 </label>
                 <Expand className="w-5 h-5" />
               </div>
             </div>
-            {/* <MonacoEditor language="JS" lineNumbers="on" /> */}
+            <Editor
+              height="300px"
+              language={selectedLanguage.toLowerCase()}
+              theme={theme === true ? "vs-dark" : "light"}
+              value={sorceCode}
+              onChange={(e) => {
+                setSorceCode(e.trim());
+              }}
+              options={{
+                autoClosingBrackets: "always",
+                acceptSuggestionOnCommitCharacter: true,
+                acceptSuggestionOnEnter: "on",
+                minimap: { enabled: true },
+                fontSize: 12,
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                tabSize: 4,
+                insertSpaces: true,
+                detectIndentation: false,
+              }}
+            />
           </div>
-          <div className="bg-base-300 rounded-md">hwllo</div>
+          <div className="bg-base-300 rounded-md overflow-auto no-scrollbar">
+            <div className="flex w-full bg-accent/100 h-10 items-center justify-between rounded-t-md sticky top-0 p-2">
+              <div className="flex">
+                <div
+                  className={`flex items-center gap-1 rounded cursor-pointer py-1 px-2 hover:bg-base-300/40 font-medium ${
+                    active === "testcases" ? "bg-base-300/40" : ""
+                  }`}
+                  onClick={() => setActive("testcases")}
+                >
+                  <SquareCheck className="h-5 w-5 text-primary" /> Testcases
+                </div>
+                <div className="divider divider-horizontal mx-0.5"></div>
+                <div
+                  className={`flex items-center gap-1 rounded cursor-pointer py-1 px-2 hover:bg-base-300/40 font-medium ${
+                    active === "testresult" ? "bg-base-300/40" : ""
+                  }`}
+                  onClick={() => setActive("testresult")}
+                >
+                  <ListChecks className="h-5 w-5 text-primary" /> Test Result
+                </div>
+              </div>
+            </div>
+            {active === "testcases" && (
+              <TestContent
+                setTestIndex={setTestIndex}
+                testIndex={testIndex}
+                problem={problem}
+              />
+            )}
+
+            {active === "testresult" && (
+              <TestResultContent
+                TestResult={TestResult}
+                testIndex={testIndex}
+                setTestIndex={setTestIndex}
+              />
+            )}
+          </div>
         </Split>
       </Split>
     </div>

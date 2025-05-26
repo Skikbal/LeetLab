@@ -5,11 +5,11 @@ import {
 } from "../components/sample/sampleData.js";
 export const useSampleData = ({ sampleType = "DP" }) => {
   const [sampleData, setSampleData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSampleLoading, setIsSampleLoading] = useState(false);
 
   useEffect(() => {
-    const fetchSampleData = () => {
-      setIsLoading(true);
+    const fetchSampleData = async () => {
+      setIsSampleLoading(true);
       try {
         const data =
           sampleType === "DP" ? sampleDPProblem : sampleStringProblem;
@@ -18,11 +18,11 @@ export const useSampleData = ({ sampleType = "DP" }) => {
         console.error("Error while fetching sample data:", error);
         setSampleData(null);
       } finally {
-        setIsLoading(false);
+        setIsSampleLoading(false);
       }
     };
     fetchSampleData();
   }, [sampleType]);
 
-  return { sampleData, isLoading };
+  return { sampleData, isSampleLoading };
 };

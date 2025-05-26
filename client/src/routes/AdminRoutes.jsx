@@ -5,7 +5,7 @@ import Layout from "../layout/Layout.jsx";
 const AdminRoutes = () => {
   const { authUser, isCheckingAuth } = useAuthStore();
   if (isCheckingAuth) return null;
-  return authUser.role === "ADMIN" ? (
+  return authUser !== null && authUser.role === "ADMIN" ? (
     <Layout>
       <Outlet />
     </Layout>

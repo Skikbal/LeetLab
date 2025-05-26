@@ -6,21 +6,22 @@ import {
   BookOpen,
   CheckCircle2,
   Loader2,
+  Building2,
 } from "lucide-react";
 // import { sampleDPProblem, sampleStringProblem } from "./sampleData.js";
 import Card from "../cards/Card.jsx";
-import { useSampleData } from "../../hooks/SampleData.js";
+// import { useSampleData } from "../../hooks/SampleData.js";
 import StarterCode from "./StarterCode.jsx";
 import RefernceSolution from "./RefernceSolution.jsx";
 import Examples from "./Examples.jsx";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
-const SampleProblem = () => {
-  const [sampleType, setSampleType] = useState("DP");
-  const { isLoading, sampleData } = useSampleData({ sampleType });
-  if (isLoading) {
-    return <Loader2 />;
-  }
+const SampleProblem = ({ sampleType, setSampleType ,sampleData}) => {
+  // const [sampleType, setSampleType] = useState("DP");
+  // const { isLoading, sampleData } = useSampleData({ sampleType });
+  // if (isLoading) {
+  //   return <Loader2 />;
+  // }
   return (
     <div className="flex flex-col w-full">
       <div className="w-full flex lg:flex-col lg:items-center lg:gap-4 xl:flex-row justify-between pb-4 border-b mb-6 md:mb-8">
@@ -86,6 +87,16 @@ const SampleProblem = () => {
         <SampleCardLayout icon={<BookOpen className="w-5 h-5" />} title="Tags">
           <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid,cols-3 gap-3">
             {sampleData?.tags?.map((tag, index) => (
+              <div className="badge badge-md  badge-primary" key={index}>
+                {tag}
+              </div>
+            ))}
+          </div>
+        </SampleCardLayout>
+        {/* Tags */}
+        <SampleCardLayout icon={<Building2 className="w-5 h-5" />} title="Company Tags">
+          <div className="grid grid-cols-1 xl:grid-cols-3 2xl:grid,cols-3 gap-3">
+            {sampleData?.companyTags?.map((tag,index) => (
               <div className="badge badge-md  badge-primary" key={index}>
                 {tag}
               </div>

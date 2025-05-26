@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProblemSchema } from "../../validators/ValidationSchema.js";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,16 +30,20 @@ import ErrorSpan from "../form/ErrorSpan.jsx";
 import TextArea from "../form/TextArea.jsx";
 import { useProblemStore } from "../../store/useProblemStore.js";
 import { useNavigate } from "react-router-dom";
+import { useSampleData } from "../../hooks/SampleData.js";
 const CreateProblemForm = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(ProblemSchema),
   });
+  const [sampleType, setSampleType] = useState("DP");
+  const { isSampleLoading, sampleData } = useSampleData({ sampleType });
   const { createProblem, isLoading } = useProblemStore();
   //testcases
   const {
@@ -74,10 +78,15 @@ const CreateProblemForm = () => {
   });
   const onSubmit = async (data) => {
     try {
-      await createProblem(data, navigate);
+      console.log(data);
+      // await createProblem(data, navigate);
     } catch (error) {
       console.log("Error creating problem: ", error);
     }
+  };
+
+  const handleLoadSample = () => {
+    reset(sampleData);
   };
   return (
     <div className="flex flex-wrap">
@@ -87,6 +96,13 @@ const CreateProblemForm = () => {
             <SquarePen className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
             Create Problem
           </h2>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => handleLoadSample()}
+          >
+            Load Sample
+          </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -199,7 +215,9 @@ const CreateProblemForm = () => {
                 </div>
               ))}
             </div>
-            {errors.companyTags && <ErrorSpan error={errors.companyTags.message} />}
+            {errors.companyTags && (
+              <ErrorSpan error={errors.companyTags.message} />
+            )}
           </SampleCardLayout>
 
           {/* Test Cases */}
@@ -222,14 +240,21 @@ const CreateProblemForm = () => {
                       <h4 className="text-base font-semibold">
                         Test Case #{index + 1}
                       </h4>
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-sm text-error"
-                        onClick={() => removeTestCase(index)}
-                        disabled={testCaseFields.length === 1}
-                      >
-                        <Trash2 className="w-4 h-4 mr-1" /> Remove
-                      </button>
+                      <div className="flex items-center">
+                        {/* <label className="flex cursor-pointer gap-2 items-center">
+                          <span className="label-text font-semibold text-xs">Public</span>
+                          <input type="checkbox" defaultChecked className="toggle toggle-xs" />
+                          <span className="label-text font-semibold text-xs">Private</span>
+                        </label> */}
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm text-error"
+                          onClick={() => removeTestCase(index)}
+                          disabled={testCaseFields.length === 1}
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" /> Remove
+                        </button>
+                      </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <div className="form-control">
@@ -304,7 +329,7 @@ const CreateProblemForm = () => {
                   {/* Reference Solution */}
                   <RefernceSolution errors={errors} language={language}>
                     <Controller
-                      name={`referencesolution.${language}`}
+                      name={`referencesolutions.${language}`}
                       control={control}
                       render={({ field }) => (
                         <MonacoEditor
@@ -400,7 +425,12 @@ const CreateProblemForm = () => {
         </form>
       </Cards>
       <Cards className="hidden lg:block lg:w-1/2 xl:w-2/5 2xl:w-1/2">
-        <SampleProblem />
+        {isSampleLoading && <div>...loading</div>}
+        <SampleProblem
+          sampleType={sampleType}
+          setSampleType={setSampleType}
+          sampleData={sampleData}
+        />
       </Cards>
     </div>
   );

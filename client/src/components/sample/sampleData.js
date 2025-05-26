@@ -5,6 +5,13 @@ const sampleStringProblem = {
     "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers. Given a string s, return true if it is a palindrome, or false otherwise.",
   difficulty: "EASY",
   tags: ["String", "Two Pointers"],
+  companyTags: [
+    "Amazon",
+    "Microsoft",
+    "Google",
+    "Facebook",
+    "Apple",
+  ],
   constraints:
     "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters.",
   hints:
@@ -205,6 +212,17 @@ const sampleDPProblem = {
     "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
   difficulty: "EASY",
   tags: ["Dynamic Programming", "Math", "Memoization"],
+  companyTags: [
+    "Amazon",
+    "Microsoft",
+    "Google",
+    "Facebook",
+    "Apple",
+    "Adobe",
+    "Oracle",
+    "Intel",
+    "Salesforce",
+  ],
   constraints: "1 <= n <= 45",
   hints:
     "To reach the nth step, you can either come from the (n-1)th step or the (n-2)th step.",
