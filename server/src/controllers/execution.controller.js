@@ -13,7 +13,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
   //user input & user id
   const { id: userId } = req.user;
   const { source_code, problemId, language_id, mode } = req.body;
-  const id = getJudge0LanguageId(language_id);
+  const lang_id = getJudge0LanguageId(language_id);
   // Problem retrieval
   const problem = await prisma.problem.findUnique({
     where: {
@@ -26,7 +26,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
 
   //filter testcases if run mode
   const testCases = problem.testcases.filter((tc) =>
-    mode === "run" ? tc.isSample === true : true,
+    mode === "run" ? tc.isPublic === true : true,
   );
 
   //stdin array
@@ -41,7 +41,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
   //prepare our submission
   const submission = testCases.map(({ input, output }) => ({
     source_code,
-    language_id: id,  
+    language_id: lang_id,
     stdin: input,
     expected_output: output,
   }));
@@ -65,7 +65,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       testCase: index + 1,
       passed: passed,
       stdout: stdOut,
-      stdin:stdIn,
+      stdin: stdIn,
       expected: expectedOutput,
       stderr: result.stderr || null,
       compiledOutput: result.compile_output || null,
@@ -78,7 +78,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
   //if user is only running testcases
   if (mode === "run") {
     //save individual testcases result
-    const testCaseResult = detailedResult.map((r) => {
+    const testCases = detailedResult.map((r) => {
       return {
         testCase: r.testCase,
         passed: r.passed,
@@ -92,7 +92,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
         time: r.time,
       };
     });
-
+    const testCaseResult = { testCases };
     return res
       .status(200)
       .json(
@@ -106,7 +106,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
         userId,
         problemId,
         sourceCode: source_code,
-        language: getLanguageName(language_id),
+        language: getLanguageName(lang_id),
         stdin: JSON.stringify(stdIn),
         stdout: JSON.stringify(detailedResult.map((r) => r.stdout)),
         stderr: detailedResult.some((r) => r.stderr)
@@ -130,7 +130,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       submissionId: submissionToDB.id,
       testCase: r.testCase,
       passed: r.passed,
-      stdin:stdIn,
+      stdin: r.stdin,
       stdout: r.stdout,
       expected: r.expected,
       stderr: r.stderr,

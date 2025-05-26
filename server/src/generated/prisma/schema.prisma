@@ -59,7 +59,7 @@ model Problem {
   difficulty         Difficulty      @default(EASY)
   userId             String
   examples           Json
-  constraints        String
+  constraints        String[]
   hints              String?
   editorial          String?
   tags               Tag[]           @relation("ProblemToTag")
@@ -123,6 +123,7 @@ model TestCasesResult {
   submissionId   String
   testCase       Int
   passed         Boolean
+  stdin          String[]
   stdout         String
   expected       String
   stderr         String?

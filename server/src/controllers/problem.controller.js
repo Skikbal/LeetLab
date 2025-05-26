@@ -195,7 +195,7 @@ const getProblemHandler = AsyncHandler(async (req, res) => {
       editorial: true,
       testcases: true,
       codesnippets: true,
-      referencesolution: true,
+      referencesolutions: true,
       createdAt: true,
       updatedAt: true,
       companies:true
