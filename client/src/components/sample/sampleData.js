@@ -5,13 +5,7 @@ const sampleStringProblem = {
     "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers. Given a string s, return true if it is a palindrome, or false otherwise.",
   difficulty: "EASY",
   tags: ["String", "Two Pointers"],
-  companyTags: [
-    "Amazon",
-    "Microsoft",
-    "Google",
-    "Facebook",
-    "Apple",
-  ],
+  companyTags: ["Amazon", "Microsoft", "Google", "Facebook", "Apple"],
   constraints:
     "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters.",
   hints:
@@ -22,14 +16,17 @@ const sampleStringProblem = {
     {
       input: "A man, a plan, a canal: Panama",
       output: "true",
+      isPublic: true,
     },
     {
       input: "race a car",
       output: "false",
+      isPublic: true,
     },
     {
       input: " ",
       output: "true",
+      isPublic: false,
     },
   ],
   examples: {
@@ -232,14 +229,17 @@ const sampleDPProblem = {
     {
       input: "2",
       output: "2",
+      isPublic: true,
     },
     {
       input: "3",
       output: "3",
+      isPublic: false,
     },
     {
       input: "4",
       output: "5",
+      isPublic: true,
     },
   ],
   examples: {

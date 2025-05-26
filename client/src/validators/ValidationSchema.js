@@ -53,6 +53,7 @@ const ProblemSchema = z.object({
       z.object({
         input: z.string().min(1, "Input is required"),
         output: z.string().min(1, "Output is required"),
+        isPublic: z.boolean(),
       })
     )
     .min(1, "Please enter at least one testcase"),

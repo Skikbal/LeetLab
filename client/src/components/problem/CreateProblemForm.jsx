@@ -17,6 +17,7 @@ import {
   Download,
   Car,
   Building2,
+  Loader2,
 } from "lucide-react";
 import SampleProblem from "../sample/SampleProblem.jsx";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
@@ -114,18 +115,36 @@ const CreateProblemForm = () => {
     reset(sampleData);
   };
 
-  console.log(errors)
+  console.log(errors);
   return (
     <div className="flex flex-wrap">
       <Cards className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-3/5 2xl:w-1/2">
-        <div className="flex flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
+        <div className="flex flex-col gap-3 sm:flex-row justify-center md:justify-between  items-center md:items-center mb-6 md:mb-8 pb-4 border-b">
           <h2 className="card-title text-2xl md:text-base flex items-center gap-3">
             <SquarePen className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
             Create Problem
           </h2>
+          <div className="join block lg:hidden w-full sm:w-auto ">
+            <button
+              className={`btn btn-sm join-item w-1/2 sm:w-auto ${
+                sampleType === "DP" ? "btn-primary" : ""
+              }`}
+              onClick={() => setSampleType("DP")}
+            >
+              DP Problem
+            </button>
+            <button
+              className={`btn btn-sm join-item w-1/2 sm:w-auto ${
+                sampleType === "STRING" ? "btn-primary" : ""
+              }`}
+              onClick={() => setSampleType("STRING")}
+            >
+              String Problem
+            </button>
+          </div>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm  w-full sm:w-auto"
             onClick={handleLoadSample}
           >
             Load Sample
@@ -269,19 +288,21 @@ const CreateProblemForm = () => {
                         Test Case #{index + 1}
                       </h4>
                       <div className="flex items-center">
-                        {/* <label className="flex cursor-pointer gap-2 items-center">
+                        <label className="flex cursor-pointer gap-2 items-center">
                           <span className="label-text font-semibold text-xs">
-                            Public
+                            Private
                           </span>
                           <input
                             type="checkbox"
                             defaultChecked
                             className="toggle toggle-xs"
+                            name={`testcases.${index}.isPublic`}
+                            {...register(`testcases.${index}.isPublic`)}
                           />
                           <span className="label-text font-semibold text-xs">
-                            Private
+                            Public
                           </span>
-                        </label> */}
+                        </label>
                         <button
                           type="button"
                           className="btn btn-ghost btn-sm text-error"
@@ -443,10 +464,14 @@ const CreateProblemForm = () => {
           <div className="card-actions justify-center md:justify-end pt-4">
             <button
               type="submit"
-              className="btn btn-md w-full md:w-auto btn-primary gap-2"
+              className="btn btn-primary w-full mt-2"
+              disabled={isLoading}
             >
               {isLoading ? (
-                <span className="loading loading-spinner text-white"></span>
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading...
+                </>
               ) : (
                 <>
                   <CheckCircle2 className="w-5 h-5" />

@@ -1,30 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ClipboardCheck,
   Code2,
   Lightbulb,
   BookOpen,
   CheckCircle2,
-  Loader2,
   Building2,
 } from "lucide-react";
-// import { sampleDPProblem, sampleStringProblem } from "./sampleData.js";
 import Card from "../cards/Card.jsx";
-// import { useSampleData } from "../../hooks/SampleData.js";
 import StarterCode from "./StarterCode.jsx";
 import RefernceSolution from "./RefernceSolution.jsx";
 import Examples from "./Examples.jsx";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
 const SampleProblem = ({ sampleType, setSampleType ,sampleData}) => {
-  // const [sampleType, setSampleType] = useState("DP");
-  // const { isLoading, sampleData } = useSampleData({ sampleType });
-  // if (isLoading) {
-  //   return <Loader2 />;
-  // }
   return (
     <div className="flex flex-col w-full">
-      <div className="w-full flex lg:flex-col lg:items-center lg:gap-4 xl:flex-row justify-between pb-4 border-b mb-6 md:mb-8">
+      <div className="w-full flex flex-col lg:flex-row lg:items-center lg:gap-4 justify-between pb-4 border-b mb-6 md:mb-8">
         <h2 className="card-title text-xl md:text-base flex items-center gap-3">
           <ClipboardCheck className="w-6 h-6 xl:w-6 xl:h-6 text-primary" />
           Sample Problem
