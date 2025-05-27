@@ -217,7 +217,7 @@ const Problems = () => {
                         </div>
                       </td>
                       <td className="w-1/10">{"solved"}</td>
-                      <td className="w-2/10">
+                      <td className="w-2/10 disabled" onClick={(e) => e.stopPropagation()}>
                         <div className="flex gap-2">
                           <button
                             className="btn p-2 bg-red-500"
@@ -227,7 +227,7 @@ const Problems = () => {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
-                          <button className="btn p-2 bg-secondary">
+                          <button className="btn p-2 bg-secondary z-40" onClick={() => navigate(`/edit/${problem.id}`)}>
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button className="btn p-2 bg-primary border-accent ">

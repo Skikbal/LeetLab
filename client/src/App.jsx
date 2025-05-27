@@ -3,7 +3,6 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore.js";
 import AppRoutes from "./routes/AppRoutes.jsx";
-import { BounceLoader } from "react-spinners";
 import "./App.css"
 const App = () => {
   const { checkAuthUser, isCheckingAuth} = useAuthStore();
@@ -26,11 +25,6 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      {isCheckingAuth && (
-        <div className="fixed inset-0 bg-base-100/70 flex items-center justify-center z-50">
-          <BounceLoader color="#5ca300" speedMultiplier={1} />
-        </div>
-      )}
       <Toaster reverseOrder={true} />
       <AppRoutes />
     </BrowserRouter>

@@ -3,11 +3,11 @@ import { axiosInstance } from "../lib/Axios";
 import toast from "react-hot-toast";
 
 export const useProblemStore = create((set) => ({
-  isLoading: false,
+  isLoading: true,
   problems: [],
   tags: [],
   companies: [],
-  problem:{},
+  problem: {},
   createProblem: async (data, navigate) => {
     set({ isLoading: true });
     try {
@@ -80,11 +80,9 @@ export const useProblemStore = create((set) => ({
 
   //get problem by Id
   getProblemById: async (id) => {
-    console.log(id);
     set({ isLoading: true });
     try {
       const res = await axiosInstance.get(`/problems/get-problem/${id}`);
-      console.log(res.data.data)
       toast.success(res.data.message);
       set({ problem: res.data.data });
     } catch (error) {
@@ -93,5 +91,23 @@ export const useProblemStore = create((set) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+
+  //update problem
+  updateProblem: async ({id, data, navigate}) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.put(
+        `/problems/update-problem/${id}`,
+        data
+      );
+      toast.success(res.data.message);
+      navigate("/");
+    } catch (error) {
+      console.log("Error updating problem: ", error.response.data.message);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }));

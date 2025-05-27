@@ -39,17 +39,18 @@ import TestResultContent from "../../components/problem/TestResultContent.jsx";
 const ProblemEditor = () => {
   const { id } = useParams();
   const { isLoading, problem, getProblemById } = useProblemStore();
-  const { executeProblem, isExecuting, TestResult } = useExecuteStore();
+  const { executeProblem, isExecuting, TestResult,successRate,success_rate,submissionById,submissions,submission_count } = useExecuteStore();
   const [tabs, setTabs] = useState("description");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [theme, setTheme] = useState(true);
   const [active, setActive] = useState("testcases");
   const [testIndex, setTestIndex] = useState(0);
-  const [mode, setMode] = useState("run");
   const [sorceCode, setSorceCode] = useState("");
   const fetchProblem = async () => {
     try {
       await getProblemById(id);
+      await successRate(id)
+      await submissionById(id);
     } catch (error) {
       console.log("Error getting problem: ", error);
     }
@@ -57,8 +58,7 @@ const ProblemEditor = () => {
   useEffect(() => {
     fetchProblem();
   }, [id]);
-  console.log(TestResult);
-  const HandleExecution = async () => {
+  const HandleExecution = async ({mode}) => {
     try {
       const data = {
         source_code: sorceCode,
@@ -71,7 +71,6 @@ const ProblemEditor = () => {
       console.log("Error executing problem: ", error);
     }
   };
-  console.log(TestResult);
   if (isExecuting) return <div>Loading...</div>;
 
   return (
@@ -90,10 +89,10 @@ const ProblemEditor = () => {
               <span>Updated {new Date(problem?.updatedAt).toDateString()}</span>
             </p>
             <p className="flex gap-1">
-              <Users className="h-5 w-5" /> 3 Submissions
+              <Users className="h-5 w-5" /> {submission_count} Submissions
             </p>
             <p className="flex gap-1">
-              <ThumbsUp className="h-5 w-5" /> 95% Success Rate
+              <ThumbsUp className="h-5 w-5" /> {success_rate}% Success Rate
             </p>
           </div>
         </div>
@@ -102,8 +101,7 @@ const ProblemEditor = () => {
           <button
             className="btn join-item cursor-pointer hover:text-primary"
             onClick={() => {
-              setMode("run");
-              HandleExecution();
+              HandleExecution({mode:"run"});
             }}
           >
             <Play className="h-6 w-6 " />
@@ -112,8 +110,7 @@ const ProblemEditor = () => {
           <button
             className="btn join-item cursor-pointer hover:text-primary"
             onClick={() => {
-              setMode("submit");
-              HandleExecution();
+              HandleExecution({mode:"submit"});
             }}
           >
             <CloudUpload className="h-6 w-6 " />
@@ -148,7 +145,7 @@ const ProblemEditor = () => {
         cursor="col-resize"
       >
         <div className="h-[calc(100vh-80px)] bg-base-300 rounded-md overflow-auto no-scrollbar">
-          <div className="flex w-full bg-accent/100 h-10 items-center justify-around rounded-t-md sticky top-0">
+          <div className="flex w-full bg-accent/100 h-10 items-center justify-around rounded-t-md sticky top-0 z-50">
             <div
               className="flex items-center gap-1 hover:bg-base-300/40 px-2 py-1 rounded cursor-pointer "
               onClick={() => setTabs("description")}
@@ -180,7 +177,7 @@ const ProblemEditor = () => {
             ) : tabs === "solution" ? (
               <SolutionContent problem={problem} />
             ) : tabs === "submissions" ? (
-              <SubmissionContent />
+              <SubmissionContent submissions={submissions}/>
             ) : (
               <DescriptionContent problem={problem} />
             ))}

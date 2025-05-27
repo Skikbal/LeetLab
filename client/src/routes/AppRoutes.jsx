@@ -10,6 +10,7 @@ import ResetPassword from "../pages/auth/ResetPassword.jsx";
 import MailVerification from "../pages/auth/MailVerification.jsx";
 import RequireVerified from "./RequireVerified.jsx";
 import ProblemEditor from "../pages/problem/ProblemEditor.jsx";
+import EditProblem from "../pages/problem/EditProblem.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -54,6 +55,14 @@ const AppRoutes = () => {
           element={
             <RequireVerified>
               <ProblemEditor />
+            </RequireVerified>
+          }
+        />
+        <Route
+          path="/edit/:id"
+          element={
+            <RequireVerified>
+              <EditProblem />
             </RequireVerified>
           }
         />
