@@ -57,8 +57,31 @@ const countSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
     );
 });
 
+const successpercentage = AsyncHandler(async (req, res) => {
+  const problemId = req.params.problemId;
+  const user = req.user.id;
+
+  const submission = await prisma.Submission.findMany({
+    where: {
+      problemId,
+      userId: user,
+    },
+  });
+
+  if (!submission) {
+    throw new ApiError(404, "Submissions not found");
+  }
+
+  const successRate =
+    (submission.filter((sub) => sub.status === "ACCEPTED").length /
+      submission.length) *
+    100;
+  return res.status(200).json(new ApiRespone(200, "Success rate", successRate));
+});
+
 export {
   getAllSubmissionsHandler,
   getSubmissionForProblemHandler,
   countSubmissionForProblemHandler,
+  successpercentage,
 };
