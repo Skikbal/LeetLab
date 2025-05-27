@@ -16,6 +16,6 @@ submissionRoute
 submissionRoute
   .route("/count-submission/:problemId")
   .get(isAuth,isVerified,countSubmissionForProblemHandler);
-submissionRoute.route("/successpercentage/:problemId").get(isAuth,isVerified,successpercentage);
+submissionRoute.route("/success-rate/:problemId").get(isAuth,isVerified,successpercentage);
 
 export default submissionRoute;

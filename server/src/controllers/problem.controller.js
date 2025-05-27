@@ -198,8 +198,8 @@ const getProblemHandler = AsyncHandler(async (req, res) => {
       referencesolutions: true,
       createdAt: true,
       updatedAt: true,
-      companies:true
-    }
+      companies: true,
+    },
   });
 
   if (!problem) {
@@ -218,8 +218,22 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     where: {
       id,
     },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      difficulty: true,
+      tags: true,
+      examples: true,
+      constraints: true,
+      hints: true,
+      editorial: true,
+      testcases: true,
+      codesnippets: true,
+      referencesolutions: true,
+      companies: true,
+    },
   });
-
   if (!problem) {
     throw new ApiError(404, "Problem not found");
   }
@@ -230,11 +244,14 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     "description",
     "difficulty",
     "tags",
+    "companyTags",
     "examples",
     "constraints",
     "hints",
     "editorial",
     "testcases",
+    "codesnippets",
+    "referencesolutions",
   ];
 
   if (userRole !== "ADMIN") {
@@ -246,8 +263,72 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
       updateData[field] = req.body[field];
     }
   }
+  const {
+    codesnippets,
+    referencesolutions,
+    testcases,
+    examples,
+    tags,
+    companyTags,
+  } = req.body;
+  //tags
+  const tagsEquals =
+    tags.length === problem.tags.length &&
+    tags.every((tag) => {
+      return problem.tags.some((problemTag) => problemTag.name === tag);
+    });
 
-  const { codesnippets, referencesolution, testcases } = req.body;
+  if (!tagsEquals) {
+    updateData.tags = tags;
+  } else {
+    delete updateData.tags;
+  }
+
+  //companyTags
+  const companyTagsEquals =
+    companyTags.length === problem.companies.length &&
+    companyTags.every((company) => {
+      return problem.companies.some(
+        (problemCompany) => problemCompany.name === company,
+      );
+    });
+
+  if (!companyTagsEquals) {
+    updateData.companies = companyTags;
+    delete updateData.companyTags;
+  } else {
+    delete updateData.companies;
+    delete updateData.companyTags;
+  }
+  //testcases
+  const testcasesEquals =
+    testcases.length === problem.testcases.length &&
+    testcases.every((testcase, index) => {
+      testcase.input === problem.testcases[index].input &&
+        testcase.output === problem.testcases[index].output &&
+        testcase.isPublic === problem.testcases[index].isPublic;
+    });
+  if (!testcasesEquals) {
+    updateData.testcases = testcases;
+  } else {
+    delete updateData.testcases;
+  }
+  const examplesEquals =
+    Object.entries(examples).length ===
+      Object.entries(problem.examples).length &&
+    Object.entries(examples).every(
+      ([language, example]) =>
+        Object.hasOwn(problem.examples, language) &&
+        example.input === problem.examples[language].input &&
+        example.output === problem.examples[language].output &&
+        example.explanation === problem.examples[language].explanation,
+    );
+
+  if (!examplesEquals) {
+    updateData.examples = examples;
+  } else {
+    delete updateData.examples;
+  }
 
   //this will strip the extra spaces and new lines
   const normalizeCode = (code) => code.replace(/\s+/g, " ").trim();
@@ -260,7 +341,6 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
         Object.hasOwn(problem.codesnippets, language) &&
         code === problem.codesnippets[language],
     );
-
   if (!codesnippetsEquals) {
     updateData.codesnippets = codesnippets;
   } else {
@@ -268,21 +348,21 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
   }
   //check if referencesolution are same or not
   const referencesolutionEquals =
-    Object.entries(referencesolution).length ===
-      Object.entries(problem.referencesolution).length &&
-    Object.entries(referencesolution).every(
+    Object.entries(referencesolutions).length ===
+      Object.entries(problem.referencesolutions).length &&
+    Object.entries(referencesolutions).every(
       ([language, solution]) =>
-        Object.hasOwn(problem.referencesolution, language) &&
-        solution === problem.referencesolution[language],
+        Object.hasOwn(problem.referencesolutions, language) &&
+        solution === problem.referencesolutions[language],
     );
 
   if (!referencesolutionEquals) {
-    const result = await judge0Validator({ referencesolution, testcases });
+    const result = await judge0Validator({ referencesolutions, testcases });
     if (result.success) {
-      updateData.referencesolution = referencesolution;
+      updateData.referencesolutions = referencesolutions;
     }
   } else {
-    delete updateData.referencesolution;
+    delete updateData.referencesolutions;
   }
 
   // donot db update if updateData is empty
@@ -292,12 +372,125 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
       .json(new ApiResponse(200, "Problem updated Successfully"));
   }
 
+  let tagRecords;
+  let tagsTodisconnect;
+  if (updateData.tags) {
+    //normalize tags
+    const inputTags = updateData.tags.map((tag) => tag.toLowerCase());
+
+    //existing tags
+    const existingTags = problem.tags.map((tag) => tag);
+
+    //upsert tag
+    tagRecords = await Promise.all(
+      inputTags.map(async (tag) => {
+        return await prisma.Tag.upsert({
+          where: {
+            name: tag,
+          },
+          update: {},
+          create: {
+            name: tag,
+          },
+        });
+      }),
+    );
+
+    //dissconect and remove tags
+    tagsTodisconnect = existingTags.filter(
+      (tag) => !inputTags.includes(tag.name),
+    );
+  }
+
+  let companyTagRecords;
+  let dissconnectCompanyTagRecords;
+  if (updateData.companies) {
+    //normalize company tags
+    const inputCompanyTags = updateData.companies.map((company) =>
+      company.toLowerCase(),
+    );
+
+    //normalize existing comapny tags
+    const existingCompanyTags = problem.companies.map((company) => company);
+
+    //create or update company tags and get their records
+    companyTagRecords = await Promise.all(
+      inputCompanyTags.map(async (company) => {
+        return await prisma.CompanyTag.upsert({
+          where: {
+            name: company.toLowerCase(),
+          },
+          update: {
+            count: {
+              increment: 1,
+            },
+          },
+          create: {
+            name: company.toLowerCase(),
+            count: 1,
+          },
+        });
+      }),
+    );
+    //find which are to be dissconnect
+    dissconnectCompanyTagRecords = existingCompanyTags.filter(
+      (company) => !inputCompanyTags.includes(company.name),
+    );
+    //decrement count
+    await Promise.all(
+      dissconnectCompanyTagRecords.map(async (company) => {
+        return await prisma.companyTag.update({
+          where: {
+            id: company.id,
+          },
+          data: {
+            count: {
+              decrement: 1,
+            },
+          },
+        });
+      }),
+    );
+  }
   //here we will update the data
   const updatedProblem = await prisma.problem.update({
     where: {
       id,
     },
-    data: { ...updateData, userId },
+    data: {
+      ...updateData,
+      userId,
+      tags: {
+        connect: tagRecords.map((tag) => ({
+          id: tag.id,
+        })),
+        disconnect: tagsTodisconnect.map((tag) => ({
+          id: tag.id,
+        })),
+      },
+      companies: {
+        connect: companyTagRecords.map((company) => ({
+          id: company.id,
+        })),
+        disconnect: dissconnectCompanyTagRecords.map((company) => ({
+          id: company.id,
+        })),
+      },
+    },
+    include: {
+      tags: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      companies: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
   });
 
   if (!updatedProblem) {
