@@ -12,6 +12,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Plus,
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchBar from "../../components/form/SearchBar";
@@ -20,8 +21,12 @@ import TagsDown from "../../components/Dropdown/TagsDown";
 import Modal from "../../components/Modal/Modal";
 import CompanyFilter from "../../components/problem/CompanyFilter";
 import { useNavigate } from "react-router-dom";
+import PlaylistModal from "../../components/Modal/PlaylistModal.jsx";
+import AddPlaylistModal from "../../components/Modal/AddPlaylistModal.jsx";
+import { usePlaylistStore } from "../../store/usePlaylistStore.js";
+import Loader from "../../components/Loader.jsx";
 const Problems = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     isLoading,
     getAllProblems,
@@ -38,7 +43,11 @@ const Problems = () => {
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [difficulty, setDifficulty] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlaylistModalOpen, setIsPlaylistModalOpen] = useState(false);
+  const [isPlaylistModalOpen2, setIsPlaylistModalOpen2] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [selectedProblem, setSelectedProblem] = useState(null);
+  const { isPlaylistLoading, getAllPlaylists, playlists } = usePlaylistStore();
   //delete
   const handleDeleteOnClick = async () => {
     try {
@@ -65,25 +74,56 @@ const Problems = () => {
       console.log("Error getting all problems: ", error);
     }
   };
+  const fetchPlaylists = async () => {
+    try {
+      await getAllPlaylists();
+    } catch (error) {
+      console.log("Error getting all playlists: ", error);
+    }
+  };
+  const fetchTags = async () => {
+    try {
+      await getAllTags();
+    } catch (error) {
+      console.log("Error getting all tags: ", error);
+    }
+  };
+
+  const fetchCompanies = async () => {
+    try {
+      await getAllCompanies();
+    } catch (error) {
+      console.log("Error getting all companies: ", error);
+    }
+  };
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        await getAllTags();
-        await getAllCompanies();
-      } catch (error) {
-        console.log("Error getting all tags: ", error);
-      }
-    };
     fetchTags();
-  }, [getAllTags, getAllCompanies]);
+    fetchPlaylists();
+    fetchCompanies();
+  }, [getAllTags, getAllCompanies, getAllPlaylists]);
 
   useEffect(() => {
     fetchProblems();
   }, [debounceQuery, selectedTags, difficulty]);
 
-  if (isLoading && problems.length === 0) return <div>Loading...</div>;
   return (
     <>
+      {(isLoading || isPlaylistLoading) && (
+        <Loader isLoading={isLoading || isPlaylistLoading} />
+      )}
+      {isPlaylistModalOpen2 && (
+        <AddPlaylistModal
+          onClose={() => setIsPlaylistModalOpen2(false)}
+          problemId={selectedProblem}
+          playlists={playlists}
+        />
+      )}
+      {isPlaylistModalOpen && (
+        <PlaylistModal
+          onClose={() => setIsPlaylistModalOpen(false)}
+          onClick={() => setIsPlaylistModalOpen(true)}
+        />
+      )}
       {isModalOpen && (
         <Modal
           isLoading={isLoading}
@@ -134,24 +174,12 @@ const Problems = () => {
               selectedTags={selectedTags}
               setSelectedTags={setSelectedTags}
             />
-            <Dropdown
-              list={[
-                {
-                  name: "Tags",
-                  onClick: () => {
-                    "";
-                  },
-                },
-                {
-                  name: "Difficulty",
-                  onClick: () => {
-                    "";
-                  },
-                },
-              ]}
-              name={"Status"}
-              icon={<ListFilter className="h-5 w-5" />}
-            />
+            <button
+              className="btn"
+              onClick={() => setIsPlaylistModalOpen(true)}
+            >
+              Create Playlist <Plus className="h-5 w-5" />
+            </button>
           </div>
         </div>
         <div className="flex flex-wrap-reverse md:flex-nowrap gap-5 w-full">
@@ -217,7 +245,10 @@ const Problems = () => {
                         </div>
                       </td>
                       <td className="w-1/10">{"solved"}</td>
-                      <td className="w-2/10 disabled" onClick={(e) => e.stopPropagation()}>
+                      <td
+                        className="w-2/10 disabled"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="flex gap-2">
                           <button
                             className="btn p-2 bg-red-500"
@@ -227,10 +258,19 @@ const Problems = () => {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
-                          <button className="btn p-2 bg-secondary z-5" onClick={() => navigate(`/edit/${problem.id}`)}>
+                          <button
+                            className="btn p-2 bg-secondary z-5"
+                            onClick={() => navigate(`/edit/${problem.id}`)}
+                          >
                             <Pencil className="h-4 w-4" />
                           </button>
-                          <button className="btn p-2 bg-primary border-accent ">
+                          <button
+                            className="btn p-2 bg-primary border-accent "
+                            onClick={() => {
+                              setIsPlaylistModalOpen2(true);
+                              setSelectedProblem(problem.id);
+                            }}
+                          >
                             <BookmarkCheck className="h-4 w-4" />{" "}
                             <span className="text-xs">Save to Playlist</span>
                           </button>

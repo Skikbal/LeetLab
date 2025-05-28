@@ -13,7 +13,7 @@ const TestContent = ({ problem }) => {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(problem?.testcases).length > 0 &&
+            {Object.keys(problem).length > 0 &&
               problem.testcases.map((testcase, index) => {
                 return (
                   <tr key={index} className="hover:bg-base-300">

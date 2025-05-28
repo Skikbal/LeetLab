@@ -88,10 +88,15 @@ const ProblemSchema = z.object({
   }),
 });
 
+const PlaylistSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters long"),
+  description: z.string().optional()
+})
 export {
   SignupSchema,
   LoginSchema,
   ProblemSchema,
   emailValidation,
   resetPasswordSchema,
+  PlaylistSchema
 };

@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/Axios";
 import toast from "react-hot-toast";
-export const usePLaylistStore = create((set) => ({
-  isPlaylistLoading: true,
+export const usePlaylistStore = create((set) => ({
+  isPlaylistLoading: false,
   playlists: null,
   playlist: null,
 
-  createPlaylist: async ({ data, navigate }) => {
+  createPlaylist: async (data) => {
     set({ isPlaylistLoading: true });
     try {
       const res = await axiosInstance.post("/playlists/new", data);
@@ -77,7 +77,7 @@ export const usePLaylistStore = create((set) => ({
     try {
       const res = await axiosInstance.post(
         `/playlists/${playlistId}/add-problem`,
-        problemIds
+        { problemIds }
       );
       toast.success(res.data.message);
     } catch (error) {

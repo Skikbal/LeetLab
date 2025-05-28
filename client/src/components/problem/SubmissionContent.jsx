@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useExecuteStore } from "../../store/useExecutionStore.js";
 import { Tag, Timer } from "lucide-react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css'
+import "react-loading-skeleton/dist/skeleton.css";
 import Loader from "../Loader.jsx";
 
-const SubmissionContent = ({submissions}) => {
+const SubmissionContent = ({ submissions }) => {
   // const { submissionById, submissions, isFetchingSubmission } =
   //   useExecuteStore();
 
@@ -38,7 +38,7 @@ const SubmissionContent = ({submissions}) => {
                 key={submission.id}
               >
                 <input type="radio" name="my-accordion-4" />
-                <div className="flex items-center gap-1 collapse-title font-semibold">
+                <div className="flex items-center gap-1 collapse-title font-semibold justify-between">
                   <p
                     className={`${
                       submission.status === "ACCEPTED"
@@ -46,9 +46,10 @@ const SubmissionContent = ({submissions}) => {
                         : "text-red-500"
                     }`}
                   >
-                    {submission.status} -{" "}
-                    {new Date(submission.createdAt).toDateString()}
+                    {submission.status}
                   </p>
+                  <p className="bg-accent py-1 px-3 rounded-md text-sm">{submission.language}</p>
+                  <p>{new Date(submission.createdAt).toDateString()}</p>
                 </div>
                 <div className="collapse-content text-sm">
                   <div className="flex flex-col gap-1 bg-base-200 rounded-md min-h-70 overflow-auto">
