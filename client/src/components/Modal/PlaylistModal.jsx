@@ -66,7 +66,7 @@ const PlaylistModal = ({ onClose }) => {
             )}
           </div>
           <div className="flex justify-end gap-2 items-center mt-3">
-            <button className="btn btn-md" type="button" onClick={onClose}>
+            <button className="btn btn-outline btn-primary btn-md" type="button" onClick={onClose}>
               Cancel
             </button>
             <button

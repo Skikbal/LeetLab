@@ -11,6 +11,7 @@ import MailVerification from "../pages/auth/MailVerification.jsx";
 import RequireVerified from "./RequireVerified.jsx";
 import ProblemEditor from "../pages/problem/ProblemEditor.jsx";
 import EditProblem from "../pages/problem/EditProblem.jsx";
+import Profile from "../pages/Dashboard/Profile.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -39,9 +40,24 @@ const AppRoutes = () => {
             </RequireVerified>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <RequireVerified>
+              <Profile />
+            </RequireVerified>
+          }
+        />
       </Route>
       <Route element={<AdminRoutes />}>
-        <Route path="/add-problem" element={<AddProblem />} />
+        <Route
+          path="/add-problem"
+          element={
+            <RequireVerified>
+              <AddProblem />
+            </RequireVerified>
+          }
+        />
         <Route
           path="/problems"
           element={
@@ -63,6 +79,14 @@ const AppRoutes = () => {
           element={
             <RequireVerified>
               <EditProblem />
+            </RequireVerified>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireVerified>
+              <Profile />
             </RequireVerified>
           }
         />

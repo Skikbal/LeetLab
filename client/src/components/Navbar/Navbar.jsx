@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { Code, User, Settings, LogOut, } from "lucide-react";
+import { Code, User, Settings, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 const Navbar = () => {
@@ -16,10 +16,10 @@ const Navbar = () => {
     }
   };
   if (isCheckingAuth) return <div>loading...</div>;
-  if(pathMatches) return null
+  if (pathMatches) return null;
   return (
     <>
-      <div className="navbar flex bg-base-100 shadow-sm justify-between">
+      <div className="navbar flex bg-base-100 shadow-sm justify-between sticky top-0 z-60 border-b border-b-accent">
         <div className="flex">
           <a className="btn btn-ghost text-xl">daisyUI</a>
         </div>
@@ -86,10 +86,10 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="">
+                <Link to={"/profile"}>
                   <User className="h-5 w-5 text-primary" />
                   Profile
-                </a>
+                </Link>
               </li>
               {authUser.role === "ADMIN" && (
                 <li>
@@ -99,12 +99,12 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              <li>
+              {/* <li>
                 <a>
                   <Settings className="h-5 w-5 text-primary" />
                   Settings
                 </a>
-              </li>
+              </li> */}
               <li className="bg-primary rounded-sm mt-3" onClick={handleLogout}>
                 <a>
                   <LogOut className="h-5 w-5 text-white" />

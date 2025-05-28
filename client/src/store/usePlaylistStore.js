@@ -3,13 +3,16 @@ import { axiosInstance } from "../lib/Axios";
 import toast from "react-hot-toast";
 export const usePlaylistStore = create((set) => ({
   isPlaylistLoading: false,
-  playlists: null,
+  playlists: [],
   playlist: null,
 
   createPlaylist: async (data) => {
     set({ isPlaylistLoading: true });
     try {
       const res = await axiosInstance.post("/playlists/new", data);
+      set((state) => ({
+        playlists: [...state.playlists, res.data.data],
+      }));
       toast.success(res.data.message);
     } catch (error) {
       console.log(error.response.data.message);
@@ -49,7 +52,12 @@ export const usePlaylistStore = create((set) => ({
   deletePlaylist: async (playlistId) => {
     set({ isPlaylistLoading: true });
     try {
-      const res = await axiosInstance.delete(`/playlists/${playlistId}`);
+      const res = await axiosInstance.delete(`/playlists/delete/${playlistId}`);
+      set((state) => ({
+        playlists: state.playlists.filter(
+          (playlist) => playlist.id !== res.data.data.id
+        ),
+      }));
       toast.success(res.data.message);
     } catch (error) {
       console.log(error.response.data.message);
