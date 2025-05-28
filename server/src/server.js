@@ -4,6 +4,7 @@ import authRouter from "./routes/auth.routes.js";
 import problemRouter from "./routes/problem.routes.js";
 import executionRouter from "./routes/execution.routes.js";
 import submissionRouter from "./routes/submission.routes.js";
+import playListRouter from "./routes/playlist.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
@@ -45,6 +46,10 @@ server.use(
   "/api/v1/submission",
   /* #swagger.tags = ['Submission'] */ submissionRouter,
 );
+server.use(
+  "/api/v1/playlists",
+  /* #swagger.tags = ['Playlist'] */ playListRouter,
+)
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 server.use(errorHandler);

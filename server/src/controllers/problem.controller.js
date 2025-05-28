@@ -461,20 +461,20 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
       ...updateData,
       userId,
       tags: {
-        connect: tagRecords.map((tag) => ({
+        connect: tagRecords?.map((tag) => ({
           id: tag.id,
-        })),
-        disconnect: tagsTodisconnect.map((tag) => ({
+        }))?? [],
+        disconnect: tagsTodisconnect?.map((tag) => ({
           id: tag.id,
-        })),
+        }))??[],
       },
       companies: {
-        connect: companyTagRecords.map((company) => ({
+        connect: companyTagRecords?.map((company) => ({
           id: company.id,
-        })),
-        disconnect: dissconnectCompanyTagRecords.map((company) => ({
+        }))??[],
+        disconnect: dissconnectCompanyTagRecords?.map((company) => ({
           id: company.id,
-        })),
+        }))??[],
       },
     },
     include: {

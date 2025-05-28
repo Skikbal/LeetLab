@@ -8,7 +8,9 @@ const ProblemSchema = z.object({
   difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
   tags: z.array(z.string()).min(1, "Please enter at least one tag"),
   companyTags: z.array(z.string()).min(1, "Please enter at least one tag"),
-  constraints: z.array(z.string()).min(1, "Please enter at least one constraint"),
+  constraints: z
+    .array(z.string())
+    .min(1, "Please enter at least one constraint"),
   hints: z.string().optional(),
   editorial: z.string().optional(),
   testcases: z
@@ -48,4 +50,7 @@ const ProblemSchema = z.object({
   }),
 });
 
-export { ProblemSchema };
+const playlistValidator = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters long"),
+});
+export { ProblemSchema, playlistValidator };
