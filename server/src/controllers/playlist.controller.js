@@ -96,9 +96,69 @@ const deletePlaylistHandler = AsyncHandler(async (req, res) => {
 
   return res.json(new ApiRespone(200, "Playlist deleted successfully"));
 });
+
+//update playlist
+const upadtePlaylistHandler = AsyncHandler(async (req, res) => {
+  const { playlistId } = req.params;
+  const { name, description } = req.body;
+
+  const updatedPlaylist = await prisma.playlist.update({
+    where: {
+      id: playlistId,
+    },
+    data: {
+      name: name,
+      description: description,
+    },
+  });
+
+  if (!updatedPlaylist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res.json(new ApiRespone(200, "Playlist updated successfully"));
+});
+
+//add  problem to playlist handler
+const addProblemToPlaylistHandler = AsyncHandler(async (req, res) => {
+  const { playlistId } = req.params;
+  const { problemIds } = req.body;
+
+  const problemInPlaylist = await prisma.problemInPlaylist.createMany({
+    data: problemIds.map((problemId) => {
+      return {
+        playlistId: playlistId,
+        problemId: problemId,
+      };
+    }),
+  });
+
+  return res.status(200).json(new ApiRespone(200, "Problem added to playlist"));
+});
+
+const removeProblemFromPlaylistHandler = AsyncHandler(async (req, res) => {
+  const { playlistId } = req.params;
+  const { problemIds } = req.body;
+
+  const removedProblems = await prisma.problemInPlaylist.deleteMany({
+    where: {
+      playlistId: playlistId,
+      problemId: {
+        in: problemIds,
+      },
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiRespone(200, "Problem removed from playlist"));
+});
 export {
   createPlaylistHandler,
   getAllPlaylistHandler,
   getPlaylistDetailsHandler,
   deletePlaylistHandler,
+  upadtePlaylistHandler,
+  addProblemToPlaylistHandler,
+  removeProblemFromPlaylistHandler,
 };
