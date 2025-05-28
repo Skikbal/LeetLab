@@ -1,7 +1,9 @@
 import { Router } from "express";
 import {
   createPlaylistHandler,
+  deletePlaylistHandler,
   getAllPlaylistHandler,
+  getPlaylistDetailsHandler,
 } from "../controllers/playlist.controller.js";
 import isAuth from "../middlewares/isAuth.middlware.js";
 import isVerified from "../middlewares/isUserVerified.middleware.js";
@@ -18,5 +20,11 @@ playListRouter
     createPlaylistHandler,
   );
 playListRouter.route("/").get(isAuth, isVerified, getAllPlaylistHandler);
+playListRouter
+  .route("/getDetails/:playlistId")
+  .get(isAuth, isVerified, getPlaylistDetailsHandler);
+playListRouter
+  .route("/delete/:playlistId")
+  .delete(isAuth, isVerified, deletePlaylistHandler);
 
 export default playListRouter;

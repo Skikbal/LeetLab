@@ -27,7 +27,6 @@ const createPlaylistHandler = AsyncHandler(async (req, res) => {
 });
 
 // get all  playlist handler
-
 const getAllPlaylistHandler = AsyncHandler(async (req, res) => {
   const { id: userId } = req.user;
 
@@ -53,4 +52,53 @@ const getAllPlaylistHandler = AsyncHandler(async (req, res) => {
     .json(new ApiRespone(200, "Playlists fetched successfully", playlists));
 });
 
-export { createPlaylistHandler, getAllPlaylistHandler };
+//getplaylist details
+const getPlaylistDetailsHandler = AsyncHandler(async (req, res) => {
+  const { id: userId } = req.user;
+  const { playlistId } = req.params;
+
+  const playlist = await prisma.playlist.findUnique({
+    where: {
+      userId: userId,
+      id: playlistId,
+    },
+    include: {
+      problems: {
+        include: {
+          problem: true,
+        },
+      },
+    },
+  });
+
+  if (!playlist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res.json(
+    new ApiRespone(200, "Playlist fetched successfully", playlist),
+  );
+});
+
+//delete playlist
+const deletePlaylistHandler = AsyncHandler(async (req, res) => {
+  const { playlistId } = req.params;
+
+  const deletedPlaylist = await prisma.playlist.delete({
+    where: {
+      id: playlistId,
+    },
+  });
+
+  if (!deletedPlaylist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res.json(new ApiRespone(200, "Playlist deleted successfully"));
+});
+export {
+  createPlaylistHandler,
+  getAllPlaylistHandler,
+  getPlaylistDetailsHandler,
+  deletePlaylistHandler,
+};
