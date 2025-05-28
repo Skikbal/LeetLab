@@ -160,11 +160,11 @@ const Problems = () => {
               {/* head */}
               <thead className="text-base-content text-base sticky top-0 z-10 bg-base-100 w-full">
                 <tr>
-                  <th className="tetx-base-content w-1/16">
+                  {/* <th className="tetx-base-content w-1/16">
                     <label>
                       <input type="checkbox" className="checkbox" />
                     </label>
-                  </th>
+                  </th> */}
                   <th className="w-2/10">Title</th>
                   <th className="w-2/10">Tags</th>
                   <th className="w-1/10">Difficulty</th>
@@ -177,14 +177,14 @@ const Problems = () => {
                   return (
                     <tr
                       key={index}
-                      className="hover:bg-base-200 overflow-hidden cursor-pointer"
+                      className="hover:bg-base-200 overflow-hidden cursor-pointer z-2"
                       onClick={() => navigate(`/editor/${problem.id}`)}
                     >
-                      <th className="w-1/16">
+                      {/* <th className="w-1/16">
                         <label>
                           <input type="checkbox" className="checkbox" />
                         </label>
-                      </th>
+                      </th> */}
 
                       <td className="w-2/10">
                         <p className="text-base text-base-content font-medium">
@@ -227,7 +227,7 @@ const Problems = () => {
                           >
                             <Trash className="h-4 w-4" />
                           </button>
-                          <button className="btn p-2 bg-secondary z-40" onClick={() => navigate(`/edit/${problem.id}`)}>
+                          <button className="btn p-2 bg-secondary z-5" onClick={() => navigate(`/edit/${problem.id}`)}>
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button className="btn p-2 bg-primary border-accent ">

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Circle,
   CircleHelp,
-  Code,
   Eye,
   EyeOff,
   Loader2,
@@ -12,12 +10,12 @@ import {
   Mail,
 } from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
 import GithubButton from "../../components/Buttons/GithubButton.jsx";
+import Loader from "../../components/Loader.jsx";
 const Login = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser, isLoading } = useAuthStore();
   const {
@@ -51,6 +49,7 @@ const Login = () => {
 
   return (
     <>
+      {isLoading && <Loader isLoading={isLoading} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"

@@ -17,7 +17,7 @@ const Modal = ({ onClose, title, description, status, onClick, isLoading }) => {
           <div
             className={`p-4 rounded-full mb-4 ${
               status === "delete"
-                ? "bg-error/30"
+                ? "bg-red-500/30"
                 : status === "update"
                 ? "bg-secondary/30"
                 : status === "add"
@@ -28,7 +28,7 @@ const Modal = ({ onClose, title, description, status, onClick, isLoading }) => {
             <Trash
               className={`w-6 h-6 ${
                 status === "delete"
-                  ? "text-error"
+                  ? "text-red-500"
                   : status === "update"
                   ? "text-secondary"
                   : status === "add"
@@ -43,7 +43,7 @@ const Modal = ({ onClose, title, description, status, onClick, isLoading }) => {
             <button
               className={`btn w-1/2 ${
                 status === "delete"
-                  ? "bg-error"
+                  ? "bg-red-500"
                   : status === "update"
                   ? "bg-secondary"
                   : status === "add"
