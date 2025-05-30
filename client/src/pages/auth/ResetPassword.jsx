@@ -1,31 +1,29 @@
-import React from "react";
-import {
-  Code,
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  ArrowLeft,
-} from "lucide-react";
-import Input from "../../components/form/Input";
-import Label from "../../components/form/Label";
-import ErrorSpan from "../../components/form/ErrorSpan";
+import React,{useState} from "react";
+import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../../store/useAuthStore";
 import { resetPasswordSchema } from "../../validators/ValidationSchema";
-import { useSearchParams, useNavigate,Link } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import logo from "../../assets/logo.svg";
+import Label from "../../components/form/Label";
+import Input from "../../components/form/Input";
+import ErrorSpan from "../../components/form/ErrorSpan";
+
 const ResetPassword = () => {
   const { isLoading, resetPassword } = useAuthStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(resetPasswordSchema) });
+
   const onSubmit = async (data) => {
     try {
       await resetPassword(data, token, navigate);
@@ -35,63 +33,100 @@ const ResetPassword = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-dark-green bg-rays">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"
+        className="w-full max-w-md rounded-2xl bg-base-200 backdrop-blur-md shadow-lg border border-base-300"
       >
-        <div className="rounded-t-2xl px-6 py-4 shadow-lg ">
-          <h2 className="text-xl font-semibold text-base-content text-center">
-            Create a new password
-          </h2>
-          <p className="text-sm text-accent text-center mt-1">
-            Enter a new password below to reset your account access.
-          </p>
+        {/* Header */}
+        <div className="flex justify-center pt-8">
+          <img src={logo} alt="logo" className="w-13 h-13" />
         </div>
-        <div className="p-6 space-y-2">
-          <div className="form-control">
-            <Label children={"New Password"} name={"newPassword"} />
+
+        <div className="px-8 py-6">
+          <h1 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
+            Reset Password
+          </h1>
+          <p className="text-center text-base-content/80 mb-6">
+            Create a new password to secure your account
+          </p>
+
+          {/* New Password Field */}
+          <div className="mb-4">
+            <Label htmlFor="newPassword">New Password</Label>
             <Input
-              type={"text"}
+              id="newPassword"
+              name="newPassword"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
               register={register}
-              name={"newPassword"}
-              placeholder={"New Password"}
+              icon={Lock}
+              error={errors.newPassword}
+              showPasswordToggle={true}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              isPasswordVisible={
+                showPassword ? (
+                  <EyeOff className="h-5 w-5 text-accent" />
+                ) : (
+                  <Eye className="h-5 w-5 text-accent" />
+                )
+              }
             />
-            {errors.newPassword && (
-              <ErrorSpan error={errors.newPassword?.message} />
-            )}
+            <ErrorSpan error={errors.newPassword?.message} />
           </div>
-          <div className="form-control">
-            <Label children={"Confirm Password"} name={"confirmPassword"} />
+
+          {/* Confirm Password Field */}
+          <div className="mb-6">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input
-              type={"text"}
+              id="confirmPassword"
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="••••••••"
               register={register}
-              name={"confirmPassword"}
-              placeholder={"Confirm Password"}
+              icon={Lock}
+              error={errors.confirmPassword}
+              showPasswordToggle={true}
+              onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+              isPasswordVisible={
+                showConfirmPassword ? (
+                  <EyeOff className="h-5 w-5 text-accent" />
+                ) : (
+                  <Eye className="h-5 w-5 text-accent" />
+                )
+              }
             />
-            {errors?.confirmPassword && (
-              <ErrorSpan error={errors?.confirmPassword?.message} />
-            )}
+            <ErrorSpan error={errors.confirmPassword?.message} />
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="btn btn-primary w-full mt-2"
+            className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-content font-medium py-2.5 px-4 rounded-lg transition-all duration-200 mb-6"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Loading...
+                <Loader2 className="h-5 w-5 animate-spin inline mr-2" />
+                Resetting...
               </>
             ) : (
-              "Reset password"
+              "Reset Password"
             )}
           </button>
         </div>
+
+        {/* Footer */}
+        <div className="px-8 py-6 border-t border-base-content/10">
+          <p className="text-center text-base-content/60">
+            Remember your password?{" "}
+            <Link to="/login" className="text-primary hover:underline">
+              Sign In
+            </Link>
+          </p>
+        </div>
       </form>
-      {/* footer */}
-      
-    </>
+    </div>
   );
 };
 

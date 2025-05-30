@@ -1,140 +1,142 @@
 import React, { useState, useEffect } from "react";
-import { Code, Terminal, FileCode, Braces, TextCursor } from "lucide-react";
+import {
+  Code,
+  Terminal,
+  FileCode,
+  Braces,
+  TextCursor,
+  Lock,
+} from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import logo from "../assets/logo.svg";
+
 const AuthImagePattern = ({ title, subtitle }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Code snippets to display in the background
   const codeSnippets = [
     `function twoSum(nums, target) {
-      const map = new Map();
-      for (let i = 0; i < nums.length; i++) {
-        const complement = target - nums[i];
-        if (map.has(complement)) {
-          return [map.get(complement), i];
-        }
-        map.set(nums[i], i);
-      }
-      return [];
-    }`,
-    `class ListNode {
-      constructor(val = 0, next = null) {
-        this.val = val;
-        this.next = next;
-      }
+  const map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+    if (map.has(complement)) {
+      return [map.get(complement), i];
     }
-    
-    function reverseList(head) {
-      let prev = null;
-      let current = head;
-      while (current) {
-        const next = current.next;
-        current.next = prev;
-        prev = current;
-        current = next;
-      }
-      return prev;
-    }`,
+    map.set(nums[i], i);
+  }
+  return [];
+}`,
+    `class ListNode {
+  constructor(val = 0, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+  
+function reverseList(head) {
+  let prev = null;
+  let current = head;
+  while (current) {
+    const next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+  return prev;
+}`,
     `function isValid(s) {
-      const stack = [];
-      const map = {
-        '(': ')',
-        '{': '}',
-        '[': ']'
-      };
-      
-      for (let i = 0; i < s.length; i++) {
-        if (s[i] in map) {
-          stack.push(s[i]);
-        } else {
-          const last = stack.pop();
-          if (map[last] !== s[i]) return false;
-        }
-      }
-      
-      return stack.length === 0;
-    }`,
+  const stack = [];
+  const map = {
+    '(': ')',
+    '{': '}',
+    '[': ']'
+  };
+  
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] in map) {
+      stack.push(s[i]);
+    } else {
+      const last = stack.pop();
+      if (map[last] !== s[i]) return false;
+    }
+  }
+  
+  return stack.length === 0;
+}`,
   ];
-  // Rotate through code snippets
+
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % codeSnippets.length);
     }, 2000);
     return () => clearInterval(interval);
   }, [codeSnippets.length]);
+
   return (
-    <div className="hidden lg:flex flex-col items-center justify-center bg-black text-white p-12 relative overflow-hidden border-l border-slate-900">
-      {/* Animated code symbols in background */}
+    <div className="hidden lg:flex flex-col items-center justify-center bg-base-100 p-12 relative overflow-hidden border-l border-base-300">
+      {/* Floating code icons */}
       <div className="absolute inset-0 opacity-10 text-primary">
-        <div className="absolute top-[10%] left-[15%] animate-pulse">
-          <Braces size={40} />
-        </div>
-        <div className="absolute top-[30%] left-[80%] animate-pulse delay-300">
-          <FileCode size={50} />
-        </div>
-        <div className="absolute top-[70%] left-[20%] animate-pulse delay-700">
-          <Terminal size={45} />
-        </div>
-        <div className="absolute top-[60%] left-[75%] animate-pulse delay-500">
-          <Code size={55} />
-        </div>
-        <div className="absolute top-[85%] left-[45%] animate-pulse delay-200">
-          <Braces size={35} />
-        </div>
-        <div className="absolute top-[15%] left-[60%] animate-pulse delay-100">
-          <Terminal size={30} />
-        </div>
+        {[Braces, FileCode, Terminal, Code].map((Icon, i) => (
+          <Icon
+            key={i}
+            size={40 + i * 5}
+            className={`absolute animate-pulse`}
+            style={{
+              top: `${15 + i * 20}%`,
+              left: `${15 + i * 20}%`,
+              animationDelay: `${i * 300}ms`,
+            }}
+          />
+        ))}
       </div>
-      <div className="z-10 max-w-md flex flex-col items-center">
-        {/* Code editor mockup */}
-        <div className="w-full bg-base-300 rounded-lg shadow-md shadow-zinc-900/40 mb-8 overflow-hidden ">
-          {/* Editor header */}
-          <div className="bg-base-200 px-4 py-2 flex items-center">
+
+      <div className="z-10 max-w-md w-full flex flex-col items-center">
+        {/* Code editor */}
+        <div className="w-full bg-base-200 rounded-lg shadow-lg mb-8 overflow-hidden border border-base-300">
+          <div className="bg-base-300 px-4 py-2 flex items-center border-b border-base-300">
             <div className="flex space-x-2 mr-4">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-secondary"></div>
               <div className="w-3 h-3 rounded-full bg-primary"></div>
             </div>
-            <div className="text-xs font-mono opacity-70">problem.js</div>
+            <div className="text-xs font-mono text-base-content/70">
+              problem.js
+            </div>
           </div>
-          {/* Code content */}
-          <div className="p-4 font-mono text-xs sm:text-sm overflow-hidden relative h-64">
-            <pre className="text-sm font-mono text-base-content">
-              <code>
-                <SyntaxHighlighter
-                  language="javascript"
-                  style={vscDarkPlus}
-                  customStyle={{
-                    background: "transparent",
-                    fontSize: "0.875rem",
-                    height: "100%",
-                    overflow: "hidden",
-                  }}
-                >
-                  {codeSnippets[activeIndex]}
-                </SyntaxHighlighter>
-              </code>
-            </pre>
 
-            {/* Blinking cursor */}
-            <div className="absolute bottom-4 right-4 w-0.5 h-4 bg-white animate-pulse delay-75"></div>
+          <div className="p-4 font-mono overflow-hidden relative h-80">
+            <SyntaxHighlighter
+              language="javascript"
+              style={vscDarkPlus}
+              customStyle={{
+                background: "transparent",
+                fontSize: "0.875rem",
+                margin: 0,
+                padding: 0,
+              }}
+              showLineNumbers
+            >
+              {codeSnippets[activeIndex]}
+            </SyntaxHighlighter>
+            <div className="absolute bottom-4 right-4 w-0.5 h-4 bg-primary animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Logo and text */}
+        <div className="flex flex-col items-center">
+          <img src={logo} alt="logo" className="w-13 h-13 my-6" />
+          <h1 className="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
+            {title || "Welcome Back"}
+          </h1>
+          <p className="text-center text-base-content/80 mb-6">
+            {subtitle || "Sign in to continue your journey with us"}
+          </p>
+          <div className="flex items-center text-sm text-base-content/60">
+            <Lock className="w-4 h-4 mr-1" />
+            <span>Secure authentication</span>
           </div>
         </div>
       </div>
-      {/* Logo */}
-      <div className="flex items-center justify-center mb-6">
-        <div className="w-15 h-15 rounded-xl  flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-15 h-15 m-auto" />
-        </div>
-      </div>
-
-      {/* Text content */}
-      <h2 className="text-2xl font-bold mb-4 text-center text-primary">
-        {title}
-      </h2>
-      <p className=" text-center text-accent">{subtitle}</p>
     </div>
   );
 };

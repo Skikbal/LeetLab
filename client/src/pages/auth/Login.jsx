@@ -9,9 +9,16 @@ import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
 import GithubButton from "../../components/Buttons/GithubButton.jsx";
 import Loader from "../../components/Loader.jsx";
 import logo from "../../assets/logo.svg";
+
+// Components
+import Label from "../../components/form/Label.jsx";
+import Input from "../../components/form/Input.jsx";
+import ErrorSpan from "../../components/form/ErrorSpan.jsx";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser, isLoading } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -27,147 +34,129 @@ const Login = () => {
   };
 
   useEffect(() => {
-    function handleMessage(event) {
-      //when message comes from the popup
+    const handleMessage = (event) => {
       if (event.data?.type === "oauth-success") {
         window.location.reload();
       }
-    }
-    //listinig when message comes
-    window.addEventListener("message", handleMessage);
-    //clean up on unmount
-    return () => {
-      window.removeEventListener("message", handleMessage);
     };
-  });
-
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
   return (
-    <>
-      {isLoading && <Loader isLoading={isLoading} />}
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" w-full max-w-md rounded-2xl"
+        className="w-full max-w-md rounded-2xl bg-base-200 backdrop-blur-md shadow-lg border border-base-300"
       >
-        <img src={logo} alt="logo" className="w-15 h-15 m-auto mt-7" />
-        <div className=" rounded-t-2xl px-6 py-4">
-          <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-center">
+        <div className="flex justify-center pt-8">
+          <img src={logo} alt="logo" className="w-13 h-13" />
+        </div>
+        <div className="px-8 py-6">
+          <h1 className="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
             Welcome Back
           </h1>
-          <p className="mt-2 text-base-content/80 text-center">
-            Your journey to{" "}
-            <span className="font-semibold text-primary">clean code</span> and{" "}
-            <span className="font-semibold text-secondary">zero noise</span>
+
+          <p className="text-center text-base-content/80 mb-8">
+            <span className="font-semibold text-primary">Zero Limits</span>. A
+            Journey to{" "}
+            <span className="font-semibold text-secondary">
+              Infinite Possibilities
+            </span>
+            .
           </p>
-        </div>
-        <div className="p-6 space-y-2">
-          <div className="form-control">
-            <label className="label mb-1" htmlFor="email">
-              <span className="label-text text-base-content/80">Email</span>
-            </label>
-            <div className="relative">
-              {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              </div> */}
-              <input
-                id="email"
-                type="text"
-                {...register("email")}
-                className={`
-        w-full bg-base-200 border border-base-300 focus:border-primary 
-        rounded-lg px-4 py-2 pl-10 text-white
-        ${errors.email ? "border-error focus:border-error" : ""}
-      `}
-                placeholder="john_doe@example.com"
-              />
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-70">
-                <Mail className="h-5 w-5 text-base-content/40" />
-              </span>
-            </div>
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
+
+          {/* Email Field */}
+          <div className="mb-4">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="text"
+              placeholder="john_doe@example.com"
+              register={register}
+              icon={Mail}
+              error={errors.email}
+            />
+            <ErrorSpan error={errors.email?.message} />
           </div>
-          <div className="form-control">
-            <label
-              className="label pb-1 flex justify-between"
-              htmlFor="password"
-            >
-              <span className="label-text text-base-content/80">Password</span>{" "}
+
+          {/* Password Field */}
+          <div className="mb-6">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="password">Password</Label>
               <Link
                 to="/forgot-password"
-                className="flex items-center justify-between"
+                className="text-sm text-base-content/70 hover:text-primary flex items-center"
               >
                 Forgot password <CircleHelp className="w-4 h-4 ml-1" />
               </Link>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-base-content/40" />
-              </div>
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                className={` w-full bg-base-200  text-white rounded px-4 py-2  pl-10 ${
-                  errors.password ? "input-error" : ""
-                }`}
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer absolute  inset-y-0 right-0 pr-3 flex items-center"
-              >
-                {showPassword ? (
+            </div>
+            <Input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              register={register}
+              icon={Lock}
+              error={errors.password}
+              showPasswordToggle={true}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              isPasswordVisible={
+                showPassword ? (
                   <EyeOff className="h-5 w-5 text-accent" />
                 ) : (
                   <Eye className="h-5 w-5 text-accent" />
-                )}
-              </button>
-            </div>
-
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
+                )
+              }
+            />
+            <ErrorSpan error={errors.password?.message} />
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="btn btn-primary w-full mt-2"
+            className="btn w-full bg-gradient-to-r from-primary to-secondary  hover:bg-primary-focus text-base-content rounded-lg transition-colors duration-200 mb-6"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin" />
-                Loading...
+                <span>Signing In...</span>
               </>
             ) : (
-              "Sign In"
+              <>
+                <span>Sign In</span>
+              </>
             )}
           </button>
-          <div className="flex items-center py-3">
-            <div className="flex-1 border-t border-accent"></div>
-            <div className="px-4 text-base-content text-sm">Or login with</div>
-            <div className="flex-1 border-t border-accent"></div>
+
+          {/* Divider */}
+          <div className="flex items-center mb-6">
+            <div className="flex-1 border-t border-base-content/20"></div>
+            <div className="px-4 text-base-content/60 text-sm">
+              Or login with
+            </div>
+            <div className="flex-1 border-t border-base-content/20"></div>
           </div>
-          <div className="flex gap-4 justify-center flex-wrap sm:flex-nowrap">
+
+          {/* OAuth Buttons */}
+          <div className="flex gap-4 justify-center">
             <GoogleLoginButton />
             <GithubButton />
           </div>
         </div>
+
+        {/* Footer */}
+        <div className="px-8 py-6 border-t border-base-content/10">
+          <p className="text-center text-base-content/60">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-primary hover:underline">
+              Register
+            </Link>
+          </p>
+        </div>
       </form>
-      {/* footer */}
-      <div className="text-center">
-        <p className="text-base-content/60">
-          Don’t have an account?{" "}
-          <Link to={"/signup"} className="link link-primary">
-            Register
-          </Link>
-        </p>
-      </div>
-    </>
+    </div>
   );
 };
 

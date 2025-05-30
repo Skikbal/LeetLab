@@ -1,11 +1,8 @@
 import React from "react";
 
 const ErrorSpan = ({ error }) => {
-  return (
-    <label className="label">
-      <span className="label-text-alt text-wrap text-red-500">{error}</span>
-    </label>
-  );
+  if (!error) return null;
+  return <p className="text-error text-sm mt-1">{error}</p>;
 };
 
 export default ErrorSpan;

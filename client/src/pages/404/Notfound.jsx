@@ -1,51 +1,62 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Terminal, Braces, FileCode, Code } from "lucide-react";
-const Notfound = () => {
+import logo from "../../assets/logo.svg";
+
+const NotFound = () => {
   return (
-    <div className="h-screen bg-base-200 flex justify-center items-center p-5">
-      <div className="relative flex flex-col items-center justify-between bg-base-100 p-5 rounded-xl w-250 h-120">
-        <div className="absolute inset-0 opacity-20 text-primary">
-          <div className="absolute top-[10%] left-[10%] animate-pulse">
-            <Braces size={40} />
-          </div>
-          <div className="absolute top-[35%] left-[35%] animate-pulse delay-500">
-            <Code size={55} />
-          </div>
-          <div className="absolute top-[30%] left-[80%] animate-pulse delay-300">
-            <FileCode size={50} />
-          </div>
-          <div className="absolute top-[85%] left-[5%] animate-pulse delay-700">
-            <FileCode size={45} />
-          </div>
-          <div className="absolute top-[70%] left-[20%] animate-pulse delay-700">
-            <Terminal size={45} />
-          </div>
-          <div className="absolute top-[60%] left-[75%] animate-pulse delay-500">
-            <Code size={55} />
-          </div>
-          <div className="absolute top-[85%] left-[45%] animate-pulse delay-200">
-            <Braces size={35} />
-          </div>
-          <div className="absolute top-[15%] left-[60%] animate-pulse delay-100">
-            <Terminal size={30} />
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-dark-green bg-rays">
+      <div className="relative w-full max-w-2xl bg-base-200/90 backdrop-blur-md rounded-2xl shadow-lg border border-base-300 p-8 overflow-hidden">
+        {/* Floating code icons */}
+        <div className="absolute inset-0 opacity-10 text-primary">
+          {[Braces, Code, FileCode, Terminal].map((Icon, index) => (
+            <Icon
+              key={index}
+              size={40 + index * 5}
+              className="absolute animate-pulse"
+              style={{
+                top: `${10 + index * 20}%`,
+                left: `${10 + index * 20}%`,
+                animationDelay: `${index * 300}ms`,
+              }}
+            />
+          ))}
         </div>
-        <h2 className="text-success-content text-[10rem]  font-extrabold animate-pulse delay-75">
-          404
-        </h2>
-        <h2 className="text-3xl md:text-7xl font-bold text-accent ">
-          Page not found
-        </h2>
-        <p className="text-lg my-4 md:text-xl text-center">
-          The page you're searching for isn't available.{" "}
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <img src={logo} alt="logo" className="w-16 h-16 mb-6" />
+
+          <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-error to-secondary mb-4">
+            404
+          </h1>
+
+          <h2 className="text-3xl font-bold text-base-content mb-4">
+            Page Not Found
+          </h2>
+
+          <p className="text-lg text-base-content/80 mb-8 max-w-md">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
+
+          <Link
+            to="/"
+            className="btn bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-content"
+          >
+            Return Home
+          </Link>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-8 text-center text-sm text-base-content/60">
+        <p>
+          Copyright © 2025 -{" "}
+          <span className="font-semibold text-primary">CodeZero</span>
         </p>
-        <Link className="btn btn-success z-10" to={"/"}>
-          Go home
-        </Link>
       </div>
     </div>
   );
 };
 
-export default Notfound;
+export default NotFound;
