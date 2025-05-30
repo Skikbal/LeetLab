@@ -33,10 +33,10 @@ playListRouter
   .route("/update/:playlistId")
   .put(isAuth, isVerified, upadtePlaylistHandler);
 playListRouter
-  .route("/add/:playlistId")
+  .route("/:playlistId/add-problem")
   .post(isAuth, isVerified, addProblemToPlaylistHandler);
 playListRouter
-  .route("/remove/:playlistId")
+  .route("/:playlistId/remove-problem")
   .delete(isAuth, isVerified, removeProblemFromPlaylistHandler);
 
 export default playListRouter;

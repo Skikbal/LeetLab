@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
+  MailCheck
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchBar from "../../components/form/SearchBar";
@@ -111,6 +112,7 @@ const Problems = () => {
       {(isLoading || isPlaylistLoading) && (
         <Loader isLoading={isLoading || isPlaylistLoading} />
       )}
+      
       {isPlaylistModalOpen2 && (
         <AddPlaylistModal
           onClose={() => setIsPlaylistModalOpen2(false)}

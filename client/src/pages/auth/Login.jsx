@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CircleHelp,
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-} from "lucide-react";
+import { CircleHelp, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { LoginSchema } from "../../validators/ValidationSchema.js";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
 import GithubButton from "../../components/Buttons/GithubButton.jsx";
 import Loader from "../../components/Loader.jsx";
+import logo from "../../assets/logo.svg";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser, isLoading } = useAuthStore();
@@ -52,34 +46,41 @@ const Login = () => {
       {isLoading && <Loader isLoading={isLoading} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" bg-base-100 w-full max-w-md rounded-2xl shadow-base-200 border border-accent"
+        className=" w-full max-w-md rounded-2xl"
       >
-        <div className="bg-zinc-950 rounded-t-2xl px-6 py-4 shadow-lg ">
-          <h2 className="text-xl font-semibold text-base-content text-center">
-            Welcome Back to CodeZero
-          </h2>
-          <p className="text-sm text-accent text-center">
-            Your journey to clean code and zero noise begins here.
+        <img src={logo} alt="logo" className="w-15 h-15 m-auto mt-7" />
+        <div className=" rounded-t-2xl px-6 py-4">
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-center">
+            Welcome Back
+          </h1>
+          <p className="mt-2 text-base-content/80 text-center">
+            Your journey to{" "}
+            <span className="font-semibold text-primary">clean code</span> and{" "}
+            <span className="font-semibold text-secondary">zero noise</span>
           </p>
         </div>
         <div className="p-6 space-y-2">
           <div className="form-control">
             <label className="label mb-1" htmlFor="email">
-              <span className="label-text text-base-content">Email</span>
+              <span className="label-text text-base-content/80">Email</span>
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-base-content/40" />
-              </div>
+              {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              </div> */}
               <input
                 id="email"
                 type="text"
                 {...register("email")}
-                className={`  w-full bg-base-200  text-white rounded px-4 py-2  pl-10 ${
-                  errors.email ? "input-error" : ""
-                }`}
+                className={`
+        w-full bg-base-200 border border-base-300 focus:border-primary 
+        rounded-lg px-4 py-2 pl-10 text-white
+        ${errors.email ? "border-error focus:border-error" : ""}
+      `}
                 placeholder="john_doe@example.com"
               />
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-70">
+                <Mail className="h-5 w-5 text-base-content/40" />
+              </span>
             </div>
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -92,7 +93,7 @@ const Login = () => {
               className="label pb-1 flex justify-between"
               htmlFor="password"
             >
-              <span className="label-text text-base-content">Password</span>{" "}
+              <span className="label-text text-base-content/80">Password</span>{" "}
               <Link
                 to="/forgot-password"
                 className="flex items-center justify-between"
@@ -151,7 +152,7 @@ const Login = () => {
             <div className="px-4 text-base-content text-sm">Or login with</div>
             <div className="flex-1 border-t border-accent"></div>
           </div>
-          <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+          <div className="flex gap-4 justify-center flex-wrap sm:flex-nowrap">
             <GoogleLoginButton />
             <GithubButton />
           </div>

@@ -75,7 +75,7 @@ model Problem {
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   submissions        Submission[]
   problemSolvedBy    problemSolved[]
-  ProblemInPlaylist  ProblemInPlaylist[]
+  ProblemInPlaylists  ProblemInPlaylist[]
 }
 
 //tags
@@ -126,7 +126,7 @@ model TestCasesResult {
   testCase       Int
   passed         Boolean
   stdin          String[]
-  stdout         String
+  stdout         String?
   expected       String
   stderr         String?
   compiledOutput String?
@@ -163,7 +163,7 @@ model Playlist {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  problem ProblemInPlaylist[]
+  problems ProblemInPlaylist[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

@@ -21,54 +21,12 @@ const Navbar = () => {
     <>
       <div className="navbar flex bg-base-100 shadow-sm justify-between sticky top-0 z-60 border-b border-b-accent">
         <div className="flex">
-          <a className="btn btn-ghost text-xl">daisyUI</a>
+          <Link to="/" className="text-2xl font-bold">
+            CODEZERO
+          </Link>
         </div>
-        <div className="flex-1">
-          <Link to="/problems">Problems</Link>
-        </div>
-        <div className="flex gap-2">
-          {/* <button className="btn btn-ghost btn-circle">
-          <div className="indicator">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {" "}
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />{" "}
-            </svg>
-            <span className="badge badge-xs badge-primary indicator-item"></span>
-          </div>
-        </button> */}
-          {/* <label className="input">
-          <svg
-            className="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input type="search" className="grow" placeholder="Search" />
-          <kbd className="kbd kbd-sm">⌘</kbd>
-          <kbd className="kbd kbd-sm">K</kbd>
-        </label> */}
-          <div className="dropdown dropdown-end">
+        <div className="flex gap-3 items-center w-1/6">
+          <div className="dropdown dropdown-start">
             <div
               tabIndex={0}
               role="button"
@@ -77,7 +35,10 @@ const Navbar = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={
+                    authUser.avatar ||
+                    "https://avatar.iran.liara.run/public/boy"
+                  }
                 />
               </div>
             </div>
@@ -112,6 +73,10 @@ const Navbar = () => {
                 </a>
               </li>
             </ul>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-sm capitalize text-primary font-medium">{authUser?.name}</p>
+            <p className=" text-accent">{authUser?.email}</p>
           </div>
         </div>
       </div>

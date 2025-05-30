@@ -9,6 +9,13 @@ const getAllSubmissionsHandler = AsyncHandler(async (req, res) => {
     where: {
       userId,
     },
+    include: {
+      testCases: {
+        include: {
+          testcase: true,
+        },
+      },
+    },
   });
 
   if (!submissions) {
@@ -26,6 +33,9 @@ const getSubmissionForProblemHandler = AsyncHandler(async (req, res) => {
     where: {
       userId,
       problemId,
+    },
+    include: {
+      testCases: true
     },
   });
 
@@ -74,8 +84,10 @@ const successpercentage = AsyncHandler(async (req, res) => {
   const successRate =
     (submissions.filter((sub) => sub.status === "ACCEPTED").length /
       submissions.length) *
-    100 || 0;
-  return res.status(200).json(new ApiRespone(200, "Success rate", successRate));
+      100 || 0;
+  return res
+    .status(200)
+    .json(new ApiRespone(200, "Success rate", successRate.toFixed(2)));
 });
 
 export {

@@ -28,7 +28,6 @@ export const useExecuteStore = create((set) => ({
     set({ isFetchingSubmission: true });
     try {
       const res = await axiosInstance.get(`/submission/${problemId}`);
-      console.log(res.data.data);
       set({ submissions: res.data.data });
       set({ submission_count: res.data.data.length });
       toast.success(res.data.message);

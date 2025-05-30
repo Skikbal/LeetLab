@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Code, Terminal, FileCode, Braces,TextCursor } from "lucide-react";
+import { Code, Terminal, FileCode, Braces, TextCursor } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-
+import logo from "../assets/logo.svg";
 const AuthImagePattern = ({ title, subtitle }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -101,35 +101,40 @@ const AuthImagePattern = ({ title, subtitle }) => {
           </div>
           {/* Code content */}
           <div className="p-4 font-mono text-xs sm:text-sm overflow-hidden relative h-64">
-            <SyntaxHighlighter
-              language="javascript"
-              style={vscDarkPlus}
-              customStyle={{
-                background: "transparent",
-                fontSize: "0.875rem",
-                height: "100%",
-                overflow: "hidden",
-              }}
-            >
-              {codeSnippets[activeIndex]}
-            </SyntaxHighlighter>
+            <pre className="text-sm font-mono text-base-content">
+              <code>
+                <SyntaxHighlighter
+                  language="javascript"
+                  style={vscDarkPlus}
+                  customStyle={{
+                    background: "transparent",
+                    fontSize: "0.875rem",
+                    height: "100%",
+                    overflow: "hidden",
+                  }}
+                >
+                  {codeSnippets[activeIndex]}
+                </SyntaxHighlighter>
+              </code>
+            </pre>
 
             {/* Blinking cursor */}
-            <div className="absolute bottom-4 right-4 w-0.5 h-4 bg-white animate-pulse delay-75">
-            </div>
+            <div className="absolute bottom-4 right-4 w-0.5 h-4 bg-white animate-pulse delay-75"></div>
           </div>
         </div>
       </div>
       {/* Logo */}
       <div className="flex items-center justify-center mb-6">
-        <div className="w-12 h-12 rounded-xl bg-primary/20  flex items-center justify-center">
-          <Code className="w-6 h-6 text-primary" />
+        <div className="w-15 h-15 rounded-xl  flex items-center justify-center">
+          <img src={logo} alt="logo" className="w-15 h-15 m-auto" />
         </div>
       </div>
 
       {/* Text content */}
-      <h2 className="text-2xl font-bold mb-4 text-center">{title}</h2>
-      <p className="text-slate-300 text-center">{subtitle}</p>
+      <h2 className="text-2xl font-bold mb-4 text-center text-primary">
+        {title}
+      </h2>
+      <p className=" text-center text-accent">{subtitle}</p>
     </div>
   );
 };

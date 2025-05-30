@@ -10,47 +10,39 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const TestResultContent = ({ TestResult }) => {
-  console.log(TestResult)
-  const testCases = TestResult?.data?.testCases ?? [];
+const SubmissionResult = ({ TestResult }) => {
+  const testCases = TestResult ?? [];
 
-  const totalTestResult = testCases.length;
-  const passedTestResult = testCases.filter((e) => e.passed === true).length;
-  const successRate =
-    totalTestResult > 0 ? (passedTestResult / totalTestResult) * 100 : 0;
+  // const totalTestResult = testCases.length;
+  // const passedTestResult = testCases.filter((e) => e.passed === true).length;
+  // const successRate =
+  //   totalTestResult > 0 ? (passedTestResult / totalTestResult) * 100 : 0;
 
-  const executionTime = testCases.map(
-    (e) => Number(e.time?.split(" ")[0]) || 0
-  );
-  const memoryUsage = testCases.map(
-    (e) => Number(e.memory?.split(" ")[0]) || 0
-  );
+  // const executionTime = testCases.map(
+  //   (e) => Number(e.time?.split(" ")[0]) || 0
+  // );
+  // const memoryUsage = testCases.map(
+  //   (e) => Number(e.memory?.split(" ")[0]) || 0
+  // );
 
-  const avgExeTime =
-    executionTime.length > 0
-      ? executionTime.reduce((a, b) => a + b, 0) / executionTime.length
-      : 0;
+  // const avgExeTime =
+  //   executionTime.length > 0
+  //     ? executionTime.reduce((a, b) => a + b, 0) / executionTime.length
+  //     : 0;
 
-  const avgMemory =
-    memoryUsage.length > 0
-      ? memoryUsage.reduce((a, b) => a + b, 0) / memoryUsage.length
-      : 0;
+  // const avgMemory =
+  //   memoryUsage.length > 0
+  //     ? memoryUsage.reduce((a, b) => a + b, 0) / memoryUsage.length
+  //     : 0;
 
-  if (!TestResult || Object.keys(TestResult).length === 0) {
-    return (
-      <div className="flex items-center justify-center p-4 overflow-auto no-scrollbar h-auto">
-        <p className="text-lg font-medium">you must run your code first</p>
-      </div>
-    );
-  }
   return (
-    <div className="testCase p-4 overflow-auto no-scrollbar h-auto">
-      <div className="flex gap-5 item-center justify-between">
+    <div className="testCase overflow-auto no-scrollbar h-auto">
+      {/* <div className="flex gap-5 item-center justify-between">
         <div className="bg-base-200 py-2 px-4 rounded-md">
           <p className="text-sm flex gap-1 items-center">
             <ClipboardCheckIcon className="w-4 h-4" /> Status
           </p>
-          {TestResult.data.testCases.every((e) => e.passed === true) ? (
+          {TestResult.every((e) => e.passed === true) ? (
             <span className="text-success text-base font-semibold">
               ACCEPTED
             </span>
@@ -91,8 +83,8 @@ const TestResultContent = ({ TestResult }) => {
             </span>
           }
         </div>
-      </div>
-      <p className="my-3 text-lg font-semibold">Test Cases Results</p>
+      </div> */}
+      <p className="my-1 text-lg font-semibold">Submission Results</p>
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-200">
         <table className="table">
           {/* head */}
@@ -106,8 +98,8 @@ const TestResultContent = ({ TestResult }) => {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(TestResult.data.testCases).length > 0 &&
-              TestResult.data.testCases.map((testcase, index) => {
+            {TestResult.length > 0 &&
+              TestResult.map((testcase, index) => {
                 return (
                   <tr key={index} className="hover:bg-base-300">
                     <td>
@@ -139,4 +131,4 @@ const TestResultContent = ({ TestResult }) => {
   );
 };
 
-export default TestResultContent;
+export default SubmissionResult;

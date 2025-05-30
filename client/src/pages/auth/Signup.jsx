@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton.jsx";
 import GithubButton from "../../components/Buttons/GithubButton.jsx";
-
+import logo from "../../assets/logo.svg";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { isLoading, signupUser } = useAuthStore();
@@ -31,11 +31,14 @@ const Signup = () => {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" bg-base-100 w-full max-w-md rounded-2xl shadow-zinc-800/40 border border-base-200"
+        className=" w-full max-w-md rounded-2xl"
       >
+        <img src={logo} alt="logo" className="w-15 h-15 m-auto mt-7" />
+
         <div className="rounded-t-2xl px-6 py-4 shadow-lg ">
           <h2 className="text-xl font-semibold text-white text-center">
-            Code Smarter with CodeZero
+            Code Smarter with{" "}
+            <span className="text-primary font-bold">CODEZERO</span>
           </h2>
           <p className="text-sm text-accent text-center">
             Create your account and start solving, learning, and improving.
@@ -140,7 +143,9 @@ const Signup = () => {
           </button>
           <div className="flex items-center py-3">
             <div className="flex-1 border-t border-accent"></div>
-            <div className="px-4 text-base-content text-sm">Or Sign Up with</div>
+            <div className="px-4 text-base-content text-sm">
+              Or Sign Up with
+            </div>
             <div className="flex-1 border-t border-accent"></div>
           </div>
           <div className="flex gap-3 flex-wrap sm:flex-nowrap">

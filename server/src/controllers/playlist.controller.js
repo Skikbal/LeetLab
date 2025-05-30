@@ -9,6 +9,16 @@ const createPlaylistHandler = AsyncHandler(async (req, res) => {
 
   const { name, description } = req.body;
 
+  const existingPlaylist = await prisma.playlist.findFirst({
+    where: {
+      name: name,
+      userId: userId,
+    },
+  });
+
+  if (existingPlaylist) {
+    throw new ApiError(409, "Playlist already exists");
+  }
   const newPlaylist = await prisma.playlist.create({
     data: {
       name: name,
@@ -37,7 +47,12 @@ const getAllPlaylistHandler = AsyncHandler(async (req, res) => {
     include: {
       problems: {
         include: {
-          problem: true,
+          problem: {
+            include: {
+              tags: true,
+              companies: true,
+            },
+          }
         },
       },
     },
@@ -94,7 +109,7 @@ const deletePlaylistHandler = AsyncHandler(async (req, res) => {
     throw new ApiError(404, "Playlist not found");
   }
 
-  return res.json(new ApiRespone(200, "Playlist deleted successfully"));
+  return res.json(new ApiRespone(200, "Playlist deleted successfully",deletedPlaylist));
 });
 
 //update playlist

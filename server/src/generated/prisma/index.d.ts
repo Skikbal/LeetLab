@@ -1689,7 +1689,7 @@ export namespace Prisma {
     companies: number
     submissions: number
     problemSolvedBy: number
-    ProblemInPlaylist: number
+    ProblemInPlaylists: number
   }
 
   export type ProblemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1697,7 +1697,7 @@ export namespace Prisma {
     companies?: boolean | ProblemCountOutputTypeCountCompaniesArgs
     submissions?: boolean | ProblemCountOutputTypeCountSubmissionsArgs
     problemSolvedBy?: boolean | ProblemCountOutputTypeCountProblemSolvedByArgs
-    ProblemInPlaylist?: boolean | ProblemCountOutputTypeCountProblemInPlaylistArgs
+    ProblemInPlaylists?: boolean | ProblemCountOutputTypeCountProblemInPlaylistsArgs
   }
 
   // Custom InputTypes
@@ -1742,7 +1742,7 @@ export namespace Prisma {
   /**
    * ProblemCountOutputType without action
    */
-  export type ProblemCountOutputTypeCountProblemInPlaylistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProblemCountOutputTypeCountProblemInPlaylistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProblemInPlaylistWhereInput
   }
 
@@ -1845,11 +1845,11 @@ export namespace Prisma {
    */
 
   export type PlaylistCountOutputType = {
-    problem: number
+    problems: number
   }
 
   export type PlaylistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    problem?: boolean | PlaylistCountOutputTypeCountProblemArgs
+    problems?: boolean | PlaylistCountOutputTypeCountProblemsArgs
   }
 
   // Custom InputTypes
@@ -1866,7 +1866,7 @@ export namespace Prisma {
   /**
    * PlaylistCountOutputType without action
    */
-  export type PlaylistCountOutputTypeCountProblemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PlaylistCountOutputTypeCountProblemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProblemInPlaylistWhereInput
   }
 
@@ -3453,7 +3453,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Problem$submissionsArgs<ExtArgs>
     problemSolvedBy?: boolean | Problem$problemSolvedByArgs<ExtArgs>
-    ProblemInPlaylist?: boolean | Problem$ProblemInPlaylistArgs<ExtArgs>
+    ProblemInPlaylists?: boolean | Problem$ProblemInPlaylistsArgs<ExtArgs>
     _count?: boolean | ProblemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["problem"]>
 
@@ -3520,7 +3520,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Problem$submissionsArgs<ExtArgs>
     problemSolvedBy?: boolean | Problem$problemSolvedByArgs<ExtArgs>
-    ProblemInPlaylist?: boolean | Problem$ProblemInPlaylistArgs<ExtArgs>
+    ProblemInPlaylists?: boolean | Problem$ProblemInPlaylistsArgs<ExtArgs>
     _count?: boolean | ProblemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProblemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3538,7 +3538,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       submissions: Prisma.$SubmissionPayload<ExtArgs>[]
       problemSolvedBy: Prisma.$problemSolvedPayload<ExtArgs>[]
-      ProblemInPlaylist: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
+      ProblemInPlaylists: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3955,7 +3955,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     submissions<T extends Problem$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Problem$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     problemSolvedBy<T extends Problem$problemSolvedByArgs<ExtArgs> = {}>(args?: Subset<T, Problem$problemSolvedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$problemSolvedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ProblemInPlaylist<T extends Problem$ProblemInPlaylistArgs<ExtArgs> = {}>(args?: Subset<T, Problem$ProblemInPlaylistArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ProblemInPlaylists<T extends Problem$ProblemInPlaylistsArgs<ExtArgs> = {}>(args?: Subset<T, Problem$ProblemInPlaylistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4492,9 +4492,9 @@ export namespace Prisma {
   }
 
   /**
-   * Problem.ProblemInPlaylist
+   * Problem.ProblemInPlaylists
    */
-  export type Problem$ProblemInPlaylistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Problem$ProblemInPlaylistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ProblemInPlaylist
      */
@@ -8125,7 +8125,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin: string[]
-    stdout: string
+    stdout: string | null
     expected: string
     stderr: string | null
     compiledOutput: string | null
@@ -8248,7 +8248,7 @@ export namespace Prisma {
       testCase: number
       passed: boolean
       stdin: string[]
-      stdout: string
+      stdout: string | null
       expected: string
       stderr: string | null
       compiledOutput: string | null
@@ -10347,7 +10347,7 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    problem?: boolean | Playlist$problemArgs<ExtArgs>
+    problems?: boolean | Playlist$problemsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | PlaylistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["playlist"]>
@@ -10383,7 +10383,7 @@ export namespace Prisma {
 
   export type PlaylistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["playlist"]>
   export type PlaylistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    problem?: boolean | Playlist$problemArgs<ExtArgs>
+    problems?: boolean | Playlist$problemsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | PlaylistCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -10397,7 +10397,7 @@ export namespace Prisma {
   export type $PlaylistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Playlist"
     objects: {
-      problem: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
+      problems: Prisma.$ProblemInPlaylistPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10801,7 +10801,7 @@ export namespace Prisma {
    */
   export interface Prisma__PlaylistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    problem<T extends Playlist$problemArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$problemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    problems<T extends Playlist$problemsArgs<ExtArgs> = {}>(args?: Subset<T, Playlist$problemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemInPlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11234,9 +11234,9 @@ export namespace Prisma {
   }
 
   /**
-   * Playlist.problem
+   * Playlist.problems
    */
-  export type Playlist$problemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Playlist$problemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ProblemInPlaylist
      */
@@ -12814,7 +12814,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: SubmissionListRelationFilter
     problemSolvedBy?: ProblemSolvedListRelationFilter
-    ProblemInPlaylist?: ProblemInPlaylistListRelationFilter
+    ProblemInPlaylists?: ProblemInPlaylistListRelationFilter
   }
 
   export type ProblemOrderByWithRelationInput = {
@@ -12838,7 +12838,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     submissions?: SubmissionOrderByRelationAggregateInput
     problemSolvedBy?: problemSolvedOrderByRelationAggregateInput
-    ProblemInPlaylist?: ProblemInPlaylistOrderByRelationAggregateInput
+    ProblemInPlaylists?: ProblemInPlaylistOrderByRelationAggregateInput
   }
 
   export type ProblemWhereUniqueInput = Prisma.AtLeast<{
@@ -12865,7 +12865,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: SubmissionListRelationFilter
     problemSolvedBy?: ProblemSolvedListRelationFilter
-    ProblemInPlaylist?: ProblemInPlaylistListRelationFilter
+    ProblemInPlaylists?: ProblemInPlaylistListRelationFilter
   }, "id">
 
   export type ProblemOrderByWithAggregationInput = {
@@ -13132,7 +13132,7 @@ export namespace Prisma {
     testCase?: IntFilter<"TestCasesResult"> | number
     passed?: BoolFilter<"TestCasesResult"> | boolean
     stdin?: StringNullableListFilter<"TestCasesResult">
-    stdout?: StringFilter<"TestCasesResult"> | string
+    stdout?: StringNullableFilter<"TestCasesResult"> | string | null
     expected?: StringFilter<"TestCasesResult"> | string
     stderr?: StringNullableFilter<"TestCasesResult"> | string | null
     compiledOutput?: StringNullableFilter<"TestCasesResult"> | string | null
@@ -13150,7 +13150,7 @@ export namespace Prisma {
     testCase?: SortOrder
     passed?: SortOrder
     stdin?: SortOrder
-    stdout?: SortOrder
+    stdout?: SortOrderInput | SortOrder
     expected?: SortOrder
     stderr?: SortOrderInput | SortOrder
     compiledOutput?: SortOrderInput | SortOrder
@@ -13171,7 +13171,7 @@ export namespace Prisma {
     testCase?: IntFilter<"TestCasesResult"> | number
     passed?: BoolFilter<"TestCasesResult"> | boolean
     stdin?: StringNullableListFilter<"TestCasesResult">
-    stdout?: StringFilter<"TestCasesResult"> | string
+    stdout?: StringNullableFilter<"TestCasesResult"> | string | null
     expected?: StringFilter<"TestCasesResult"> | string
     stderr?: StringNullableFilter<"TestCasesResult"> | string | null
     compiledOutput?: StringNullableFilter<"TestCasesResult"> | string | null
@@ -13189,7 +13189,7 @@ export namespace Prisma {
     testCase?: SortOrder
     passed?: SortOrder
     stdin?: SortOrder
-    stdout?: SortOrder
+    stdout?: SortOrderInput | SortOrder
     expected?: SortOrder
     stderr?: SortOrderInput | SortOrder
     compiledOutput?: SortOrderInput | SortOrder
@@ -13214,7 +13214,7 @@ export namespace Prisma {
     testCase?: IntWithAggregatesFilter<"TestCasesResult"> | number
     passed?: BoolWithAggregatesFilter<"TestCasesResult"> | boolean
     stdin?: StringNullableListFilter<"TestCasesResult">
-    stdout?: StringWithAggregatesFilter<"TestCasesResult"> | string
+    stdout?: StringNullableWithAggregatesFilter<"TestCasesResult"> | string | null
     expected?: StringWithAggregatesFilter<"TestCasesResult"> | string
     stderr?: StringNullableWithAggregatesFilter<"TestCasesResult"> | string | null
     compiledOutput?: StringNullableWithAggregatesFilter<"TestCasesResult"> | string | null
@@ -13294,7 +13294,7 @@ export namespace Prisma {
     userId?: StringFilter<"Playlist"> | string
     createdAt?: DateTimeFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
-    problem?: ProblemInPlaylistListRelationFilter
+    problems?: ProblemInPlaylistListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -13305,7 +13305,7 @@ export namespace Prisma {
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    problem?: ProblemInPlaylistOrderByRelationAggregateInput
+    problems?: ProblemInPlaylistOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
   }
 
@@ -13320,7 +13320,7 @@ export namespace Prisma {
     userId?: StringFilter<"Playlist"> | string
     createdAt?: DateTimeFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
-    problem?: ProblemInPlaylistListRelationFilter
+    problems?: ProblemInPlaylistListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "name_userId">
 
@@ -13604,7 +13604,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateInput = {
@@ -13627,7 +13627,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUpdateInput = {
@@ -13650,7 +13650,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateInput = {
@@ -13673,7 +13673,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemCreateManyInput = {
@@ -13968,7 +13968,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -13986,7 +13986,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -14002,7 +14002,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14020,7 +14020,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14037,7 +14037,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -14053,7 +14053,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14070,7 +14070,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14141,7 +14141,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    problem?: ProblemInPlaylistCreateNestedManyWithoutPlaylistInput
+    problems?: ProblemInPlaylistCreateNestedManyWithoutPlaylistInput
     user: UserCreateNestedOneWithoutPlaylistInput
   }
 
@@ -14152,7 +14152,7 @@ export namespace Prisma {
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    problem?: ProblemInPlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+    problems?: ProblemInPlaylistUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUpdateInput = {
@@ -14161,7 +14161,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    problem?: ProblemInPlaylistUpdateManyWithoutPlaylistNestedInput
+    problems?: ProblemInPlaylistUpdateManyWithoutPlaylistNestedInput
     user?: UserUpdateOneRequiredWithoutPlaylistNestedInput
   }
 
@@ -14172,7 +14172,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    problem?: ProblemInPlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+    problems?: ProblemInPlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistCreateManyInput = {
@@ -14205,8 +14205,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    playlist: PlaylistCreateNestedOneWithoutProblemInput
-    problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
+    playlist: PlaylistCreateNestedOneWithoutProblemsInput
+    problem: ProblemCreateNestedOneWithoutProblemInPlaylistsInput
   }
 
   export type ProblemInPlaylistUncheckedCreateInput = {
@@ -14221,8 +14221,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    playlist?: PlaylistUpdateOneRequiredWithoutProblemNestedInput
-    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
+    playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistsNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateInput = {
@@ -15668,32 +15668,32 @@ export namespace Prisma {
     deleteMany?: ProblemInPlaylistScalarWhereInput | ProblemInPlaylistScalarWhereInput[]
   }
 
-  export type PlaylistCreateNestedOneWithoutProblemInput = {
-    create?: XOR<PlaylistCreateWithoutProblemInput, PlaylistUncheckedCreateWithoutProblemInput>
-    connectOrCreate?: PlaylistCreateOrConnectWithoutProblemInput
+  export type PlaylistCreateNestedOneWithoutProblemsInput = {
+    create?: XOR<PlaylistCreateWithoutProblemsInput, PlaylistUncheckedCreateWithoutProblemsInput>
+    connectOrCreate?: PlaylistCreateOrConnectWithoutProblemsInput
     connect?: PlaylistWhereUniqueInput
   }
 
-  export type ProblemCreateNestedOneWithoutProblemInPlaylistInput = {
-    create?: XOR<ProblemCreateWithoutProblemInPlaylistInput, ProblemUncheckedCreateWithoutProblemInPlaylistInput>
-    connectOrCreate?: ProblemCreateOrConnectWithoutProblemInPlaylistInput
+  export type ProblemCreateNestedOneWithoutProblemInPlaylistsInput = {
+    create?: XOR<ProblemCreateWithoutProblemInPlaylistsInput, ProblemUncheckedCreateWithoutProblemInPlaylistsInput>
+    connectOrCreate?: ProblemCreateOrConnectWithoutProblemInPlaylistsInput
     connect?: ProblemWhereUniqueInput
   }
 
-  export type PlaylistUpdateOneRequiredWithoutProblemNestedInput = {
-    create?: XOR<PlaylistCreateWithoutProblemInput, PlaylistUncheckedCreateWithoutProblemInput>
-    connectOrCreate?: PlaylistCreateOrConnectWithoutProblemInput
-    upsert?: PlaylistUpsertWithoutProblemInput
+  export type PlaylistUpdateOneRequiredWithoutProblemsNestedInput = {
+    create?: XOR<PlaylistCreateWithoutProblemsInput, PlaylistUncheckedCreateWithoutProblemsInput>
+    connectOrCreate?: PlaylistCreateOrConnectWithoutProblemsInput
+    upsert?: PlaylistUpsertWithoutProblemsInput
     connect?: PlaylistWhereUniqueInput
-    update?: XOR<XOR<PlaylistUpdateToOneWithWhereWithoutProblemInput, PlaylistUpdateWithoutProblemInput>, PlaylistUncheckedUpdateWithoutProblemInput>
+    update?: XOR<XOR<PlaylistUpdateToOneWithWhereWithoutProblemsInput, PlaylistUpdateWithoutProblemsInput>, PlaylistUncheckedUpdateWithoutProblemsInput>
   }
 
-  export type ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput = {
-    create?: XOR<ProblemCreateWithoutProblemInPlaylistInput, ProblemUncheckedCreateWithoutProblemInPlaylistInput>
-    connectOrCreate?: ProblemCreateOrConnectWithoutProblemInPlaylistInput
-    upsert?: ProblemUpsertWithoutProblemInPlaylistInput
+  export type ProblemUpdateOneRequiredWithoutProblemInPlaylistsNestedInput = {
+    create?: XOR<ProblemCreateWithoutProblemInPlaylistsInput, ProblemUncheckedCreateWithoutProblemInPlaylistsInput>
+    connectOrCreate?: ProblemCreateOrConnectWithoutProblemInPlaylistsInput
+    upsert?: ProblemUpsertWithoutProblemInPlaylistsInput
     connect?: ProblemWhereUniqueInput
-    update?: XOR<XOR<ProblemUpdateToOneWithWhereWithoutProblemInPlaylistInput, ProblemUpdateWithoutProblemInPlaylistInput>, ProblemUncheckedUpdateWithoutProblemInPlaylistInput>
+    update?: XOR<XOR<ProblemUpdateToOneWithWhereWithoutProblemInPlaylistsInput, ProblemUpdateWithoutProblemInPlaylistsInput>, ProblemUncheckedUpdateWithoutProblemInPlaylistsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15959,7 +15959,7 @@ export namespace Prisma {
     companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutUserInput = {
@@ -15981,7 +15981,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutUserInput = {
@@ -16068,7 +16068,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    problem?: ProblemInPlaylistCreateNestedManyWithoutPlaylistInput
+    problems?: ProblemInPlaylistCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistUncheckedCreateWithoutUserInput = {
@@ -16077,7 +16077,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    problem?: ProblemInPlaylistUncheckedCreateNestedManyWithoutPlaylistInput
+    problems?: ProblemInPlaylistUncheckedCreateNestedManyWithoutPlaylistInput
   }
 
   export type PlaylistCreateOrConnectWithoutUserInput = {
@@ -16387,7 +16387,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    playlist: PlaylistCreateNestedOneWithoutProblemInput
+    playlist: PlaylistCreateNestedOneWithoutProblemsInput
   }
 
   export type ProblemInPlaylistUncheckedCreateWithoutProblemInput = {
@@ -16601,7 +16601,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutTagsInput = {
@@ -16623,7 +16623,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutTagsInput = {
@@ -16666,7 +16666,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutCompaniesInput = {
@@ -16688,7 +16688,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutCompaniesInput = {
@@ -16788,7 +16788,7 @@ export namespace Prisma {
     companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutSubmissionsInput = {
@@ -16810,7 +16810,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
     companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutSubmissionsInput = {
@@ -16823,7 +16823,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -16839,7 +16839,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -16953,7 +16953,7 @@ export namespace Prisma {
     companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutSubmissionsInput = {
@@ -16975,7 +16975,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
     companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type TestCasesResultUpsertWithWhereUniqueWithoutSubmissionInput = {
@@ -17003,7 +17003,7 @@ export namespace Prisma {
     testCase?: IntFilter<"TestCasesResult"> | number
     passed?: BoolFilter<"TestCasesResult"> | boolean
     stdin?: StringNullableListFilter<"TestCasesResult">
-    stdout?: StringFilter<"TestCasesResult"> | string
+    stdout?: StringNullableFilter<"TestCasesResult"> | string | null
     expected?: StringFilter<"TestCasesResult"> | string
     stderr?: StringNullableFilter<"TestCasesResult"> | string | null
     compiledOutput?: StringNullableFilter<"TestCasesResult"> | string | null
@@ -17174,7 +17174,7 @@ export namespace Prisma {
     companies?: CompanyTagCreateNestedManyWithoutProblemsInput
     user: UserCreateNestedOneWithoutProblemsInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutProblemSolvedByInput = {
@@ -17196,7 +17196,7 @@ export namespace Prisma {
     tags?: TagUncheckedCreateNestedManyWithoutProblemsInput
     companies?: CompanyTagUncheckedCreateNestedManyWithoutProblemsInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutProblemSolvedByInput = {
@@ -17297,7 +17297,7 @@ export namespace Prisma {
     companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutProblemSolvedByInput = {
@@ -17319,14 +17319,14 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
     companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemInPlaylistCreateWithoutPlaylistInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
+    problem: ProblemCreateNestedOneWithoutProblemInPlaylistsInput
   }
 
   export type ProblemInPlaylistUncheckedCreateWithoutPlaylistInput = {
@@ -17482,7 +17482,7 @@ export namespace Prisma {
     solvedProblems?: problemSolvedUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type PlaylistCreateWithoutProblemInput = {
+  export type PlaylistCreateWithoutProblemsInput = {
     id?: string
     name: string
     description?: string | null
@@ -17491,7 +17491,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutPlaylistInput
   }
 
-  export type PlaylistUncheckedCreateWithoutProblemInput = {
+  export type PlaylistUncheckedCreateWithoutProblemsInput = {
     id?: string
     name: string
     description?: string | null
@@ -17500,12 +17500,12 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PlaylistCreateOrConnectWithoutProblemInput = {
+  export type PlaylistCreateOrConnectWithoutProblemsInput = {
     where: PlaylistWhereUniqueInput
-    create: XOR<PlaylistCreateWithoutProblemInput, PlaylistUncheckedCreateWithoutProblemInput>
+    create: XOR<PlaylistCreateWithoutProblemsInput, PlaylistUncheckedCreateWithoutProblemsInput>
   }
 
-  export type ProblemCreateWithoutProblemInPlaylistInput = {
+  export type ProblemCreateWithoutProblemInPlaylistsInput = {
     id?: string
     title: string
     description: string
@@ -17527,7 +17527,7 @@ export namespace Prisma {
     problemSolvedBy?: problemSolvedCreateNestedManyWithoutProblemInput
   }
 
-  export type ProblemUncheckedCreateWithoutProblemInPlaylistInput = {
+  export type ProblemUncheckedCreateWithoutProblemInPlaylistsInput = {
     id?: string
     title: string
     description: string
@@ -17549,23 +17549,23 @@ export namespace Prisma {
     problemSolvedBy?: problemSolvedUncheckedCreateNestedManyWithoutProblemInput
   }
 
-  export type ProblemCreateOrConnectWithoutProblemInPlaylistInput = {
+  export type ProblemCreateOrConnectWithoutProblemInPlaylistsInput = {
     where: ProblemWhereUniqueInput
-    create: XOR<ProblemCreateWithoutProblemInPlaylistInput, ProblemUncheckedCreateWithoutProblemInPlaylistInput>
+    create: XOR<ProblemCreateWithoutProblemInPlaylistsInput, ProblemUncheckedCreateWithoutProblemInPlaylistsInput>
   }
 
-  export type PlaylistUpsertWithoutProblemInput = {
-    update: XOR<PlaylistUpdateWithoutProblemInput, PlaylistUncheckedUpdateWithoutProblemInput>
-    create: XOR<PlaylistCreateWithoutProblemInput, PlaylistUncheckedCreateWithoutProblemInput>
+  export type PlaylistUpsertWithoutProblemsInput = {
+    update: XOR<PlaylistUpdateWithoutProblemsInput, PlaylistUncheckedUpdateWithoutProblemsInput>
+    create: XOR<PlaylistCreateWithoutProblemsInput, PlaylistUncheckedCreateWithoutProblemsInput>
     where?: PlaylistWhereInput
   }
 
-  export type PlaylistUpdateToOneWithWhereWithoutProblemInput = {
+  export type PlaylistUpdateToOneWithWhereWithoutProblemsInput = {
     where?: PlaylistWhereInput
-    data: XOR<PlaylistUpdateWithoutProblemInput, PlaylistUncheckedUpdateWithoutProblemInput>
+    data: XOR<PlaylistUpdateWithoutProblemsInput, PlaylistUncheckedUpdateWithoutProblemsInput>
   }
 
-  export type PlaylistUpdateWithoutProblemInput = {
+  export type PlaylistUpdateWithoutProblemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17574,7 +17574,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutPlaylistNestedInput
   }
 
-  export type PlaylistUncheckedUpdateWithoutProblemInput = {
+  export type PlaylistUncheckedUpdateWithoutProblemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17583,18 +17583,18 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProblemUpsertWithoutProblemInPlaylistInput = {
-    update: XOR<ProblemUpdateWithoutProblemInPlaylistInput, ProblemUncheckedUpdateWithoutProblemInPlaylistInput>
-    create: XOR<ProblemCreateWithoutProblemInPlaylistInput, ProblemUncheckedCreateWithoutProblemInPlaylistInput>
+  export type ProblemUpsertWithoutProblemInPlaylistsInput = {
+    update: XOR<ProblemUpdateWithoutProblemInPlaylistsInput, ProblemUncheckedUpdateWithoutProblemInPlaylistsInput>
+    create: XOR<ProblemCreateWithoutProblemInPlaylistsInput, ProblemUncheckedCreateWithoutProblemInPlaylistsInput>
     where?: ProblemWhereInput
   }
 
-  export type ProblemUpdateToOneWithWhereWithoutProblemInPlaylistInput = {
+  export type ProblemUpdateToOneWithWhereWithoutProblemInPlaylistsInput = {
     where?: ProblemWhereInput
-    data: XOR<ProblemUpdateWithoutProblemInPlaylistInput, ProblemUncheckedUpdateWithoutProblemInPlaylistInput>
+    data: XOR<ProblemUpdateWithoutProblemInPlaylistsInput, ProblemUncheckedUpdateWithoutProblemInPlaylistsInput>
   }
 
-  export type ProblemUpdateWithoutProblemInPlaylistInput = {
+  export type ProblemUpdateWithoutProblemInPlaylistsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17616,7 +17616,7 @@ export namespace Prisma {
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
   }
 
-  export type ProblemUncheckedUpdateWithoutProblemInPlaylistInput = {
+  export type ProblemUncheckedUpdateWithoutProblemInPlaylistsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17705,7 +17705,7 @@ export namespace Prisma {
     companies?: CompanyTagUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutUserInput = {
@@ -17727,7 +17727,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutUserInput = {
@@ -17824,7 +17824,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    problem?: ProblemInPlaylistUpdateManyWithoutPlaylistNestedInput
+    problems?: ProblemInPlaylistUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateWithoutUserInput = {
@@ -17833,7 +17833,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    problem?: ProblemInPlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
+    problems?: ProblemInPlaylistUncheckedUpdateManyWithoutPlaylistNestedInput
   }
 
   export type PlaylistUncheckedUpdateManyWithoutUserInput = {
@@ -17994,7 +17994,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    playlist?: PlaylistUpdateOneRequiredWithoutProblemNestedInput
+    playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateWithoutProblemInput = {
@@ -18030,7 +18030,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutTagsInput = {
@@ -18052,7 +18052,7 @@ export namespace Prisma {
     companies?: CompanyTagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutTagsInput = {
@@ -18092,7 +18092,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProblemsNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutCompaniesInput = {
@@ -18114,7 +18114,7 @@ export namespace Prisma {
     tags?: TagUncheckedUpdateManyWithoutProblemsNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
     problemSolvedBy?: problemSolvedUncheckedUpdateManyWithoutProblemNestedInput
-    ProblemInPlaylist?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
+    ProblemInPlaylists?: ProblemInPlaylistUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutCompaniesInput = {
@@ -18140,7 +18140,7 @@ export namespace Prisma {
     testCase: number
     passed: boolean
     stdin?: TestCasesResultCreatestdinInput | string[]
-    stdout: string
+    stdout?: string | null
     expected: string
     stderr?: string | null
     compiledOutput?: string | null
@@ -18156,7 +18156,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18172,7 +18172,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18188,7 +18188,7 @@ export namespace Prisma {
     testCase?: IntFieldUpdateOperationsInput | number
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdin?: TestCasesResultUpdatestdinInput | string[]
-    stdout?: StringFieldUpdateOperationsInput | string
+    stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
     compiledOutput?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18210,7 +18210,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistsNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateWithoutPlaylistInput = {

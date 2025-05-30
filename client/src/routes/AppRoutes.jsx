@@ -12,6 +12,7 @@ import RequireVerified from "./RequireVerified.jsx";
 import ProblemEditor from "../pages/problem/ProblemEditor.jsx";
 import EditProblem from "../pages/problem/EditProblem.jsx";
 import Profile from "../pages/Dashboard/Profile.jsx";
+import HeroPage from "../pages/Dashboard/HeroPage.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -23,13 +24,13 @@ const AppRoutes = () => {
       </Route>
       //ProtectedRoutes
       <Route element={<ProtectedRoutes />}>
-        <Route path="/" element={<Dashboard />} />
+        {/* <Route path="/" element={<Dashboard />} /> */}
         <Route
-          path="/problems"
+          path="/"
           element={
-            <RequireVerified>
-              <Problems />
-            </RequireVerified>
+            // <RequireVerified>
+            <Problems />
+            // </RequireVerified>
           }
         />
         <Route
@@ -59,7 +60,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/problems"
+          path="/"
           element={
             <RequireVerified>
               <Problems />

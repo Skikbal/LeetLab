@@ -30,9 +30,14 @@ const OnboardLayout = ({ children }) => {
     description: "Get started",
   };
   return (
-    <div className="h-screen grid lg:grid-cols-2 bg-base-200">
+    <div className="h-screen grid lg:grid-cols-2 bg-gradient-dark-green bg-rays">
       <div className=" flex flex-col justify-center items-center">
+        {/* <p className="text-4xl font-bold absolute top-5 left-5">CODEZERO</p> */}
         {children}
+        <footer class="mt-12 mb-3 text-center text-sm opacity-70">
+          Copyright © 2025 - <span class="font-semibold">CodeZero</span>. All
+          rights reserved.
+        </footer>
       </div>
       {/* Right Side - Image/Pattern */}
       <AuthImagePattern title={meta.title} subtitle={meta.description} />

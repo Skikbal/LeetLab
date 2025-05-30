@@ -74,7 +74,6 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
       time: result.time ? `${result.time} SEC` : undefined,
     };
   });
-
   //if user is only running testcases
   if (mode === "run") {
     //save individual testcases result
@@ -108,7 +107,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
         sourceCode: source_code,
         language: getLanguageName(lang_id),
         stdin: JSON.stringify(stdIn),
-        stdout: JSON.stringify(detailedResult.map((r) => r.stdout)),
+        stdout: JSON.stringify(detailedResult.map((r) => r.stdout ?? undefined)),
         stderr: detailedResult.some((r) => r.stderr)
           ? JSON.stringify(detailedResult.map((r) => r.stderr))
           : null,
@@ -162,7 +161,7 @@ const executeProblemHandler = AsyncHandler(async (req, res) => {
 
     return submissionToDB;
   });
-
+  console.log(result);
   //save individual testcases result
   const fetchedTestCases = await prisma.Submission.findUnique({
     where: {

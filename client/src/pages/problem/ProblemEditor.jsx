@@ -37,6 +37,7 @@ import pythons from "../../assets/language/pythons.png";
 import TestContent from "../../components/problem/TestContent.jsx";
 import TestResultContent from "../../components/problem/TestResultContent.jsx";
 import Loader from "../../components/Loader.jsx";
+
 const ProblemEditor = () => {
   const { id } = useParams();
   const { isLoading, problem, getProblemById } = useProblemStore();
@@ -55,7 +56,7 @@ const ProblemEditor = () => {
   const [theme, setTheme] = useState(true);
   const [active, setActive] = useState("testcases");
   const [testIndex, setTestIndex] = useState(0);
-  const [sorceCode, setSorceCode] = useState("");
+  const [sourceCode, setsourceCode] = useState("");
   const fetchProblem = async () => {
     try {
       await getProblemById(id);
@@ -67,11 +68,19 @@ const ProblemEditor = () => {
   };
   useEffect(() => {
     fetchProblem();
-  }, [id]);
+  }, [getProblemById]);
+
+  useEffect(() => {
+    if (problem && selectedLanguage) {
+      const code =
+        problem?.codesnippets?.[selectedLanguage.toUpperCase()] || "";
+      setsourceCode(code);
+    }
+  }, [problem, selectedLanguage]);
   const HandleExecution = async ({ mode }) => {
     try {
       const data = {
-        source_code: sorceCode,
+        source_code: sourceCode,
         problemId: id,
         language_id: selectedLanguage.toLowerCase(),
         mode: mode,
@@ -82,9 +91,15 @@ const ProblemEditor = () => {
     }
   };
 
+  const handleLanguageChange = (language) => {
+    setSelectedLanguage(language);
+    const code = problem?.codesnippets?.[language.toUpperCase()] || "";
+    setsourceCode(code);
+  };
+  if (isLoading || !problem) return <Loader isLoading={isLoading} />;
   return (
     <>
-    {isExecuting && <Loader isLoading={isExecuting} />}
+      {isExecuting && <Loader isLoading={isExecuting} />}
       <div className="bg-base-200 h-screen">
         <div className="navbar flex flex-wrap md:flex-nowrapbg-base-200 shadow-sm justify-between items-center">
           <div className="flex flex-col gap-2 ">
@@ -136,7 +151,7 @@ const ProblemEditor = () => {
             <select
               defaultValue="javascript"
               className="w-full select select-ghost border border-accent text-base rounded bg-base-200 cursor-pointer"
-              onClick={(e) => setSelectedLanguage(e.target.value)}
+              onChange={(e) => handleLanguageChange(e.target.value)}
             >
               <option value={"javascript"}>JavaScript</option>
               <option value={"python"}>Python</option>
@@ -184,13 +199,16 @@ const ProblemEditor = () => {
                 <History className="h-4 w-4 text-warning" /> Submissions
               </div>
             </div>
-            {Object.keys(problem).length > 0 &&
+            {Object.keys(problem)?.length > 0 &&
               (tabs === "editorial" ? (
                 <EditorialContent problem={problem} />
               ) : tabs === "solution" ? (
                 <SolutionContent problem={problem} />
               ) : tabs === "submissions" ? (
-                <SubmissionContent submissions={submissions} />
+                <SubmissionContent
+                  submissions={submissions}
+                  problemName={problem?.title}
+                />
               ) : (
                 <DescriptionContent problem={problem} />
               ))}
@@ -279,9 +297,9 @@ const ProblemEditor = () => {
                 height="300px"
                 language={selectedLanguage.toLowerCase()}
                 theme={theme === true ? "vs-dark" : "light"}
-                value={sorceCode}
+                value={sourceCode}
                 onChange={(e) => {
-                  setSorceCode(e.trim());
+                  setsourceCode(e.trim());
                 }}
                 options={{
                   autoClosingBrackets: "always",
