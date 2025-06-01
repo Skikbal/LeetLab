@@ -37,6 +37,7 @@ const resetPasswordSchema = z
 
 const ProblemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
+  topic: z.string().min(3, "Topic must be at least 3 characters long"),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters long"),
@@ -59,23 +60,16 @@ const ProblemSchema = z.object({
       })
     )
     .min(1, "Please enter at least one testcase"),
-  examples: z.object({
-    JAVASCRIPT: z.object({
-      input: z.string().min(1, "Input is required"),
-      output: z.string().min(1, "Output is required"),
-      explanation: z.string().optional(),
-    }),
-    PYTHON: z.object({
-      input: z.string().min(1, "Input is required"),
-      output: z.string().min(1, "Output is required"),
-      explanation: z.string().optional(),
-    }),
-    JAVA: z.object({
-      input: z.string().min(1, "Input is required"),
-      output: z.string().min(1, "Output is required"),
-      explanation: z.string().optional(),
-    }),
-  }),
+  examples: z
+    .array(
+      z.object({
+        input: z.string().min(1, "Input is required"),
+        output: z.string().min(1, "Output is required"),
+        explanation: z.string().optional(),
+      })
+    )
+    .min(1, "Please enter at least one testcase"),
+
   codesnippets: z.object({
     JAVASCRIPT: z.string().min(1, "Code snippet is required"),
     PYTHON: z.string().min(1, "Code snippet is required"),
@@ -90,13 +84,13 @@ const ProblemSchema = z.object({
 
 const PlaylistSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
-  description: z.string().optional()
-})
+  description: z.string().optional(),
+});
 export {
   SignupSchema,
   LoginSchema,
   ProblemSchema,
   emailValidation,
   resetPasswordSchema,
-  PlaylistSchema
+  PlaylistSchema,
 };

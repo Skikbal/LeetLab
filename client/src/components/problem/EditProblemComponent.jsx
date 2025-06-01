@@ -19,7 +19,7 @@ import SampleCardLayout from "../cards/SampleCardLayout.jsx";
 import StarterCode from "../sample/StarterCode.jsx";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
 import RefernceSolution from "../sample/RefernceSolution.jsx";
-import ProblemExample from "./ProblemExample.jsx";
+
 import Label from "../form/Label.jsx";
 import Input from "../form/Input.jsx";
 import ErrorSpan from "../form/ErrorSpan.jsx";

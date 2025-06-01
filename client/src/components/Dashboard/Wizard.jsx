@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,29 +14,19 @@ import {
   Lightbulb,
   ClipboardCheck,
   SquarePen,
+  BadgeCheck,
 } from "lucide-react";
 
-const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
-  const [completedSteps, setCompletedSteps] = useState([]);
-  const [direction, setDirection] = useState(1);
-
-  const nextStep = () => {
-    if (currentStep < steps.length) {
-      setDirection(1);
-      setCurrentStep(currentStep + 1);
-      setCompletedSteps([...completedSteps, currentStep]);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setDirection(-1);
-      setCurrentStep(currentStep - 1);
-      setCompletedSteps(
-        completedSteps.filter((step) => step !== currentStep - 1)
-      );
-    }
-  };
+const Wizard = ({
+  steps,
+  children,
+  currentStep,
+  completedSteps,
+  direction,
+  prevStep,
+  nextStep,
+}) => {
+  
 
   const getStepStatus = (stepIndex) => {
     if (stepIndex + 1 === currentStep) return "in-progress";
@@ -157,7 +147,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
       <div className="flex flex-1 gap-6">
         {/* Sidebar with step info */}
         <motion.div
-          className="hidden md:flex flex-col w-1/3 rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50 p-6"
+          className="hidden lg:flex flex-col w-1/3 rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50 p-6"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
@@ -168,11 +158,11 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
               {steps[currentStep - 1].title}
             </h2>
           </div>
-          <p className="text-base-content/80 mb-6">
+          <p className="text-base-content/80 mb-4">
             {steps[currentStep - 1].description}
           </p>
 
-          <div className="mt-auto space-y-6">
+          <div className=" space-y-6">
             {/* Completed Steps */}
             {completedSteps.length > 0 && (
               <motion.div
@@ -182,7 +172,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
                 transition={{ delay: 0.4 }}
               >
                 <h3 className="font-medium text-primary flex items-center gap-2">
-                  <Check className="w-4 h-4" />
+                  <BadgeCheck className="w-4 h-4" />
                   Completed Steps
                 </h3>
                 <ul className="space-y-2 pl-6">
@@ -194,7 +184,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
-                      <Check className="w-3 h-3" />
+                      <BadgeCheck className="w-3 h-3" />
                       {steps[step - 1].title}
                     </motion.li>
                   ))}
@@ -255,8 +245,8 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
         </motion.div>
 
         {/* Main Content */}
-        <div className="flex-1 rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50  relative">
-          <div className="p-6 overflow-auto h-100 mb-20">
+        <div className="flex-1 w-full rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50  relative">
+          <div className="p-6 overflow-y-auto h-100 mb-20 scrollbar-thin">
             <AnimatePresence custom={direction} mode="wait">
               <motion.div
                 key={currentStep}
@@ -280,7 +270,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
               <motion.button
                 onClick={prevStep}
                 disabled={currentStep === 1}
-                className="btn btn-ghost gap-2"
+                className="btn btn-outline btn-secondary gap-2"
                 whileHover={{ scale: currentStep === 1 ? 1 : 1.05 }}
                 whileTap={{ scale: currentStep === 1 ? 1 : 0.95 }}
               >
@@ -288,18 +278,30 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
                 Previous
               </motion.button>
 
-              <motion.button
-                onClick={nextStep}
-                disabled={currentStep === steps.length}
-                className="btn btn-primary gap-2"
-                whileHover={{ scale: currentStep === steps.length ? 1 : 1.05 }}
-                whileTap={{ scale: currentStep === steps.length ? 1 : 0.95 }}
-              >
-                {currentStep === steps.length ? "Submit" : "Next"}
-                {currentStep < steps.length && (
+              {currentStep === steps.length ? (
+                // Submit button (part of the form)
+                <motion.button
+                  form="add-problem"
+                  type="submit" // Crucial for form submission
+                  className="btn btn-primary gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Submit Problem
+                </motion.button>
+              ) : (
+                // Next button (not part of form submission)
+                <motion.button
+                  type="button"
+                  onClick={nextStep}
+                  className="btn btn-primary gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Next
                   <ChevronRight className="w-5 h-5" />
-                )}
-              </motion.button>
+                </motion.button>
+              )}
             </div>
           </div>
         </div>

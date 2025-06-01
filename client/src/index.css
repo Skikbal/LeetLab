@@ -51,16 +51,22 @@
     scrollbar-width: none;
   }
 
-  @layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 2px !important;
+    height: 4px !important;
+  }
+
   .bg-rays {
     position: relative;
     isolation: isolate;
-    min-height: 100vh; /* Ensure it covers at least the viewport */
+    min-height: 100vh;
+    /* Ensure it covers at least the viewport */
   }
 
   .bg-rays::before {
     content: "";
-    position: fixed; /* Changed from absolute to fixed */
+    position: fixed;
+    /* Changed from absolute to fixed */
     inset: 0;
     background:
       var(--rays-overlay),
@@ -68,8 +74,10 @@
     filter: blur(20px);
     z-index: -1;
     pointer-events: none;
-    height: 100%; /* Cover full viewport */
-    width: 100%; /* Cover full viewport */
+    height: 100%;
+    /* Cover full viewport */
+    width: 100%;
+    /* Cover full viewport */
   }
-}
+
 }

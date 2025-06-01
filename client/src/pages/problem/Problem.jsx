@@ -6,6 +6,7 @@ import Info from "../../components/AddProblem/Info.jsx";
 import Tags from "../../components/AddProblem/Tags.jsx";
 import TestCases from "../../components/AddProblem/TestCases.jsx";
 import Wizard from "../../components/Dashboard/Wizard.jsx";
+import Preview from "../../components/AddProblem/Preview.jsx";
 import {
   SquarePen,
   BookOpen,
@@ -17,8 +18,9 @@ import {
 } from "lucide-react";
 
 import { useForm, FormProvider } from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ProblemSchema } from "../../validators/ValidationSchema.js";
+import WizardButtons from "../../components/AddProblem/WizardButtons.jsx";
 const steps = [
   {
     title: "Basic Information",
@@ -26,6 +28,7 @@ const steps = [
     description: "Provide the core details of the problem",
     component: <Info />,
     icon: <SquarePen className="w-5 h-5" />,
+    fields: ["title", "topic", "description", "difficulty"],
   },
   {
     title: "Topics & Tags",
@@ -33,6 +36,7 @@ const steps = [
     description: "Add relevant topics and tags",
     component: <Tags />, // ✅ Fixed
     icon: <BookOpen className="w-5 h-5" />,
+    fields: ["tags", "companyTags"],
   },
   {
     title: "Test Cases",
@@ -40,6 +44,7 @@ const steps = [
     description: "Define sample and edge test cases",
     component: <TestCases />, // ✅ Fixed
     icon: <ClipboardCheck className="w-5 h-5" />,
+    fields: ["testcases"],
   },
   {
     title: "Code Setup",
@@ -47,6 +52,7 @@ const steps = [
     description: "Provide starter code and reference solutions",
     component: <CodeSetup />, // ✅ Fixed
     icon: <Code className="w-5 h-5" />,
+    fields: ["codesnippets", "referencesolutions"],
   },
   {
     title: "Examples",
@@ -54,6 +60,7 @@ const steps = [
     description: "Add example input/output with explanations",
     component: <Examples />, // ✅ Fixed
     icon: <FileText className="w-5 h-5" />,
+    fields: ["examples"],
   },
   {
     title: "Additional Details",
@@ -61,10 +68,12 @@ const steps = [
     description: "Include extra details like constraints",
     component: <AdditionalDetail />, // ✅ Fixed
     icon: <Lightbulb className="w-5 h-5" />,
+    fields: ["constraints", "hints", "editorial"],
   },
   {
     title: "Review & Submit",
     tag: "final",
+    component: <Preview />,
     description: "Verify all entered information",
     icon: <CheckCircle className="w-5 h-5" />,
   },
@@ -72,6 +81,7 @@ const steps = [
 
 const Problem = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  
   const methods = useForm({
     resolver: zodResolver(ProblemSchema),
     mode: "onChange",
@@ -97,26 +107,49 @@ const Problem = () => {
       },
     },
   });
+
+  const [completedSteps, setCompletedSteps] = useState([]);
+  const [direction, setDirection] = useState(1);
+
+  const nextStep = async () => {
+  
+    const currentStepFields = steps[currentStep - 1].fields;
+    const isValid = await methods.trigger(currentStepFields);
+    if (isValid && currentStep < steps.length) {
+      setDirection(1);
+      setCurrentStep(currentStep + 1);
+      setCompletedSteps([...completedSteps, currentStep]);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setDirection(-1);
+      setCurrentStep(currentStep - 1);
+      setCompletedSteps(
+        completedSteps.filter((step) => step !== currentStep - 1)
+      );
+    }
+  };
+
+  const onSubmit = async (data) => {
+    console.log("data>>>>>>>>>>>>>>>>>>>",data)
+  };
   return (
     <Wizard
       steps={steps}
       currentStep={currentStep}
+      nextStep={nextStep}
+      prevStep={prevStep}
+      completedSteps={completedSteps}
       setCurrentStep={setCurrentStep}
+      formMethods={methods}
+      onSubmit={onSubmit}
+      direction={direction}
+      setDirection={setDirection}
     >
       <FormProvider {...methods}>
-        <form>
-          {steps[currentStep - 1].component ? (
-            steps[currentStep - 1].component
-          ) : (
-            <div className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-bold mb-4">Review & Submit</h2>
-              <p className="text-base-content/80 mb-8">
-                Verify all information before submitting
-              </p>
-              <button className="btn btn-primary">Submit Problem</button>
-            </div>
-          )}
-        </form>
+        <form id="add-problem" onSubmit={methods.handleSubmit(onSubmit)}>{steps[currentStep - 1].component}</form>
       </FormProvider>
     </Wizard>
   );
