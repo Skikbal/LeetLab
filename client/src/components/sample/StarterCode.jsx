@@ -2,7 +2,7 @@ import React from "react";
 import ErrorSpan from "../form/ErrorSpan.jsx";
 const StarterCode = ({ children, errors, language }) => {
   return (
-    <div className="card bg-base-100 shadow-md">
+    <div className="card bg-base-100/80 backdrop-blur-sm shadow-md">
       <div className="card-body p-4 md:p-6">
         <h4 className="font-semibold text-base md:text-lg xl:text-base mb-4">
           Starter Code Template

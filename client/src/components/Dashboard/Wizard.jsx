@@ -83,7 +83,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
     <div className="flex flex-col w-full min-h-[calc(100vh-5rem)] p-6 gap-6">
       {/* Progress Bar */}
       <motion.div
-        className="flex items-center w-full  rounded-lg p-5 px-10 shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50 relative h-24"
+        className="flex items-center w-full  rounded-lg p-5 px-10 shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50 relative py-3"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -255,8 +255,8 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
         </motion.div>
 
         {/* Main Content */}
-        <div className="flex-1 rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50 overflow-auto relative">
-          <div className="p-6 mb-6">
+        <div className="flex-1 rounded-lg shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300/50  relative">
+          <div className="p-6 overflow-auto h-100 mb-20">
             <AnimatePresence custom={direction} mode="wait">
               <motion.div
                 key={currentStep}
@@ -275,7 +275,7 @@ const Wizard = ({ steps, children, currentStep, setCurrentStep }) => {
 
           {/* Navigation Buttons */}
           {/* Fixed Navigation Buttons */}
-          <div className="border-t border border-base-300/50 sticky bottom-0 left-0  w-full p-4">
+          <div className="border-t bg-base-100/80 backdrop-blur-sm border border-base-300/50 fixed bottom-0 left-0  w-full p-4">
             <div className="flex justify-between">
               <motion.button
                 onClick={prevStep}

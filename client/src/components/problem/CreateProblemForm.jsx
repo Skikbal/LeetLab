@@ -129,7 +129,6 @@ const CreateProblemForm = () => {
     reset(sampleData);
   };
 
-  console.log(errors);
   return (
     <div className="flex flex-wrap">
       <Cards className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-3/5 2xl:w-1/2">

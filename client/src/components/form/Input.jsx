@@ -20,8 +20,9 @@ const Input = ({
       placeholder={placeholder}
       className={`
         w-full bg-base-200 border border-base-300 focus:border-primary 
-        rounded-lg px-4 py-2 pl-10 text-white 
+        rounded-lg px-4 py-2 text-white 
         ${error ? "border-error focus:border-error" : ""}
+        ${Icon ? "pl-10" : ""}
       `}
     />
     {Icon && (
