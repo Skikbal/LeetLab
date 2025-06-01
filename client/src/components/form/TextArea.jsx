@@ -1,13 +1,17 @@
 import React from "react";
 
-const TextArea = ({ register, name, placeholder, className }) => {
+const TextArea = ({ register, name, placeholder, className = "", error }) => {
   return (
-    <textarea
-      id={name}
-      className={`rounded border border-accent w-full text-base p-4 resize-y ${className} `}
-      {...register(name)}
-      placeholder={placeholder}
-    />
+    <div className="form-control">
+      <textarea
+        id={name}
+        className={`textarea textarea-bordered w-full bg-base-200 border-base-300 text-base-content placeholder-base-content/50 ${className} ${
+          error ? "textarea-error" : ""
+        }`}
+        {...register(name)}
+        placeholder={placeholder}
+      />
+    </div>
   );
 };
 

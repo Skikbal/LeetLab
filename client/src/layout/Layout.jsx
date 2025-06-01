@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
       ) : (
-        <div className="px-2">{children}</div>
+        <div className="bg-rays px-6">{children}</div>
       )}
     </div>
   );

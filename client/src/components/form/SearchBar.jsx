@@ -1,10 +1,10 @@
 import React from "react";
 
-const SearchBar = ({ onChange, value,className,placeholder }) => {
+const SearchBar = ({ onChange, value, className = "", placeholder }) => {
   return (
-    <label className={`w-full  input focus:outline-none focus-within:outline-none shadow-none focus:border focus:border-accent ${className}`}>
+    <label className={`input input-bordered flex items-center gap-2 bg-base-200 border-base-300 ${className}`}>
       <svg
-        className="h-[1em] opacity-50"
+        className="w-4 h-4 opacity-70"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -21,7 +21,7 @@ const SearchBar = ({ onChange, value,className,placeholder }) => {
       </svg>
       <input
         type="search"
-        required
+        className="grow bg-transparent focus:outline-none"
         placeholder={placeholder}
         onChange={onChange}
         value={value}

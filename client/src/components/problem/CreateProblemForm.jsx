@@ -212,13 +212,13 @@ const CreateProblemForm = () => {
 
           {/* Tags */}
           <SampleCardLayout
-            title={"Tags"}
+            title={"Topics"}
             icon={<BookOpen className="w-5 h-5" />}
             button={true}
             onClick={() => appendTag("")}
             buttonTitle={
               <>
-                <Plus className="w-4 h-4" /> Add Tags
+                <Plus className="w-4 h-4" /> Add Topics
               </>
             }
           >

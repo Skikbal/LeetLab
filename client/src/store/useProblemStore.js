@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/Axios";
 import toast from "react-hot-toast";
 
 export const useProblemStore = create((set) => ({
-  isLoading: true,
+  isLoading: false,
   problems: [],
   tags: [],
   companies: [],

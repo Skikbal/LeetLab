@@ -23,13 +23,13 @@ const AppRoutes = () => {
       </Route>
       //ProtectedRoutes
       <Route element={<ProtectedRoutes />}>
-        {/* <Route path="/" element={<Dashboard />} /> */}
+        <Route path="/" element={<Dashboard />} />
         <Route
-          path="/"
+          path="/problems"
           element={
-            // <RequireVerified>
-            <Problems />
-            // </RequireVerified>
+            <RequireVerified>
+              <Problems />
+            </RequireVerified>
           }
         />
         <Route
@@ -50,6 +50,8 @@ const AppRoutes = () => {
         />
       </Route>
       <Route element={<AdminRoutes />}>
+        <Route path="/" element={<Dashboard />} />
+
         <Route
           path="/add-problem"
           element={
@@ -59,7 +61,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/"
+          path="/problems"
           element={
             <RequireVerified>
               <Problems />

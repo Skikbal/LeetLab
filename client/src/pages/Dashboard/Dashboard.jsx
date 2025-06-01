@@ -1,6 +1,8 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { MailCheck } from "lucide-react";
+// import DashboardHero from "../../components/Dashboard/DashboardHero";
+import Problem from "../problem/Problem.jsx";
 const Dashboard = () => {
   const { authUser, isVerified } = useAuthStore();
   return (
@@ -22,11 +24,7 @@ const Dashboard = () => {
         </div>
       )}
       <div className="flex w-full">
-        <div className="w-[80%] border border-white">
-          <h1>Category-All</h1>
-          <h2></h2>
-        </div>
-        <div className="w-[20%] border border-white">i am good</div>
+        <Problem />
       </div>
     </>
   );

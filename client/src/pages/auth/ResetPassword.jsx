@@ -126,6 +126,10 @@ const ResetPassword = () => {
           </p>
         </div>
       </form>
+      {/* Footer */}
+      <div className="mt-8 text-center text-sm text-base-content/60">
+        <p>Copyright © 2025 - <span className="font-semibold text-primary">CodeZero</span>. All rights reserved.</p>
+      </div>
     </div>
   );
 };
