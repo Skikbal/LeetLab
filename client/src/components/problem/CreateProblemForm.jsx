@@ -110,13 +110,7 @@ const CreateProblemForm = () => {
     control,
     name: "companyTags",
   });
-  const onSubmit = async (data) => {
-    try {
-      await createProblem(data, navigate);
-    } catch (error) {
-      console.log("Error creating problem: ", error);
-    }
-  };
+  
 
   const handleLoadSample = () => {
     replaceTag(sampleData.tags.map((tag) => tag));

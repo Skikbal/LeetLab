@@ -4,7 +4,6 @@ import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import GuestGuard from "./GuestGuard.jsx";
 import AdminRoutes from "./AdminRoutes.jsx";
 import Notfound from "../pages/404/Notfound.jsx";
-import AddProblem from "../pages/problem/AddProblem.jsx";
 import Problems from "../pages/problem/Problems.jsx";
 import ResetPassword from "../pages/auth/ResetPassword.jsx";
 import MailVerification from "../pages/auth/MailVerification.jsx";
@@ -12,7 +11,7 @@ import RequireVerified from "./RequireVerified.jsx";
 import ProblemEditor from "../pages/problem/ProblemEditor.jsx";
 import EditProblem from "../pages/problem/EditProblem.jsx";
 import Profile from "../pages/Dashboard/Profile.jsx";
-import HeroPage from "../pages/Dashboard/HeroPage.jsx";
+import CreateProblem from "../pages/problem/CreateProblem.jsx";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -56,7 +55,7 @@ const AppRoutes = () => {
           path="/add-problem"
           element={
             <RequireVerified>
-              <AddProblem />
+              <CreateProblem />
             </RequireVerified>
           }
         />

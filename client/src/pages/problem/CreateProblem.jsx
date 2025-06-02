@@ -16,11 +16,12 @@ import {
   Lightbulb,
   CheckCircle,
 } from "lucide-react";
-
+import Loader from "../../components/Loader.jsx";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProblemSchema } from "../../validators/ValidationSchema.js";
-import WizardButtons from "../../components/AddProblem/WizardButtons.jsx";
+import { useProblemStore } from "../../store/useProblemStore.js";
+import { useNavigate } from "react-router-dom";
 const steps = [
   {
     title: "Basic Information",
@@ -79,7 +80,9 @@ const steps = [
   },
 ];
 
-const Problem = () => {
+const CreateProblem = () => {
+  const navigate = useNavigate();
+  const { createProblem, isLoading } = useProblemStore();
   const [currentStep, setCurrentStep] = useState(1);
   
   const methods = useForm({
@@ -133,8 +136,14 @@ const Problem = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("data>>>>>>>>>>>>>>>>>>>",data)
+    try {
+      await createProblem(data, navigate);
+    } catch (error) {
+      console.log("Error creating problem: ", error);
+    }
   };
+
+  if (isLoading) return <Loader />;
   return (
     <Wizard
       steps={steps}
@@ -155,4 +164,4 @@ const Problem = () => {
   );
 };
 
-export default Problem;
+export default CreateProblem;

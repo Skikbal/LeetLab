@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
 import ErrorSpan from "../form/ErrorSpan.jsx";
 import Label from "../form/Label.jsx";
-import { useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext, useFieldArray, useWatch } from "react-hook-form";
 import { CheckCircle2, Trash2, Plus } from "lucide-react";
 import TextArea from "../form/TextArea.jsx";
 const TestCases = () => {
@@ -10,8 +10,13 @@ const TestCases = () => {
     control,
     register,
     formState: { errors },
-    trigger,
   } = useFormContext();
+
+  const watchTestCases = useWatch({
+    control,
+    name: "testcases",
+  });
+
   //testcases
   const {
     fields: testCaseFields,
@@ -22,6 +27,10 @@ const TestCases = () => {
     control,
     name: "testcases",
   });
+
+  useEffect(() => {
+    replacetestcases(watchTestCases.map((tc) => tc));
+  }, []);
   return (
     <div>
       {/* Test Cases */}
@@ -38,7 +47,10 @@ const TestCases = () => {
       >
         <div className="space-y-6">
           {testCaseFields.map((field, index) => (
-            <div key={field.id} className="card bg-base-100/80 backdrop-blur-sm shadow-md">
+            <div
+              key={field.id}
+              className="card bg-base-100/80 backdrop-blur-sm shadow-md"
+            >
               <div className="card-body p-4 md:p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-base font-semibold">

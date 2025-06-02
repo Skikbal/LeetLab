@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
-import { useFieldArray,useFormContext} from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import ErrorSpan from "../form/ErrorSpan.jsx";
 import Input from "../form/Input.jsx";
-import { BookOpen,Building2,Plus,Trash2 } from "lucide-react";
+import { BookOpen, Building2, Plus, Trash2 } from "lucide-react";
 
 const Tags = () => {
   const {
     register,
     control,
     formState: { errors },
-    trigger,
   } = useFormContext();
+
+  const watchTags = useWatch({
+    control,
+    name: "tags",
+  });
+
+  const watchCompanyTags = useWatch({
+    control,
+    name: "companyTags",
+  });
 
   //tags
   const {
@@ -33,6 +42,15 @@ const Tags = () => {
     control,
     name: "companyTags",
   });
+
+  useEffect(() => {
+    if (watchTags?.length > 0) {
+      replaceTag(watchTags.map((tag) => tag.name));
+    }
+    if (watchCompanyTags?.length > 0) {
+      replaceCompanyTag(watchCompanyTags.map((tag) => tag.name));
+    }
+  },[]);
   return (
     <div className="space-y-8">
       {/* Tags */}

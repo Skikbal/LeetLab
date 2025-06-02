@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
-import { useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext, useFieldArray,useWatch } from "react-hook-form";
 import { ChevronsLeftRight,Lightbulb,Plus,Trash2 } from "lucide-react";
 import Label from "../form/Label.jsx";
 import TextArea from "../form/TextArea.jsx";
@@ -12,16 +12,25 @@ const AdditionalDetail = () => {
     control,
     formState: { errors },
   } = useFormContext();
+
+  const watchConstraints = useWatch({
+    control,
+    name: "constraints",
+  });
   //contraints
   const {
     fields: constraintFields,
     append: appendConstraint,
     remove: removeConstraint,
-    // replace: replaceConstraint,
+    replace: replaceConstraint,
   } = useFieldArray({
     control,
     name: "constraints",
   });
+
+  useEffect(() => {
+    replaceConstraint(watchConstraints.map((c) => c));
+  }, []);
   return (
     <div className="card bg-base-200 p-4 md:p-6 shadow-md">
       <h3 className="text-base font-semibold mb-6 flex items-center gap-2">

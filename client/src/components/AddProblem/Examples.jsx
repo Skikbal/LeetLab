@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SampleCardLayout from "../cards/SampleCardLayout.jsx";
-import { useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext, useFieldArray,useWatch } from "react-hook-form";
 import { Code2,Plus,Trash2 } from "lucide-react";
 import TextArea from "../form/TextArea.jsx";
 import Label from "../form/Label.jsx";
@@ -10,9 +10,12 @@ const Examples = () => {
     control,
     register,
     formState: { errors },
-    trigger,
   } = useFormContext();
-  console.log(errors)
+
+  // const watchExamples = useWatch({
+  //   control,
+  //   name: "examples",
+  // });
   //testcases
   const {
     fields: exampleFields,
@@ -23,6 +26,9 @@ const Examples = () => {
     control,
     name: "examples",
   });
+  // useEffect(() => {
+  //   replaceExample(watchExamples.map((ex) => ex));
+  // }, []);
 
   return (
     <div className="space-y-8">

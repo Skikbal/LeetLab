@@ -13,7 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  MailCheck
+  MailCheck,
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchBar from "../../components/form/SearchBar";
@@ -26,6 +26,7 @@ import PlaylistModal from "../../components/Modal/PlaylistModal.jsx";
 import AddPlaylistModal from "../../components/Modal/AddPlaylistModal.jsx";
 import { usePlaylistStore } from "../../store/usePlaylistStore.js";
 import Loader from "../../components/Loader.jsx";
+import {useAuthStore} from "../../store/useAuthStore.js";
 const Problems = () => {
   const navigate = useNavigate();
   const {
@@ -49,6 +50,7 @@ const Problems = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [selectedProblem, setSelectedProblem] = useState(null);
   const { isPlaylistLoading, getAllPlaylists, playlists } = usePlaylistStore();
+  const { authUser } = useAuthStore();
   //delete
   const handleDeleteOnClick = async () => {
     try {
@@ -112,7 +114,7 @@ const Problems = () => {
       {(isLoading || isPlaylistLoading) && (
         <Loader isLoading={isLoading || isPlaylistLoading} />
       )}
-      
+
       {isPlaylistModalOpen2 && (
         <AddPlaylistModal
           onClose={() => setIsPlaylistModalOpen2(false)}
@@ -182,6 +184,11 @@ const Problems = () => {
             >
               Create Playlist <Plus className="h-5 w-5" />
             </button>
+            {authUser?.role === "ADMIN" && (
+              <button className="btn" onClick={() => navigate("/add-problem")}>
+                Create Problem <Plus className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
         <div className="flex flex-wrap-reverse md:flex-nowrap gap-5 w-full">

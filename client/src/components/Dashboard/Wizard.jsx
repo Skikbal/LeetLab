@@ -25,9 +25,8 @@ const Wizard = ({
   direction,
   prevStep,
   nextStep,
+  updateProblem,
 }) => {
-  
-
   const getStepStatus = (stepIndex) => {
     if (stepIndex + 1 === currentStep) return "in-progress";
     if (completedSteps.includes(stepIndex + 1)) return "completed";
@@ -278,19 +277,8 @@ const Wizard = ({
                 Previous
               </motion.button>
 
-              {currentStep === steps.length ? (
+              {currentStep < steps.length && (
                 // Submit button (part of the form)
-                <motion.button
-                  form="add-problem"
-                  type="submit" // Crucial for form submission
-                  className="btn btn-primary gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Submit Problem
-                </motion.button>
-              ) : (
-                // Next button (not part of form submission)
                 <motion.button
                   type="button"
                   onClick={nextStep}
@@ -298,8 +286,20 @@ const Wizard = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Next
+                  {currentStep === steps.length - 1 ? "Review" : "Next"}
                   <ChevronRight className="w-5 h-5" />
+                </motion.button>
+              )}
+
+              {currentStep === steps.length && (
+                <motion.button
+                  form={updateProblem ? "update-problem" : "add-problem"}
+                  type="submit" // Crucial for form submission
+                  className="btn btn-primary gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {updateProblem ? "Update Problem" : "Submit Problem"}
                 </motion.button>
               )}
             </div>

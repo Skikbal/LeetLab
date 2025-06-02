@@ -54,6 +54,11 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 2px !important;
     height: 4px !important;
+    border-radius: 10px !important;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2) !important;
   }
 
   .bg-rays {
