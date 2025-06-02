@@ -9,7 +9,6 @@ const Info = () => {
   const {
     register,
     formState: { errors },
-    trigger,
   } = useFormContext();
 
   return (
@@ -25,18 +24,6 @@ const Info = () => {
         />
         {errors?.title && <ErrorSpan error={errors.title.message} />}
       </div>
-      {/* Topic Field */}
-      <div className="form-control sm:col-span-2">
-        <Label children={"Topic"} name={"topic"} />
-        <Input
-          register={register}
-          name="topic"
-          placeholder="Enter problem topic"
-          type="text"
-        />
-        {errors?.topic && <ErrorSpan error={errors.topic.message} />}
-      </div>
-
       {/* Description Field */}
       <div className="form-control sm:col-span-2">
         <Label children={"Description"} name={"description"} />

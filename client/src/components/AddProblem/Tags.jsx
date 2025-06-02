@@ -16,12 +16,10 @@ const Tags = () => {
     control,
     name: "tags",
   });
-
   const watchCompanyTags = useWatch({
     control,
-    name: "companyTags",
+    name: "companies",
   });
-
   //tags
   const {
     fields: tagFields,
@@ -30,7 +28,7 @@ const Tags = () => {
     replace: replaceTag,
   } = useFieldArray({
     control,
-    name: "tags",
+    name: "formTags",
   });
   //company tags
   const {
@@ -44,24 +42,28 @@ const Tags = () => {
   });
 
   useEffect(() => {
-    if (watchTags?.length > 0) {
-      replaceTag(watchTags.map((tag) => tag.name));
-    }
     if (watchCompanyTags?.length > 0) {
-      replaceCompanyTag(watchCompanyTags.map((tag) => tag.name));
+      replaceCompanyTag(watchCompanyTags.map((company) => company.name));
     }
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    if (!watchTags || watchTags.length === 0) {
+      replaceTag(watchTags?.map((tag) => tag.name) || []);
+    }
+  }, []);
+
   return (
     <div className="space-y-8">
       {/* Tags */}
       <SampleCardLayout
-        title={"Tags"}
+        title={"Topics"}
         icon={<BookOpen className="w-5 h-5" />}
         button={true}
         onClick={() => appendTag("")}
         buttonTitle={
           <>
-            <Plus className="w-4 h-4" /> Add Tags
+            <Plus className="w-4 h-4" /> Add Topic
           </>
         }
       >
@@ -70,8 +72,8 @@ const Tags = () => {
             <div key={field.id} className="flex gap-2 items-center">
               <Input
                 register={register}
-                name={`tags.${index}`}
-                placeholder={"Enter tag"}
+                name={`formTags.${index}`}
+                placeholder={"Enter topics"}
                 type={"text"}
               />
               <button
@@ -85,7 +87,7 @@ const Tags = () => {
             </div>
           ))}
         </div>
-        {errors.tags && <ErrorSpan error={errors.tags.message} />}
+        {errors.formTags && <ErrorSpan error={errors.form.message} />}
       </SampleCardLayout>
       {/* tag compnies */}
       <SampleCardLayout

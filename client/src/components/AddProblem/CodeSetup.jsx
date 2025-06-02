@@ -6,11 +6,10 @@ import StarterCode from "../sample/StarterCode.jsx";
 import { Code2 } from "lucide-react";
 import MonacoEditor from "../Monaco/MonacoEditor.jsx";
 const CodeSetup = () => {
+
   const {
-    register,
     control,
     formState: { errors },
-    trigger,
   } = useFormContext();
   return (
     <div className="space-y-8">
@@ -54,8 +53,6 @@ const CodeSetup = () => {
                 )}
               />
             </RefernceSolution>
-
-           
           </div>
         </SampleCardLayout>
       ))}

@@ -29,7 +29,7 @@ const steps = [
     description: "Provide the core details of the problem",
     component: <Info />,
     icon: <SquarePen className="w-5 h-5" />,
-    fields: ["title", "topic", "description", "difficulty"],
+    fields: ["title","description", "difficulty"],
   },
   {
     title: "Topics & Tags",
@@ -79,6 +79,9 @@ const steps = [
     icon: <CheckCircle className="w-5 h-5" />,
   },
 ];
+
+
+
 
 const CreateProblem = () => {
   const navigate = useNavigate();

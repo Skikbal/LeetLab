@@ -37,12 +37,11 @@ const resetPasswordSchema = z
 
 const ProblemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
-  topic: z.string().min(3, "Topic must be at least 3 characters long"),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters long"),
   difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
-  tags: z.array(z.string()).min(1, "Please enter at least one tag"),
+  formTags: z.array(z.string()).min(1, "Please enter at least one topic"),
   companyTags: z
     .array(z.string())
     .min(1, "Please enter at least one company tag"),
