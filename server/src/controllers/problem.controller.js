@@ -11,7 +11,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
     title,
     description,
     difficulty,
-    tags,
+    formTags,
     companyTags,
     examples,
     constraints,
@@ -36,7 +36,7 @@ const createProblemHandler = AsyncHandler(async (req, res) => {
 
   // Create or update tags and get their records
   const tagRecords = await Promise.all(
-    tags.map(async (tag) => {
+    formTags.map(async (tag) => {
       return await prisma.tag.upsert({
         where: {
           name: tag.toLowerCase(),
@@ -243,7 +243,7 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     "title",
     "description",
     "difficulty",
-    "tags",
+    "formTags",
     "companyTags",
     "examples",
     "constraints",
@@ -268,19 +268,21 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     referencesolutions,
     testcases,
     examples,
-    tags,
+    formTags,
     companyTags,
   } = req.body;
   //tags
   const tagsEquals =
-    tags.length === problem.tags.length &&
-    tags.every((tag) => {
+    formTags.length === problem.tags.length &&
+    formTags.every((tag) => {
       return problem.tags.some((problemTag) => problemTag.name === tag);
     });
 
   if (!tagsEquals) {
-    updateData.tags = tags;
+    updateData.tags = formTags;
+    delete updateData.formTags;
   } else {
+    delete updateData.formTags;
     delete updateData.tags;
   }
 
@@ -314,15 +316,12 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
     delete updateData.testcases;
   }
   const examplesEquals =
-    Object.entries(examples).length ===
-      Object.entries(problem.examples).length &&
-    Object.entries(examples).every(
-      ([language, example]) =>
-        Object.hasOwn(problem.examples, language) &&
-        example.input === problem.examples[language].input &&
-        example.output === problem.examples[language].output &&
-        example.explanation === problem.examples[language].explanation,
-    );
+    examples.length === problem.examples.length &&
+    examples.every((example, index) => {
+      example.input === problem.examples[index].input &&
+        example.output === problem.examples[index].output &&
+        example.explanation === problem.examples[index].explanation;
+    });
 
   if (!examplesEquals) {
     updateData.examples = examples;
@@ -461,20 +460,24 @@ const updateProblemHandler = AsyncHandler(async (req, res) => {
       ...updateData,
       userId,
       tags: {
-        connect: tagRecords?.map((tag) => ({
-          id: tag.id,
-        }))?? [],
-        disconnect: tagsTodisconnect?.map((tag) => ({
-          id: tag.id,
-        }))??[],
+        connect:
+          tagRecords?.map((tag) => ({
+            id: tag.id,
+          })) ?? [],
+        disconnect:
+          tagsTodisconnect?.map((tag) => ({
+            id: tag.id,
+          })) ?? [],
       },
       companies: {
-        connect: companyTagRecords?.map((company) => ({
-          id: company.id,
-        }))??[],
-        disconnect: dissconnectCompanyTagRecords?.map((company) => ({
-          id: company.id,
-        }))??[],
+        connect:
+          companyTagRecords?.map((company) => ({
+            id: company.id,
+          })) ?? [],
+        disconnect:
+          dissconnectCompanyTagRecords?.map((company) => ({
+            id: company.id,
+          })) ?? [],
       },
     },
     include: {

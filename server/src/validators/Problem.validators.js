@@ -21,23 +21,15 @@ const ProblemSchema = z.object({
       }),
     )
     .min(1, "Please enter at least one testcase"),
-  examples: z.object({
-    JAVASCRIPT: z.object({
+  examples: z
+  .array(
+    z.object({
       input: z.string().min(1, "Input is required"),
       output: z.string().min(1, "Output is required"),
       explanation: z.string().optional(),
     }),
-    PYTHON: z.object({
-      input: z.string().min(1, "Input is required"),
-      output: z.string().min(1, "Output is required"),
-      explanation: z.string().optional(),
-    }),
-    JAVA: z.object({
-      input: z.string().min(1, "Input is required"),
-      output: z.string().min(1, "Output is required"),
-      explanation: z.string().optional(),
-    }),
-  }),
+  )
+  .min(1, "Please enter at least one example"),
   codesnippets: z.object({
     JAVASCRIPT: z.string().min(1, "Code snippet is required"),
     PYTHON: z.string().min(1, "Code snippet is required"),

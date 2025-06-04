@@ -75,8 +75,10 @@ model Problem {
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   submissions        Submission[]
   problemSolvedBy    problemSolved[]
-  ProblemInPlaylists  ProblemInPlaylist[]
+  ProblemInPlaylists ProblemInPlaylist[]
 }
+
+
 
 //tags
 model Tag {
