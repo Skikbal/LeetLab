@@ -39,16 +39,7 @@ const Preview = () => {
               <p className="text-wrap w-full">{formData?.title}</p>
             </Card>
           </div>
-          <div className=" md:col-span-2">
-            <label className="label mb-1">
-              <span className="label-text text-base-content md:text-lg xl:text-base font-semibold">
-                Topic
-              </span>
-            </label>
-            <Card>
-              <p className="text-wrap w-full">{formData?.topic}</p>
-            </Card>
-          </div>
+          
 
           <div className=" md:col-span-2">
             <label className="label mb-1">
@@ -72,9 +63,9 @@ const Preview = () => {
         </div>
 
         {/* Tags */}
-        <SampleCardLayout icon={<BookOpen className="w-5 h-5" />} title="Tags">
+        <SampleCardLayout icon={<BookOpen className="w-5 h-5" />} title="Topics">
           <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid,cols-3 gap-3">
-            {formData?.tags?.map((tag, index) => (
+            {formData?.formTags?.map((tag, index) => (
               <div className="badge badge-md  badge-secondary" key={index}>
                 {tag}
               </div>

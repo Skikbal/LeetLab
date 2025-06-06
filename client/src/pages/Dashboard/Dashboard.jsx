@@ -1,7 +1,6 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { MailCheck } from "lucide-react";
-// import DashboardHero from "../../components/Dashboard/DashboardHero";
 const Dashboard = () => {
   const { authUser, isVerified } = useAuthStore();
   return (
@@ -23,6 +22,7 @@ const Dashboard = () => {
         </div>
       )}
       <div className="flex w-full">
+        <p>Dashboard</p>
       </div>
     </>
   );

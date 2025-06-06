@@ -5,7 +5,7 @@ import { BounceLoader } from "react-spinners";
 
 const Loader = ({ loading, size = 40 }) => {
   return (
-    <div className="fixed inset-0 bg-base-100/70 flex items-center justify-center z-100">
+    <div className="fixed inset-0 bg-base-100/70 flex items-center justify-center z-150">
       <BounceLoader
         color="#5ca300"
         speedMultiplier={2}

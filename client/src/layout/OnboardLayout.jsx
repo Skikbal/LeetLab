@@ -59,7 +59,7 @@ const OnboardLayout = ({ children }) => {
   if (isCheckingAuth || isLoading)
     return <Loader variant="primary" fullScreen={true} size={40} />;
   return (
-    <div className="h-screen grid lg:grid-cols-2 bg-rays">
+    <div className="grid lg:grid-cols-2 bg-shiny">
       {/* Left Side - Form Content */}
       <div className="flex flex-col justify-center items-center p-4 relative">
         <div className="w-full max-w-md">

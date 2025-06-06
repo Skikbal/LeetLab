@@ -8,7 +8,7 @@ export const useProblemStore = create((set) => ({
   tags: [],
   companies: [],
   problem: null,
-  createProblem: async (data, navigate) => {
+  createProblem: async ({data, navigate}) => {
     set({ isLoading: true });
     try {
       const res = await axiosInstance.post("/problems/create-problem", data);

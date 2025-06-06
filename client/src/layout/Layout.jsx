@@ -5,7 +5,9 @@ import { MailCheck } from "lucide-react";
 const Layout = ({ children }) => {
   const { authUser, isVerified } = useAuthStore();
   return (
-    <div className="h-screen bg-base-200 overflow-auto">
+    <div className="h-screen bg-rays overflow-auto">
+    {/* <div class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-5 blur-xl animate-pulse pointer-events-none"></div> */}
+
       <Navbar />
 
       {authUser && !isVerified ? (
@@ -24,7 +26,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
       ) : (
-        <div className="bg-rays px-6">{children}</div>
+        <div className="px-6">{children}</div>
       )}
     </div>
   );

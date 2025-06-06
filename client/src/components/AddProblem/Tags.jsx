@@ -30,6 +30,9 @@ const Tags = () => {
     control,
     name: "formTags",
   });
+
+  console.log(tagFields)
+
   //company tags
   const {
     fields: companyTagFields,
@@ -48,8 +51,8 @@ const Tags = () => {
   }, []);
 
   useEffect(() => {
-    if (!watchTags || watchTags.length === 0) {
-      replaceTag(watchTags?.map((tag) => tag.name) || []);
+    if (watchTags?.length > 0) {
+      replaceTag(watchTags?.map((tag) => tag.name));
     }
   }, []);
 
@@ -87,7 +90,7 @@ const Tags = () => {
             </div>
           ))}
         </div>
-        {errors.formTags && <ErrorSpan error={errors.form.message} />}
+        {errors.formTags && <ErrorSpan error={errors.formTags.message} />}
       </SampleCardLayout>
       {/* tag compnies */}
       <SampleCardLayout

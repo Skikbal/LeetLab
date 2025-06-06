@@ -140,7 +140,7 @@ const CreateProblem = () => {
 
   const onSubmit = async (data) => {
     try {
-      await createProblem(data, navigate);
+      await createProblem({data, navigate});
     } catch (error) {
       console.log("Error creating problem: ", error);
     }

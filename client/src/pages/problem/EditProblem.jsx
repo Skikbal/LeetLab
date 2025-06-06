@@ -156,12 +156,13 @@ const EditProblem = () => {
   const onSubmit = async (data) => {
     try {
       await updateProblem({ data, id, navigate });
+      navigate("/");
     } catch (error) {
       console.log("Error creating problem: ", error);
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader loading={isLoading} />;
   return (
     <Wizard
       steps={steps}
